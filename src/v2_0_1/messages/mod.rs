@@ -38,6 +38,7 @@ pub mod notify_ev_charging_schedule;
 pub mod notify_event;
 pub mod notify_monitoring_report;
 pub mod notify_report;
+pub mod prelude;
 pub mod publish_firmware;
 pub mod publish_firmware_status_notification;
 pub mod report_charging_profiles;

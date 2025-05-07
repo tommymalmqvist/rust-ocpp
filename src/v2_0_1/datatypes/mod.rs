@@ -34,6 +34,7 @@ pub mod modem_type;
 pub mod monitoring_data_type;
 pub mod network_connection_profile_type;
 pub mod ocsp_request_data_type;
+pub mod prelude;
 pub mod relative_time_interval_type;
 pub mod report_data_type;
 pub mod sales_tariff_entry_type;
