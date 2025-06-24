@@ -20,18 +20,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: download grcov for code coverage
-        run: curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -
       - name: install llvm tools preview
         run: rustup component add llvm-tools-preview
+      - name: install grcov
+        run: cargo install grcov --root .
       - name: Build
         run: cargo build --all-features
       - name: Run tests
-        run: LLVM_PROFILE_FILE="your_name-%p-%m.profraw" cargo test --all-features
+        run: LLVM_PROFILE_FILE="rust-ocpp-%p-%m.profraw" cargo test --all-features
       - name: Generate lcov.info for Code coverage
-        run: ./grcov . --binary-path ./target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "/*" -o lcov.info
+        run: ./bin/grcov . --binary-path ./target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "/*" -o lcov.info
       - name: Codecov
         uses: codecov/codecov-action@v5.1.2
         with:
           files: ./lcov.info
           token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
