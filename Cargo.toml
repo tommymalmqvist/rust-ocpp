@@ -43,7 +43,7 @@ validator = { version = "0.20.0", default-features = false, features = [
     "derive",
 ] }
 regex = "1.11.1"
-rust_decimal = { version = "1.36.0", features = [
+rust_decimal = { version = "1.37.2", features = [
     "serde-with-arbitrary-precision",
 ] }
 rust_decimal_macros = "1.36.0"
