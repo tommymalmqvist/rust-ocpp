@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # build
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: install llvm tools preview
         run: rustup component add llvm-tools-preview
       - uses: dtolnay/rust-toolchain@stable
