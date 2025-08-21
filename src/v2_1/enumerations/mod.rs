@@ -78,6 +78,7 @@ pub mod payment_status;
 pub mod phase;
 pub mod power_during_cessation;
 pub mod preconditioning_status;
+pub mod prelude;
 pub mod priority_charging_status;
 pub mod publish_firmware_status;
 pub mod reading_context;

@@ -62,6 +62,7 @@ pub mod ocpp_transport_enum_type;
 pub mod ocpp_version_enum_type;
 pub mod operational_status_enum_type;
 pub mod phase_enum_type;
+pub mod prelude;
 pub mod publish_firmware_status_enum_type;
 pub mod reading_context_enum_type;
 pub mod reason_enum_type;

@@ -14,6 +14,7 @@ pub mod get_diagnostics;
 pub mod get_local_list_version;
 pub mod heart_beat;
 pub mod meter_values;
+pub mod prelude;
 pub mod remote_start_transaction;
 pub mod remote_stop_transaction;
 pub mod reserve_now;

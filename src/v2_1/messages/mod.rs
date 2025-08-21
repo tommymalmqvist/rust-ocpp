@@ -56,6 +56,7 @@ pub mod notify_report;
 pub mod notify_settlement;
 pub mod notify_web_payment_started;
 pub mod open_periodic_event_stream;
+pub mod prelude;
 pub mod publish_firmware;
 pub mod publish_firmware_status_notification;
 pub mod pull_dynamic_schedule_update;

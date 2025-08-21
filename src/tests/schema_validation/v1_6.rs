@@ -1,77 +1,7 @@
 #[cfg(test)]
 mod tests {
-    use crate::v1_6::messages::authorize::{AuthorizeRequest, AuthorizeResponse};
-    use crate::v1_6::messages::boot_notification::{
-        BootNotificationRequest, BootNotificationResponse,
-    };
-    use crate::v1_6::messages::cancel_reservation::{
-        CancelReservationRequest, CancelReservationResponse,
-    };
-    use crate::v1_6::messages::change_availability::{
-        ChangeAvailabilityRequest, ChangeAvailabilityResponse,
-    };
-    use crate::v1_6::messages::change_configuration::{
-        ChangeConfigurationRequest, ChangeConfigurationResponse,
-    };
-    use crate::v1_6::messages::clear_cache::{ClearCacheRequest, ClearCacheResponse};
-    use crate::v1_6::messages::clear_charging_profile::{
-        ClearChargingProfileRequest, ClearChargingProfileResponse,
-    };
-    use crate::v1_6::messages::data_transfer::{DataTransferRequest, DataTransferResponse};
-    use crate::v1_6::messages::diagnostics_status_notification::{
-        DiagnosticsStatusNotificationRequest, DiagnosticsStatusNotificationResponse,
-    };
-    use crate::v1_6::messages::firmware_status_notification::{
-        FirmwareStatusNotificationRequest, FirmwareStatusNotificationResponse,
-    };
-    use crate::v1_6::messages::get_composite_schedule::{
-        GetCompositeScheduleRequest, GetCompositeScheduleResponse,
-    };
-    use crate::v1_6::messages::get_configuration::{
-        GetConfigurationRequest, GetConfigurationResponse,
-    };
-    use crate::v1_6::messages::get_diagnostics::{GetDiagnosticsRequest, GetDiagnosticsResponse};
-    use crate::v1_6::messages::get_local_list_version::{
-        GetLocalListVersionRequest, GetLocalListVersionResponse,
-    };
-    use crate::v1_6::messages::heart_beat::{HeartbeatRequest, HeartbeatResponse};
-    use crate::v1_6::messages::meter_values::{MeterValuesRequest, MeterValuesResponse};
-    use crate::v1_6::messages::remote_start_transaction::{
-        RemoteStartTransactionRequest, RemoteStartTransactionResponse,
-    };
-    use crate::v1_6::messages::remote_stop_transaction::{
-        RemoteStopTransactionRequest, RemoteStopTransactionResponse,
-    };
-    use crate::v1_6::messages::reserve_now::{ReserveNowRequest, ReserveNowResponse};
-    use crate::v1_6::messages::reset::{ResetRequest, ResetResponse};
-    use crate::v1_6::messages::send_local_list::{SendLocalListRequest, SendLocalListResponse};
-    use crate::v1_6::messages::set_charging_profile::{
-        SetChargingProfileRequest, SetChargingProfileResponse,
-    };
-    use crate::v1_6::messages::start_transaction::{
-        StartTransactionRequest, StartTransactionResponse,
-    };
-    use crate::v1_6::messages::status_notification::{
-        StatusNotificationRequest, StatusNotificationResponse,
-    };
-    use crate::v1_6::messages::stop_transaction::{
-        StopTransactionRequest, StopTransactionResponse,
-    };
-    use crate::v1_6::messages::trigger_message::{TriggerMessageRequest, TriggerMessageResponse};
-    use crate::v1_6::messages::unlock_connector::{
-        UnlockConnectorRequest, UnlockConnectorResponse,
-    };
-    use crate::v1_6::messages::update_firmware::{UpdateFirmwareRequest, UpdateFirmwareResponse};
-    use crate::v1_6::types::{
-        AuthorizationStatus, AvailabilityStatus, AvailabilityType, CancelReservationStatus,
-        ChargePointErrorCode, ChargePointStatus, ChargingProfile, ChargingProfileKindType,
-        ChargingProfilePurposeType, ChargingProfileStatus, ChargingRateUnitType, ChargingSchedule,
-        ChargingSchedulePeriod, ClearCacheStatus, ClearChargingProfileStatus, ConfigurationStatus,
-        DataTransferStatus, DiagnosticsStatus, FirmwareStatus, GetCompositeScheduleStatus,
-        IdTagInfo, KeyValue, MessageTrigger, MeterValue, RegistrationStatus, RemoteStartStopStatus,
-        ReservationStatus, ResetRequestStatus, ResetResponseStatus, SampledValue,
-        TriggerMessageStatus, UnlockStatus, UpdateStatus, UpdateType,
-    };
+    use crate::v1_6::messages::prelude::*;
+    use crate::v1_6::types::prelude::*;
     use chrono::Utc;
     use jsonschema::Validator;
     use rust_decimal_macros::dec;
