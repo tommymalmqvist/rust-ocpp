@@ -6,6 +6,8 @@ on:
       - "**.rs"
     branches: [main]
   pull_request:
+    paths:
+      - "**.rs"
     branches: [main]
   workflow_dispatch: {}
 
