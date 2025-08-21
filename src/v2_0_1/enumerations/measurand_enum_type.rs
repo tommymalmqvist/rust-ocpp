@@ -1,4 +1,3 @@
-// DONE: FIX THIS
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, PartialEq, Eq, Hash, Default)]
 pub enum MeasurandEnumType {
     #[serde(rename = "Current.Export")]
