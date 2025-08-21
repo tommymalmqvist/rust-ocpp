@@ -33,7 +33,7 @@ jobs:
       - name: Generate lcov.info for Code coverage
         run: ./grcov . --binary-path ./target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "/*" -o lcov.info
       - name: Codecov
-        uses: codecov/codecov-action@v5.1.2
+        uses: codecov/codecov-action@v5.5.0
         with:
           files: ./lcov.info
           token: ${{ secrets.CODECOV_TOKEN }}
