@@ -1,0 +1,19 @@
+comment:
+  layout: "condensed_header, diff, flags, components"
+
+component_management:
+  individual_components:
+    - component_id: v1.6
+      name: v.1.6
+      paths:
+        - src/v1_6
+    - component_id: v2.0
+      name: v.2.0.1
+      paths:
+        - src/v2_0_1
+
+coverage:
+  status:
+    project:
+      default:
+        target: 20%
