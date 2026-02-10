@@ -3,7 +3,7 @@ name = "rust-ocpp"
 description = "ocpp 1.6, 2.0.1 and 2.1 libraries"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
-version = "3.0.2"
+version = "3.0.4"
 authors = ["Tommy Malmqvist <tommy.malmqvist@codelabs.se"]
 homepage = "https://codelabs.se/"
 repository = "https://github.com/codelabsab/rust-ocpp"
@@ -33,7 +33,7 @@ v2_0_1 = []
 
 [dependencies]
 serde = { version = "1", default-features = false, features = ["derive"] }
-chrono = { version = "0.4.39", default-features = false, features = [
+chrono = { version = "0.4.42", default-features = false, features = [
     "now",
     "serde",
     "alloc",
@@ -49,9 +49,9 @@ rust_decimal = { version = "1.36.0", features = [
 rust_decimal_macros = "1.36.0"
 serde_json = "1"
 lazy_static = "1.4"
-jsonschema = "0.30.0"
+jsonschema = "0.33.0"
 
 [dev-dependencies]
-chrono = { version = "0.4.39", default-features = false, features = ["clock"] }
+chrono = { version = "0.4.42", default-features = false, features = ["clock"] }
 mockall = "0.13.1"
-jsonschema = "0.30.0"
+jsonschema = "0.33.0"
