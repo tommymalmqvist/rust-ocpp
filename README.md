@@ -7,37 +7,39 @@
 The `rust-ocpp` libs implements the Open Charge Point Protocol
 used in charging stations. You can read more on the official [Open Charge Alliance](https://www.openchargealliance.org/) website.
 
-Both OCPP v1.6 and v2.0.1 are implemented and validated using the official json schemas from Open Charge Alliance.
+OCPP versions v1.6, v2.0.1, and v2.1 are implemented and validated using the official json schemas from Open Charge Alliance.
 
-You can find the tests in `schema_validation.rs` for both `v.1.6` and `v2.0.1`
+You can find the tests in `schema_validation.rs` for all supported versions.
 
 ## repo structure
 
-`src/` : library files for v1.6 and v2.0.1
+`src/` : library files for v1.6, v2.0.1, and v2.1
 
 `docs/` : official ocpp specification
 
 ## How to Use
 
-Add `rust-ocpp` as a dependency in your `Cargo.toml`. It will default to version `2.0.1` of OCPP.
+Add `rust-ocpp` as a dependency in your `Cargo.toml`. Note that there is no default version - you must explicitly specify which OCPP version(s) you want to use via feature flags.
 
 ```toml
 [dependencies]
 rust-ocpp = "3.0"
 ```
 
-To use `1.6` you need to specify a protocol version with a feature flag:
+To use a specific version, specify it with a feature flag:
 
 ```toml
 [dependencies]
-rust-ocpp = { version = "1.0", features = ["v1_6"] }
+rust-ocpp = { version = "2.0", features = ["v1_6"] }  # For OCPP 1.6
+rust-ocpp = { version = "2.0", features = ["v2_0_1"] }  # For OCPP 2.0.1
+rust-ocpp = { version = "2.0", features = ["v2_1"] }  # For OCPP 2.1
 ```
 
-or use both versions
+You can also use multiple versions:
 
 ```toml
 [dependencies]
-rust-ocpp = { version = "1.0", features = ["v2_0_1", "v1_6"] }
+rust-ocpp = { version = "2.0", features = ["v2_0_1", "v2_1"] }
 ```
 
 ## How to Build
@@ -59,7 +61,7 @@ Once you have Rust and Cargo installed, you can build the library using the foll
    cd rust-ocpp
    ```
 
-3. Build the library using Cargo for both `1.6` and `2.0.1`:
+3. Build the library using Cargo for all versions:
 
    ```bash
    cargo build --all-features
@@ -68,14 +70,14 @@ Once you have Rust and Cargo installed, you can build the library using the foll
    This command will compile the library and its dependencies. If the build is successful, you will find the compiled
    artifacts in the `target/debug` directory.
 
-4. Run the tests on both versions:
+4. Run the tests on all versions:
 
    ```bash
    cargo test --all-features
 
    ```
 
-   This command will execute the tests for both OCPP versions. If all tests pass, it means that the library is
+   This command will execute the tests for all OCPP versions. If all tests pass, it means that the library is
    functioning correctly.
 
 5. Build a specific version:
@@ -91,6 +93,12 @@ Once you have Rust and Cargo installed, you can build the library using the foll
 
    ```bash
    cargo build --features v2_0_1
+   ```
+
+   To build `v2_1`:
+
+   ```bash
+   cargo build --features v2_1
    ```
 
 6. (Optional) Build for release:
@@ -119,35 +127,23 @@ please check the project's issue tracker on GitHub or open a new issue for assis
 
 ## Testing
 
-`rust-ocpp` provides testing against json schemas for both OCPP v1.6 and v2.0.1 versions. To run the tests, you can use
+`rust-ocpp` provides testing against json schemas for all supported OCPP versions. To run the tests, you can use
 Cargo's built-in test runner.
 
 ### Running Tests
 
-To run the tests for a specific version, use the appropriate feature flag when running the tests.
-
-For OCPP v1.6 tests:
+To run the tests for a specific version, use the appropriate feature flag:
 
 ```bash
-cargo test --features v1_6
+cargo test --features v1_6      # For OCPP 1.6 tests
+cargo test --features v2_0_1    # For OCPP 2.0.1 tests
+cargo test --features v2_1      # For OCPP 2.1 tests
 ```
 
-For OCPP v2.0.1 tests:
+To run all tests for all versions:
 
 ```bash
-cargo test --features v2_0_1
-```
-
-To run all tests:
-
-```bash
-cargo test
-```
-
-or for a specific version
-
-```bash
-cargo test --features v1_6
+cargo test --all-features
 ```
 
 ### Test Coverage
@@ -172,6 +168,7 @@ Use `rustfmt` before you PR.
 pre-commit config is available. You can read more about it at [pre-commits](https://pre-commit.com) website and checkout their repo on [github](https://github.com/pre-commit/pre-commit)
 
 ## Releasing a new version
+
 1. Update the version of the library and push the changes to the main branch.
 2. Create a [new release](https://github.com/codelabsab/rust-ocpp/releases/new) on GitHub with the new version number and some release notes (optional).
 

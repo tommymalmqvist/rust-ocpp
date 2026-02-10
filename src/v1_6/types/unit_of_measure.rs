@@ -35,6 +35,8 @@ pub enum UnitOfMeasure {
     /// Voltage (r.m.s. AC).
     V,
     /// Degrees (temperature).
+    /// Also allow Celcius as an alias for compatibility - see OCPP 1.6 errata
+    #[serde(alias = "Celcius")]
     Celsius,
     /// Degrees (temperature).
     Fahrenheit,

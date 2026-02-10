@@ -1230,4 +1230,15 @@ mod tests {
         }
         assert!(compiled.is_valid(&instance));
     }
+    #[test]
+    fn test_unit_of_measure_deserialize_celcius_celsius() {
+        use crate::v1_6::types::UnitOfMeasure;
+        let json = r#""Celcius""#;
+        let unit: UnitOfMeasure = serde_json::from_str(json).unwrap();
+        assert_eq!(unit, UnitOfMeasure::Celsius);
+
+        let json = r#""Celsius""#;
+        let unit: UnitOfMeasure = serde_json::from_str(json).unwrap();
+        assert_eq!(unit, UnitOfMeasure::Celsius);
+    }
 }

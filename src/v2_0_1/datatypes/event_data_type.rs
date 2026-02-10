@@ -5,6 +5,7 @@ use super::component_type::ComponentType;
 use super::variable_type::VariableType;
 use crate::v2_0_1::enumerations::event_notification_enum_type::EventNotificationEnumType;
 use crate::v2_0_1::enumerations::event_trigger_enum_type::EventTriggerEnumType;
+use crate::v2_0_1::helpers::datetime_rfc3339;
 
 /// Class to report an event notification for a component-variable.
 /// EventDataType is used by: NotifyEventRequest
@@ -12,6 +13,7 @@ use crate::v2_0_1::enumerations::event_trigger_enum_type::EventTriggerEnumType;
 #[serde(rename_all = "camelCase")]
 pub struct EventDataType {
     pub event_id: i32,
+    #[serde(with = "datetime_rfc3339 ")]
     pub timestamp: DateTime<Utc>,
     pub trigger: EventTriggerEnumType,
     #[serde(skip_serializing_if = "Option::is_none")]
