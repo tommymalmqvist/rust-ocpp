@@ -6,6 +6,7 @@ use validator::Validate;
 use super::charging_schedule_period_type::ChargingSchedulePeriodType;
 use super::sales_tariff_type::SalesTariffType;
 use crate::v2_0_1::enumerations::charging_rate_unit_enum_type::ChargingRateUnitEnumType;
+use crate::v2_0_1::helpers::datetime_rfc3339;
 
 /// Charging schedule structure defines a list of charging periods, as used in: GetCompositeSchedule.conf and ChargingProfile.
 /// ChargingScheduleType is used by: Common:ChargingProfileType , NotifyChargingLimitRequest, NotifyEVChargingScheduleRequest
@@ -15,7 +16,11 @@ pub struct ChargingScheduleType {
     /// Required. Identifies the ChargingSchedule.
     pub id: i32,
     /// Optional. Starting point of an absolute schedule. If absent the schedule will be relative to start of charging
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub start_schedule: Option<DateTime<Utc>>,
     /// Optional. Duration of the charging schedule in seconds. If the duration is left empty, the last period will continue indefinitely or until end of the transaction if chargingProfilePurpose = TxProfile
     #[serde(skip_serializing_if = "Option::is_none")]
