@@ -7,15 +7,14 @@
 The `rust-ocpp` libs implements the Open Charge Point Protocol
 used in charging stations. You can read more on the official [Open Charge Alliance](https://www.openchargealliance.org/) website.
 
-OCPP versions v1.6, v2.0.1, and v2.1 are implemented and validated using the official json schemas from Open Charge Alliance.
+OCPP versions v1.6, v2.0.1, and v2.1 are implemented and validated using the official json schemas from Open Charge Alliance. For official
+and up-to-date documentation please visit https://openchargealliance.org/download-ocpp/.
 
 You can find the tests in `schema_validation.rs` for all supported versions.
 
 ## repo structure
 
 `src/` : library files for v1.6, v2.0.1, and v2.1
-
-`docs/` : official ocpp specification
 
 ## How to Use
 
