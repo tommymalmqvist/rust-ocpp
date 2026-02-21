@@ -1,0 +1,16 @@
+name: Dependabot Build
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup component add llvm-tools-preview
+      - run: cargo build --all-features
+      - run: cargo test --all-features
+
