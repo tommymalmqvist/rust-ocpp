@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -20,6 +21,7 @@ pub struct ReserveNowRequest {
     pub id: i32,
 
     /// Required. Date and time at which the reservation expires.
+    #[serde(with = "datetime_rfc3339")]
     pub expiry_date_time: DateTime<Utc>,
 
     /// Optional. This field specifies the connector type.

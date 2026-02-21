@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -36,12 +37,20 @@ pub struct ChargingProfileType {
 
     /// Point in time at which the profile starts to be valid.
     /// If absent, the profile is valid as soon as it is received by the Charging Station.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub valid_from: Option<DateTime<Utc>>,
 
     /// Point in time at which the profile stops to be valid.
     /// If absent, the profile is valid until it is replaced by another profile.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub valid_to: Option<DateTime<Utc>>,
 
     /// SHALL only be included if ChargingProfilePurpose is set to TxProfile.
@@ -63,7 +72,11 @@ pub struct ChargingProfileType {
     pub dyn_update_interval: Option<i32>,
 
     /// Time at which limits or setpoints in this charging profile were last updated by a PullDynamicScheduleUpdateRequest or UpdateDynamicScheduleRequest or by an external actor. Only relevant in a dynamic charging profile.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub dyn_update_time: Option<DateTime<Utc>>,
 
     /// ISO 15118-20 signature for all price schedules in _chargingSchedules_. +\r\nNote: for 256-bit elliptic curves (like secp256k1) the ECDSA signature is 512 bits (64 bytes) and for 521-bit curves (like secp521r1) the signature is 1042 bits. This equals 131 bytes, which can be encoded as base64 in 176 bytes.

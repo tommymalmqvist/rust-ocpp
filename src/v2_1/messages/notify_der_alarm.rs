@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -28,6 +29,7 @@ pub struct NotifyDERAlarmRequest {
     pub alarm_ended: Option<bool>,
 
     /// Time of start or end of alarm.
+    #[serde(with = "datetime_rfc3339")]
     pub timestamp: DateTime<Utc>,
 
     /// Optional info provided by EV.

@@ -1,4 +1,5 @@
 use super::custom_data::CustomDataType;
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationError};
@@ -12,11 +13,19 @@ pub struct LogParametersType {
     pub remote_location: String,
 
     /// Required. The oldest log entry date/time to include in the response.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub oldest_timestamp: Option<DateTime<Utc>>,
 
     /// Optional. The latest log entry date/time to include in the response.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub latest_timestamp: Option<DateTime<Utc>>,
 
     /// Custom data from the Charging Station.

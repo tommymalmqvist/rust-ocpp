@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -9,6 +10,7 @@ use super::{custom_data::CustomDataType, price_level_schedule_entry::PriceLevelS
 #[serde(rename_all = "camelCase")]
 pub struct PriceLevelScheduleType {
     /// Required. Starting point of this price schedule.
+    #[serde(with = "datetime_rfc3339")]
     pub time_anchor: DateTime<Utc>,
 
     /// Required. Unique ID of this price schedule.

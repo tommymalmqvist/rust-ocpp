@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -103,6 +104,7 @@ pub struct BootNotificationResponse {
     pub custom_data: Option<CustomDataType>,
 
     /// Required. This contains the CSMS's current time.
+    #[serde(with = "datetime_rfc3339")]
     pub current_time: DateTime<Utc>,
 
     /// Required. When Status is Accepted, this contains the heartbeat interval in seconds.

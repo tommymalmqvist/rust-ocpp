@@ -1,5 +1,6 @@
 use super::custom_data::CustomDataType;
 use super::der_curve::DERCurveType;
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
@@ -14,13 +15,14 @@ pub struct LimitMaxDischargeType {
     pub priority: i32,
 
     /// Only for PowerMonitoring. The value specifies a percentage (0 to 100) of the rated maximum discharge power of EV. The PowerMonitoring curve becomes active when power exceeds this percentage.
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision",
-        rename = "pctMaxDischargePower"
-    )]
+    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
     pub pct_max_discharge_power: Decimal,
 
-    #[serde(rename = "startTime")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub start_time: Option<DateTime<Utc>>,
 
     #[serde(
@@ -30,10 +32,7 @@ pub struct LimitMaxDischargeType {
     )]
     pub duration: Option<Decimal>,
 
-    #[serde(
-        skip_serializing_if = "Option::is_none",
-        rename = "powerMonitoringMustTrip"
-    )]
+    #[serde(skip_serializing_if = "Option::is_none")]
     #[validate(nested)]
     pub power_monitoring_must_trip: Option<DERCurveType>,
 

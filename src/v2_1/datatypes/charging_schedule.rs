@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
@@ -20,7 +21,11 @@ pub struct ChargingScheduleType {
     pub id: i32,
 
     /// Starting point of an absolute schedule or recurring schedule.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub start_schedule: Option<DateTime<Utc>>,
 
     /// Duration of the charging schedule in seconds.

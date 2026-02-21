@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -9,6 +10,7 @@ use super::{custom_data::CustomDataType, ev_power_schedule_entry::EVPowerSchedul
 #[serde(rename_all = "camelCase")]
 pub struct EVPowerScheduleType {
     /// Starting point in time of the EVEnergyOffer.
+    #[serde(with = "datetime_rfc3339")]
     pub time_anchor: DateTime<Utc>,
 
     /// List of power schedule entries.
@@ -134,6 +136,7 @@ impl EVPowerScheduleType {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use chrono::Timelike;
     use serde_json::json;
     use validator::Validate;
 
@@ -291,7 +294,7 @@ mod tests {
 
     #[test]
     fn test_serialization_deserialization() {
-        let time_anchor = Utc::now();
+        let time_anchor = Utc::now().with_nanosecond(0).unwrap();
         let entries = vec![
             EVPowerScheduleEntryType::new(3600, 11000.0),
             EVPowerScheduleEntryType::new(7200, 7500.0),

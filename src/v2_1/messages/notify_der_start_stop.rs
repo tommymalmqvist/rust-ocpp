@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::DateTime;
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
@@ -21,6 +22,7 @@ pub struct NotifyDERStartStopRequest {
     pub started: bool,
 
     /// Time of start or end of event.
+    #[serde(with = "datetime_rfc3339")]
     pub timestamp: DateTime<Utc>,
 
     /// List of controlIds that are superseded as a result of this control starting.

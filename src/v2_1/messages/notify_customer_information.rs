@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -25,6 +26,7 @@ pub struct NotifyCustomerInformationRequest {
     pub seq_no: i32,
 
     /// Timestamp of the moment this message was generated at the Charging Station.
+    #[serde(with = "datetime_rfc3339")]
     pub generated_at: DateTime<Utc>,
 
     /// The Id of the request.

@@ -26,7 +26,7 @@ all-features = true
 # No default feature, so each version must be explicitly enabled
 v1_6 = []
 v2_0_1 = []
-#v2_1 = []
+v2_1 = []
 
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

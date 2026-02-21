@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -18,6 +19,7 @@ pub struct EventDataType {
     pub event_id: i32,
 
     /// Required. Timestamp of when the event occurred.
+    #[serde(with = "datetime_rfc3339")]
     pub timestamp: DateTime<Utc>,
 
     /// Required. Trigger type of the event.
@@ -63,6 +65,7 @@ pub struct NotifyEventRequest {
     pub seq_no: i32,
 
     /// Required. Timestamp of when this message was generated at the Charging Station.
+    #[serde(with = "datetime_rfc3339")]
     pub generated_at: DateTime<Utc>,
 
     /// Optional. Custom data specific to this class.

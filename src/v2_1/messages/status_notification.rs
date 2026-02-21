@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -24,6 +25,7 @@ pub struct StatusNotificationRequest {
     pub custom_data: Option<CustomDataType>,
 
     /// Required. The time for which the status is reported.
+    #[serde(with = "datetime_rfc3339")]
     pub timestamp: DateTime<Utc>,
 
     /// Required. The current status of the Connector.

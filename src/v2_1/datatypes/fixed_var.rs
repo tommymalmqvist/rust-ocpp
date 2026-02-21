@@ -1,5 +1,6 @@
 use super::custom_data::CustomDataType;
 use crate::v2_1::enumerations::der_unit::DERUnitEnumType;
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use rust_decimal::prelude::{FromPrimitive, ToPrimitive};
 use rust_decimal::Decimal;
@@ -26,7 +27,11 @@ pub struct FixedVarType {
     pub unit: DERUnitEnumType,
 
     /// Time when this setting becomes active.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub start_time: Option<DateTime<Utc>>,
 
     /// Duration in seconds that this setting is active.

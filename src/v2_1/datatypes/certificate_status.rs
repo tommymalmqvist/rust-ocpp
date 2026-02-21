@@ -2,6 +2,7 @@ use crate::v2_1::datatypes::{
     certificate_hash_data::CertificateHashDataType, custom_data::CustomDataType,
 };
 use crate::v2_1::enumerations::{CertificateStatusEnumType, CertificateStatusSourceEnumType};
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -24,6 +25,7 @@ pub struct CertificateStatusType {
     pub status: CertificateStatusEnumType,
 
     /// The date and time at which the next update of the certificate status MAY be expected.
+    #[serde(with = "datetime_rfc3339")]
     pub next_update: DateTime<Utc>,
 
     /// Optional custom data

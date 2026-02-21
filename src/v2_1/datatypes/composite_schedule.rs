@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -19,6 +20,7 @@ pub struct CompositeScheduleType {
 
     /// Date and time at which the schedule becomes active.
     /// All time measurements within the schedule are relative to this timestamp.
+    #[serde(with = "datetime_rfc3339")]
     pub schedule_start: DateTime<Utc>,
 
     /// The unit of measure in which limits and setpoints are expressed.

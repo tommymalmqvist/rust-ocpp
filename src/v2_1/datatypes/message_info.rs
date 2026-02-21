@@ -3,6 +3,7 @@ use super::{
     message_content::MessageContentType,
 };
 use crate::v2_1::enumerations::{MessagePriorityEnumType, MessageStateEnumType};
+use crate::v2_1::helpers::datetime_rfc3339;
 use crate::v2_1::helpers::validator::validate_identifier_string;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -35,10 +36,15 @@ pub struct MessageInfoType {
     /// Required. Date and time at which this message was received.
     ///
     /// From what date-time should this message be shown. If omitted: directly.
+    #[serde(with = "datetime_rfc3339")]
     pub start_timestamp: DateTime<Utc>,
 
     /// Optional. Date and time at which this message should be removed from the display.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub end_timestamp: Option<DateTime<Utc>>,
 
     /// Optional. Transaction Id for which this message is intended.

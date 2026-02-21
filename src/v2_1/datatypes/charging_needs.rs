@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use crate::v2_1::{
     datatypes::{
         ACChargingParametersType, CustomDataType, DCChargingParametersType,
@@ -30,7 +31,11 @@ pub struct ChargingNeedsType {
     pub mobility_needs_mode: Option<MobilityNeedsModeEnumType>,
 
     /// Estimated departure time of the EV.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub departure_time: Option<DateTime<Utc>>,
 
     /// Charging parameters for ISO 15118-20, also supporting V2X charging/discharging.+\r\nAll values are greater or equal to zero, with the exception of EVMinEnergyRequest, EVMaxEnergyRequest, EVTargetEnergyRequest, EVMinV2XEnergyRequest and EVMaxV2XEnergyRequest.

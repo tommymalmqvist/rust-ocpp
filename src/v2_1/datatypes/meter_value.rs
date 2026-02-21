@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -17,6 +18,7 @@ pub struct MeterValueType {
     /// Required. Timestamp for measured value(s).
     ///
     /// This is the exact time when the meter values were sampled.
+    #[serde(with = "datetime_rfc3339")]
     pub timestamp: DateTime<Utc>,
 
     /// Required. One or more measured values.

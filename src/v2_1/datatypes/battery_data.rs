@@ -1,4 +1,5 @@
 use super::custom_data::CustomDataType;
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
@@ -50,6 +51,7 @@ pub struct BatteryDataType {
     pub so_h: Decimal,
 
     ///Optional. Production date of battery
+    #[serde(with = "datetime_rfc3339")]
     pub production_date: DateTime<Utc>,
 
     ///Optional. Vendor-specific info from battery in undefined format.
