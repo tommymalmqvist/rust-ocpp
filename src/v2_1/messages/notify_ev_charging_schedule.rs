@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -10,6 +11,7 @@ use crate::v2_1::enumerations::GenericStatusEnumType;
 #[serde(rename_all = "camelCase")]
 pub struct NotifyEVChargingScheduleRequest {
     /// Required. Periods contained in the charging profile are relative to this point in time.
+    #[serde(with = "datetime_rfc3339")]
     pub time_base: DateTime<Utc>,
 
     /// Required. The charging schedule contained in this notification applies to an EVSE. EvseId must be > 0.

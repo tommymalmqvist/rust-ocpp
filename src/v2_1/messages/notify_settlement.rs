@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -30,6 +31,7 @@ pub struct NotifySettlementRequest {
     pub settlement_amount: f64,
 
     /// Required. The time when the settlement was done.
+    #[serde(with = "datetime_rfc3339")]
     pub settlement_time: DateTime<Utc>,
 
     /// Optional. Receipt ID for this settlement.

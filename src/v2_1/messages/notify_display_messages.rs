@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -27,11 +28,19 @@ pub struct MessageInfoType {
     pub state: Option<MessageStateEnumType>,
 
     /// Optional. From what date-time should this message be shown. If omitted: directly.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub start_date_time: Option<DateTime<Utc>>,
 
     /// Optional. Until what date-time should this message be shown, after this date/time this message SHALL be removed.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub end_date_time: Option<DateTime<Utc>>,
 
     /// Optional. During which transaction shall this message be shown.

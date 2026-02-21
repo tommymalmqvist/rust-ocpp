@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -25,6 +26,7 @@ pub struct StreamDataElementType {
 #[serde(rename_all = "camelCase")]
 pub struct NotifyPeriodicEventStreamRequest {
     /// Required. Base timestamp to add to time offset of values.
+    #[serde(with = "datetime_rfc3339")]
     pub basetime: DateTime<Utc>,
 
     /// Required. Array of stream data elements.

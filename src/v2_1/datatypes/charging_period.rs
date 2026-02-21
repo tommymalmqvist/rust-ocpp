@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -11,6 +12,7 @@ use super::{cost_dimension::CostDimensionType, custom_data::CustomDataType};
 pub struct ChargingPeriodType {
     /// Start timestamp of charging period. A period ends when the next period starts.
     /// The last period ends when the session ends.
+    #[serde(with = "datetime_rfc3339")]
     pub start_period: DateTime<Utc>,
 
     /// List of dimensions that influence this period.

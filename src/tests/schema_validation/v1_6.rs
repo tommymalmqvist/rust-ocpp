@@ -83,7 +83,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/Authorize.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -106,7 +106,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/AuthorizeResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -133,7 +133,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/BootNotification.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -154,7 +154,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/BootNotificationResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -171,7 +171,7 @@ mod tests {
         let test = CancelReservationRequest { reservation_id: 0 };
 
         let schema = include_str!("schemas/v1.6/json/CancelReservation.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -190,7 +190,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/CancelReservationResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -210,7 +210,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/ChangeAvailability.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -229,7 +229,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/ChangeAvailabilityResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -249,7 +249,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/ChangeConfiguration.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -268,7 +268,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/ChangeConfigurationResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -285,7 +285,7 @@ mod tests {
         let test = ClearCacheRequest {};
 
         let schema = include_str!("schemas/v1.6/json/ClearCache.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -304,7 +304,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/ClearCacheResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -326,7 +326,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/ClearChargingProfile.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -345,7 +345,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/ClearChargingProfileResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -366,7 +366,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/DataTransfer.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -386,7 +386,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/DataTransferResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -405,7 +405,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/DiagnosticsStatusNotification.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -422,7 +422,7 @@ mod tests {
         let test = DiagnosticsStatusNotificationResponse {};
 
         let schema = include_str!("schemas/v1.6/json/DiagnosticsStatusNotificationResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -441,7 +441,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/FirmwareStatusNotification.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -458,7 +458,7 @@ mod tests {
         let test = FirmwareStatusNotificationResponse {};
 
         let schema = include_str!("schemas/v1.6/json/FirmwareStatusNotificationResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -479,7 +479,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/GetCompositeSchedule.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -511,7 +511,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/GetCompositeScheduleResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -530,7 +530,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/GetConfiguration.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -554,7 +554,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/GetConfigurationResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -577,7 +577,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/GetDiagnostics.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -594,7 +594,7 @@ mod tests {
         let test = GetDiagnosticsResponse { file_name: None };
 
         let schema = include_str!("schemas/v1.6/json/GetDiagnosticsResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -611,7 +611,7 @@ mod tests {
         let test = GetLocalListVersionRequest {};
 
         let schema = include_str!("schemas/v1.6/json/GetLocalListVersion.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -628,7 +628,7 @@ mod tests {
         let test = GetLocalListVersionResponse { list_version: 0 };
 
         let schema = include_str!("schemas/v1.6/json/GetLocalListVersionResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -645,7 +645,7 @@ mod tests {
         let test = HeartbeatRequest {};
 
         let schema = include_str!("schemas/v1.6/json/Heartbeat.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -664,7 +664,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/HeartbeatResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -696,7 +696,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/MeterValues.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -713,7 +713,7 @@ mod tests {
         let test = MeterValuesResponse {};
 
         let schema = include_str!("schemas/v1.6/json/MeterValuesResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -734,7 +734,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/RemoteStartTransaction.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -753,7 +753,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/RemoteStartTransactionResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -770,7 +770,7 @@ mod tests {
         let test = RemoteStopTransactionRequest { transaction_id: 0 };
 
         let schema = include_str!("schemas/v1.6/json/RemoteStopTransaction.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -789,7 +789,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/RemoteStopTransactionResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -812,7 +812,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/ReserveNow.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -831,7 +831,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/ReserveNowResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -850,7 +850,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/Reset.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -869,7 +869,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/ResetResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -890,7 +890,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/SendLocalList.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -909,7 +909,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/SendLocalListResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -949,7 +949,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/SetChargingProfile.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -968,7 +968,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/SetChargingProfileResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -991,7 +991,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/StartTransaction.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -1015,7 +1015,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/StartTransactionResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -1040,7 +1040,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/StatusNotification.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -1057,7 +1057,7 @@ mod tests {
         let test = StatusNotificationResponse {};
 
         let schema = include_str!("schemas/v1.6/json/StatusNotificationResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -1081,7 +1081,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/StopTransaction.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -1104,7 +1104,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/StopTransactionResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -1124,7 +1124,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/TriggerMessage.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -1143,7 +1143,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/TriggerMessageResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -1160,7 +1160,7 @@ mod tests {
         let test = UnlockConnectorRequest { connector_id: 0 };
 
         let schema = include_str!("schemas/v1.6/json/UnlockConnector.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -1179,7 +1179,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/UnlockConnectorResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -1201,7 +1201,7 @@ mod tests {
         };
 
         let schema = include_str!("schemas/v1.6/json/UpdateFirmware.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);
@@ -1218,7 +1218,7 @@ mod tests {
         let test = UpdateFirmwareResponse {};
 
         let schema = include_str!("schemas/v1.6/json/UpdateFirmwareResponse.json");
-        let schema = serde_json::from_str(&schema).unwrap();
+        let schema = serde_json::from_str(schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
         let compiled = Validator::new(&schema).expect("A valid schema");
         let result = compiled.validate(&instance);

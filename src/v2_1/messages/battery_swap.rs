@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -20,7 +21,11 @@ pub struct BatteryDataType {
     pub evse_id: i32,
 
     /// Optional. Production date of battery.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub production_date: Option<DateTime<Utc>>,
 
     /// Required. Serial number of battery.

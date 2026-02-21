@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -13,11 +14,19 @@ pub struct FirmwareType {
     pub location: String,
 
     /// Date and time at which the firmware shall be retrieved.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub retrieve_date_time: Option<DateTime<Utc>>,
 
     /// Date and time at which the firmware shall be installed.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub install_date_time: Option<DateTime<Utc>>,
 
     /// Firmware version.
@@ -258,6 +267,7 @@ impl FirmwareType {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use chrono::Timelike;
     use serde_json::json;
     use validator::Validate;
 
@@ -466,8 +476,8 @@ mod tests {
     fn test_serialization_deserialization() {
         let location = "https://example.com/firmware/v1.2.3".to_string();
         let signature = "1.2.3".to_string();
-        let retrieve_date_time = Utc::now();
-        let install_date_time = Utc::now();
+        let retrieve_date_time = Utc::now().with_nanosecond(0).unwrap();
+        let install_date_time = Utc::now().with_nanosecond(0).unwrap();
         let signing_certificate = "0123456789abcdef0123456789abcdef".to_string();
         let custom_data = CustomDataType::new("VendorX".to_string())
             .with_property("version".to_string(), json!("1.0"));

@@ -19,11 +19,11 @@ jobs:
       - name: install llvm tools preview
         run: rustup component add llvm-tools-preview
       - uses: dtolnay/rust-toolchain@stable
-      - run: cargo build --release --all-features
+      - run: cargo build --release --features="v1_6,v2_0_1"
 
       # test
       - name: Run tests
-        run: LLVM_PROFILE_FILE="your_name-%p-%m.profraw" cargo test --verbose --all-features
+        run: LLVM_PROFILE_FILE="your_name-%p-%m.profraw" cargo test --verbose --features="v1_6,v2_0_1"
 
       # publish
       - uses: katyo/publish-crates@v2

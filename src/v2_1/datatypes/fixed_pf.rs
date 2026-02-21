@@ -1,4 +1,5 @@
 use super::custom_data::CustomDataType;
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use rust_decimal::prelude::ToPrimitive;
 use rust_decimal::Decimal;
@@ -22,7 +23,11 @@ pub struct FixedPFType {
     pub excitation: bool,
 
     /// Time when this setting becomes active.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub start_time: Option<DateTime<Utc>>,
 
     /// Duration of the setting in seconds.
@@ -335,6 +340,7 @@ impl fmt::Display for FixedPFType {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use chrono::Timelike;
     use rust_decimal_macros::dec;
     use serde_json::json;
 
@@ -521,7 +527,7 @@ mod tests {
         let priority = 1;
         let displacement = 0.95;
         let excitation = true;
-        let start_time = Utc::now();
+        let start_time = Utc::now().with_nanosecond(0).unwrap();
         let duration = 3600.0;
         let custom_data = CustomDataType::new("VendorX".to_string())
             .with_property("version".to_string(), json!("1.0"));

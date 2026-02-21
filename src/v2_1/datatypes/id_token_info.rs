@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -17,7 +18,11 @@ pub struct IdTokenInfoType {
     pub status: AuthorizationStatusEnumType,
 
     /// Optional. Only filled in when the status is ConcurrentTx.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub cache_expiry_date_time: Option<DateTime<Utc>>,
 
     /// Optional. Priority from a business point of view.

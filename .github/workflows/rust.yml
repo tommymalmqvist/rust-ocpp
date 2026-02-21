@@ -26,10 +26,14 @@ jobs:
         run: curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -
       - name: install llvm tools preview
         run: rustup component add llvm-tools-preview
+      - name: Format check
+        run: cargo fmt -- --check
+      - name: Lint
+        run: cargo clippy --tests --features="v1_6,v2_0_1" -- -D warnings
       - name: Build
-        run: cargo build --all-features
+        run: cargo build --features="v1_6,v2_0_1"
       - name: Run tests
-        run: LLVM_PROFILE_FILE="your_name-%p-%m.profraw" cargo test --all-features
+        run: LLVM_PROFILE_FILE="your_name-%p-%m.profraw" cargo test --features="v1_6,v2_0_1"
       - name: Generate lcov.info for Code coverage
         run: ./grcov . --binary-path ./target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "/*" -o lcov.info
       - name: Codecov

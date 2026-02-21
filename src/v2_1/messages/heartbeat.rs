@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -22,5 +23,6 @@ pub struct HeartbeatResponse {
     pub custom_data: Option<CustomDataType>,
 
     /// Required. Contains the current time of the CSMS.
+    #[serde(with = "datetime_rfc3339")]
     pub current_time: DateTime<Utc>,
 }

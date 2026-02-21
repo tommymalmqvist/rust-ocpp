@@ -38,7 +38,7 @@ mod tests {
     use chrono::Datelike;
     use chrono::TimeZone;
     use chrono::Utc;
-    use serde_json::{json, Value};
+    use serde_json::Value;
 
     #[test]
     fn test_id_token_info_serialize_with_none_cache_expiry() {

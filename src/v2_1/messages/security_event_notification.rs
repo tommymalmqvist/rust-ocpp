@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
@@ -18,6 +19,7 @@ pub struct SecurityEventNotificationRequest {
     pub kind: String,
 
     /// Required. Date and time at which the event occurred.
+    #[serde(with = "datetime_rfc3339")]
     pub timestamp: DateTime<Utc>,
 
     /// Optional. Additional information about the occurred security event.

@@ -3,6 +3,7 @@ use super::{
     reactive_power_params::ReactivePowerParamsType, voltage_params::VoltageParamsType,
 };
 use crate::v2_1::enumerations::der_unit::DERUnitEnumType;
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
@@ -48,7 +49,11 @@ pub struct DERCurveType {
     pub response_time: Option<Decimal>,
 
     /// Point in time when this curve will become activated. Only absent when default is true.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "datetime_rfc3339::option"
+    )]
     pub start_time: Option<DateTime<Utc>>,
 
     /// Duration in seconds that this curve will be active. Only absent when default is true.

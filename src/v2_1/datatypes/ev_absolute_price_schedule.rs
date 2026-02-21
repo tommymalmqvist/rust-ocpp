@@ -1,3 +1,4 @@
+use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use std::convert::TryFrom;
@@ -13,6 +14,7 @@ use super::{
 #[serde(rename_all = "camelCase")]
 pub struct EVAbsolutePriceScheduleType {
     /// Starting point in time of the EVEnergyOffer.
+    #[serde(with = "datetime_rfc3339")]
     pub time_anchor: DateTime<Utc>,
 
     /// Currency code according to ISO 4217.
@@ -257,6 +259,8 @@ impl TryFrom<String> for EVAbsolutePriceScheduleType {
 
 #[cfg(test)]
 mod tests {
+    use chrono::Timelike;
+
     use super::*;
     #[test]
     fn test_new_ev_absolute_price_schedule() {
@@ -385,7 +389,7 @@ mod tests {
 
     #[test]
     fn test_from_to_string() {
-        let time_anchor = Utc::now();
+        let time_anchor = Utc::now().with_nanosecond(0).unwrap();
         let currency = "USD".to_string();
         let price_algorithm = "StackedEnergy".to_string();
         let entries = vec![EVAbsolutePriceScheduleEntryType::new_with_single_price(
