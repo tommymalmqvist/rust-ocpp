@@ -331,7 +331,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -372,7 +372,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -401,7 +401,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -427,7 +427,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -444,7 +444,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -468,7 +468,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -488,7 +488,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -512,7 +512,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -535,7 +535,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -559,7 +559,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -576,7 +576,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -600,7 +600,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -626,7 +626,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -650,7 +650,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -667,7 +667,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -691,7 +691,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -711,7 +711,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -729,7 +729,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -746,7 +746,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -772,7 +772,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -792,7 +792,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -808,7 +808,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -843,7 +843,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -865,7 +865,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -885,7 +885,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -905,7 +905,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -928,7 +928,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -951,7 +951,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -973,7 +973,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -992,7 +992,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1008,7 +1008,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1028,7 +1028,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1051,7 +1051,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1070,7 +1070,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1092,7 +1092,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1116,7 +1116,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1139,7 +1139,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1166,7 +1166,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1188,7 +1188,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1208,7 +1208,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1242,7 +1242,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1263,7 +1263,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1285,7 +1285,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1303,7 +1303,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1340,7 +1340,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1356,7 +1356,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1372,7 +1372,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1398,7 +1398,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1421,7 +1421,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1454,7 +1454,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1476,7 +1476,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1509,7 +1509,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1531,7 +1531,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1549,7 +1549,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1568,7 +1568,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1600,7 +1600,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1638,7 +1638,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1654,7 +1654,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1672,7 +1672,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1691,7 +1691,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1713,7 +1713,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1732,7 +1732,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1748,7 +1748,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1786,7 +1786,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1802,7 +1802,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1857,7 +1857,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1873,7 +1873,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1895,7 +1895,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1911,7 +1911,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1951,7 +1951,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -1967,7 +1967,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2006,7 +2006,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2028,7 +2028,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2080,7 +2080,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2102,7 +2102,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2147,7 +2147,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2163,7 +2163,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2205,7 +2205,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2221,7 +2221,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2328,7 +2328,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2378,7 +2378,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2394,7 +2394,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2416,7 +2416,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2438,7 +2438,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2458,7 +2458,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2474,7 +2474,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2539,7 +2539,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2555,7 +2555,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2634,7 +2634,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2657,7 +2657,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2675,7 +2675,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2697,7 +2697,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2716,7 +2716,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2732,7 +2732,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2769,7 +2769,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2791,7 +2791,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2810,7 +2810,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2832,7 +2832,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2852,7 +2852,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2868,7 +2868,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2918,7 +2918,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -2940,7 +2940,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3002,7 +3002,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3024,7 +3024,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3062,7 +3062,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3084,7 +3084,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3102,7 +3102,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3124,7 +3124,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3140,7 +3140,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3162,7 +3162,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3205,7 +3205,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3227,7 +3227,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3263,7 +3263,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3302,7 +3302,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3335,7 +3335,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3372,7 +3372,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3391,7 +3391,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3413,7 +3413,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3434,7 +3434,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3450,7 +3450,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3514,7 +3514,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3559,7 +3559,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3581,7 +3581,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3603,7 +3603,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3622,7 +3622,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3644,7 +3644,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3662,7 +3662,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3680,7 +3680,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3707,7 +3707,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));
@@ -3729,7 +3729,7 @@ mod tests {
         if result.is_err() {
             for error in compiled.iter_errors(&instance) {
                 println!("Validation error: {}", error);
-                println!("Instance path: {}", error.instance_path);
+                println!("Instance path: {}", error.instance_path());
             }
         }
         assert!(compiled.is_valid(&instance));

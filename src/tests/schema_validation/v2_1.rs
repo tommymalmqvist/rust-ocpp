@@ -22,7 +22,7 @@ fn validate_schema_instance(
     if result.is_err() {
         for error in compiled.iter_errors(&instance) {
             println!("Validation error: {}", error);
-            println!("Instance path: {}", error.instance_path);
+            println!("Instance path: {}", error.instance_path());
         }
     }
 
