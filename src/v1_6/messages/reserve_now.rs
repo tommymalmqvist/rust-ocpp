@@ -2,6 +2,7 @@ use chrono::{DateTime, Utc};
 
 use validator::Validate;
 
+use crate::v1_6::helpers::datetime_rfc3339;
 use crate::v1_6::types::ReservationStatus;
 
 /// This contains the field definition of the ReserveNow.req PDU sent by the Central System to the Charge Point. See also Reserve Now
@@ -11,6 +12,7 @@ pub struct ReserveNowRequest {
     /// Required. This contains the id of the connector to be reserved. A value of 0 means that the reservation is not for a specific connector.
     pub connector_id: u32,
     /// Required. This contains the date and time when the reservation ends.
+    #[serde(with = "datetime_rfc3339")]
     pub expiry_date: DateTime<Utc>,
     /// Required. The identifier for which the Charge Point has to reserve a connector.
     #[validate(length(min = 1, max = 20))]

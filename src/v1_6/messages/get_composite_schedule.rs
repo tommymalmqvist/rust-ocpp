@@ -1,5 +1,6 @@
 use chrono::{DateTime, Utc};
 
+use crate::v1_6::helpers::datetime_rfc3339;
 use crate::v1_6::types::{ChargingRateUnitType, ChargingSchedule, GetCompositeScheduleStatus};
 
 /// This contains the field definition of the GetCompositeSchedule.req PDU sent by the Central System to theCharge Point. See also Get Composite Schedule
@@ -26,6 +27,7 @@ pub struct GetCompositeScheduleResponse {
     pub connector_id: Option<i32>,
     /// Optional. Time. Periods contained in the charging profile are relative to this point in time. If status is "Rejected", this field may be absent.
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default, with = "datetime_rfc3339::option")]
     pub schedule_start: Option<DateTime<Utc>>,
     /// Optional. Planned Composite Charging Schedule, the energy consumption over time. Always relative to ScheduleStart. If status is "Rejected", this field may be absent.
     #[serde(skip_serializing_if = "Option::is_none")]
