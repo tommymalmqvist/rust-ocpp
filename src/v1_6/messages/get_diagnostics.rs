@@ -1,6 +1,8 @@
 use chrono::{DateTime, Utc};
 use validator::Validate;
 
+use crate::v1_6::helpers::datetime_rfc3339;
+
 /// This contains the field definition of the GetDiagnostics.req PDU sent by the Central System to the Charge Point. See also Get Diagnostics
 #[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
@@ -15,9 +17,11 @@ pub struct GetDiagnosticsRequest {
     pub retry_interval: Option<i32>,
     /// Optional. This contains the date and time of the oldest logging information to include in the diagnostics.
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default, with = "datetime_rfc3339::option")]
     pub start_time: Option<DateTime<Utc>>,
     /// Optional. This contains the date and time of the latest logging information to include in the diagnostics.
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default, with = "datetime_rfc3339::option")]
     pub stop_time: Option<DateTime<Utc>>,
 }
 

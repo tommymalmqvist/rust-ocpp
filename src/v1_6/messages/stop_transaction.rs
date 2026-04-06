@@ -1,3 +1,4 @@
+use crate::v1_6::helpers::datetime_rfc3339;
 use crate::v1_6::types::{IdTagInfo, MeterValue, Reason};
 
 use chrono::{DateTime, Utc};
@@ -14,6 +15,7 @@ pub struct StopTransactionRequest {
     /// Optional. Only filled in when request applies to a specific connector.
     pub meter_stop: i32,
     /// Required. This contains the date and time on which the transaction is stopped.
+    #[serde(with = "datetime_rfc3339")]
     pub timestamp: DateTime<Utc>,
     /// Required. This contains the transaction-id as received by the StartTransactionResponse
     pub transaction_id: i32,

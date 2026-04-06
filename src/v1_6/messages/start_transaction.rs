@@ -1,3 +1,4 @@
+use crate::v1_6::helpers::datetime_rfc3339;
 use crate::v1_6::types::IdTagInfo;
 
 use chrono::{DateTime, Utc};
@@ -18,6 +19,7 @@ pub struct StartTransactionRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reservation_id: Option<i32>,
     /// Required. This contains the date and time on which the transaction is started.
+    #[serde(with = "datetime_rfc3339")]
     pub timestamp: DateTime<Utc>,
 }
 

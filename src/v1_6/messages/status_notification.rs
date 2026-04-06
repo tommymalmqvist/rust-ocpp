@@ -1,3 +1,4 @@
+use crate::v1_6::helpers::datetime_rfc3339;
 use crate::v1_6::types::{ChargePointErrorCode, ChargePointStatus};
 
 use chrono::{DateTime, Utc};
@@ -19,6 +20,7 @@ pub struct StatusNotificationRequest {
     pub status: ChargePointStatus,
     /// Optional. The time for which the status is reported. If absent time of receipt of the message will be assumed.
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default, with = "datetime_rfc3339::option")]
     pub timestamp: Option<DateTime<Utc>>,
     /// Optional. This identifies the vendor-specific implementation.
     #[serde(skip_serializing_if = "Option::is_none")]

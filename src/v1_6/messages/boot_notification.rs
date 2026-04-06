@@ -38,6 +38,7 @@
 //! While in pending state, the following Central System initiated messages are not allowed:
 //! RemoteStartTransaction.req and RemoteStopTransaction.req
 
+use crate::v1_6::helpers::datetime_rfc3339;
 use crate::v1_6::types::RegistrationStatus;
 use chrono::{DateTime, Utc};
 use validator::Validate;
@@ -104,6 +105,7 @@ pub struct BootNotificationRequest {
 pub struct BootNotificationResponse {
     /// # From OCPP Specification
     /// Required. This contains the Central System’s current time.
+    #[serde(with = "datetime_rfc3339")]
     pub current_time: DateTime<Utc>,
 
     /// # From OCPP Specification

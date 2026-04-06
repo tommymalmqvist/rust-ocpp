@@ -2,6 +2,7 @@ use chrono::{DateTime, Utc};
 use rust_decimal::Decimal;
 
 use super::{ChargingRateUnitType, ChargingSchedulePeriod};
+use crate::v1_6::helpers::datetime_rfc3339;
 
 /// Charging schedule structure defines a list of charging periods, as used in: GetCompositeSchedule.conf and ChargingProfile.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
@@ -12,6 +13,7 @@ pub struct ChargingSchedule {
     pub duration: Option<i32>,
     /// Optional. Starting point of an absolute schedule. If absent the schedule will be relative to start of charging.
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default, deserialize_with = "datetime_rfc3339::option::deserialize")]
     pub start_schedule: Option<DateTime<Utc>>,
     /// Required. The unit of measure Limit is expressed in.
     pub charging_rate_unit: ChargingRateUnitType,
