@@ -35,7 +35,7 @@ wip_v2_1 = []
 
 [dependencies]
 serde = { version = "1", default-features = false, features = ["derive"] }
-chrono = { version = "0.4.43", default-features = false, features = [
+chrono = { version = "0.4.44", default-features = false, features = [
     "now",
     "serde",
     "alloc",
@@ -53,6 +53,6 @@ serde_json = "1"
 lazy_static = "1.4"
 
 [dev-dependencies]
-chrono = { version = "0.4.43", default-features = false, features = ["clock"] }
+chrono = { version = "0.4.44", default-features = false, features = ["clock"] }
 mockall = "0.13.1"
 jsonschema = "0.42.1"
