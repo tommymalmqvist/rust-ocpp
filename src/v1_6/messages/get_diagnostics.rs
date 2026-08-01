@@ -1,8 +1,10 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use chrono::{DateTime, Utc};
-use validator::Validate;
 
 /// This contains the field definition of the GetDiagnostics.req PDU sent by the Central System to the Charge Point. See also Get Diagnostics
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetDiagnosticsRequest {
     /// Required. This contains the location (directory) where the diagnostics file shall be uploaded to.
@@ -22,11 +24,12 @@ pub struct GetDiagnosticsRequest {
 }
 
 /// This contains the field definition of the GetDiagnostics.conf PDU sent by the Charge Point to the Central System in response to a GetDiagnosticsRequest PDU. See also Get Diagnostics
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetDiagnosticsResponse {
     /// Optional. This contains the name of the file with diagnostic information that will be uploaded. This field is not present when no diagnostic information is vailable.
-    #[validate(length(min = 1, max = 255))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 255)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub file_name: Option<String>,
 }

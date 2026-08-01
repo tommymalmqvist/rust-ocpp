@@ -1,13 +1,17 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{cost_dimension::CostDimensionType, custom_data::CustomDataType};
 
 /// A ChargingPeriodType consists of a start time, and a list of possible values that influence this period,
 /// for example: amount of energy charged this period, maximum current during this period etc.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingPeriodType {
     /// Start timestamp of charging period. A period ends when the next period starts.
@@ -17,18 +21,18 @@ pub struct ChargingPeriodType {
 
     /// List of dimensions that influence this period.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1), nested))]
     pub dimensions: Option<Vec<CostDimensionType>>,
 
     /// Unique identifier of the Tariff that was used to calculate cost.
     /// If not provided, then cost was calculated by some other means.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 60))]
+    #[cfg_attr(feature = "std", validate(length(max = 60)))]
     pub tariff_id: Option<String>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

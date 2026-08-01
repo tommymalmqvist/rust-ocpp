@@ -1,5 +1,7 @@
 use super::consumption_cost_type::ConsumptionCostType;
 use super::relative_time_interval_type::RelativeTimeIntervalType;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 /// SalesTariffEntryType is used by: Common:SalesTariffType
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]

@@ -1,5 +1,6 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::datatypes::{custom_data::CustomDataType, status_info::StatusInfoType};
 use crate::v2_1::enumerations::{
@@ -8,7 +9,8 @@ use crate::v2_1::enumerations::{
 };
 
 /// Used by the CSMS to request installation of a certificate on a Charging Station.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct InstallCertificateRequest {
     /// Custom data from the CSMS.
@@ -19,12 +21,13 @@ pub struct InstallCertificateRequest {
     pub certificate_type: InstallCertificateUseEnumType,
 
     /// Required. A PEM encoded X.509 certificate.
-    #[validate(length(max = 10000))]
+    #[cfg_attr(feature = "std", validate(length(max = 10000)))]
     pub certificate: String,
 }
 
 /// The response to a InstallCertificateRequest, sent by the Charging Station to the CSMS.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct InstallCertificateResponse {
     /// Custom data from the Charging Station.

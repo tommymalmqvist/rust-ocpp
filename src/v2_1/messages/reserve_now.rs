@@ -1,7 +1,6 @@
 use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CustomDataType, IdTokenType, StatusInfoType},
@@ -9,7 +8,8 @@ use crate::v2_1::{
 };
 
 /// Request body for the ReserveNow request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ReserveNowRequest {
     /// Optional. Custom data from the Charging Station.
@@ -17,7 +17,7 @@ pub struct ReserveNowRequest {
     pub custom_data: Option<CustomDataType>,
 
     /// Required. Id of reservation.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub id: i32,
 
     /// Required. Date and time at which the reservation expires.
@@ -33,7 +33,7 @@ pub struct ReserveNowRequest {
 
     /// Optional. This contains ID of the evse to be reserved.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub evse_id: Option<i32>,
 
     /// Optional. Group authorization reference to use when starting a transaction.
@@ -42,7 +42,8 @@ pub struct ReserveNowRequest {
 }
 
 /// Response body for the ReserveNow response.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ReserveNowResponse {
     /// Optional. Custom data from the Charging Station.

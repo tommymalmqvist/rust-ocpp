@@ -1,17 +1,21 @@
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, string::ToString};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
 
 /// Represents a UnitOfMeasure with a multiplier
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct UnitOfMeasureType {
     /// Unit of the value. Default = "Wh" if the (default) measurand is an "Energy" type.
     /// This field SHALL use a value from the list Standardized Units of Measurements in Part 2 Appendices.
     /// If an applicable unit is available in that list, otherwise a "custom" unit might be used.
     #[serde(default = "default_unit")]
-    #[validate(length(max = 20))]
+    #[cfg_attr(feature = "std", validate(length(max = 20)))]
     pub unit: String,
 
     /// Multiplier, this value represents the exponent to base 10. I.e. multiplier 3 means 10 raised to the 3rd power. Default is 0.
@@ -20,7 +24,7 @@ pub struct UnitOfMeasureType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

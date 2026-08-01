@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CustomDataType, StatusInfoType},
@@ -7,7 +6,8 @@ use crate::v2_1::{
 };
 
 /// Parameters for the periodic event stream.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct PeriodicEventStreamParamsType {
     /// Optional. Custom data from the Charging Station.
@@ -15,16 +15,17 @@ pub struct PeriodicEventStreamParamsType {
     pub custom_data: Option<CustomDataType>,
 
     /// Time in seconds after which stream data is sent.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub interval: i32,
 
     /// Number of items to be sent together in stream.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub values: i32,
 }
 
 /// Request body for the AdjustPeriodicEventStream request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct AdjustPeriodicEventStreamRequest {
     /// Optional. Custom data from the Charging Station.
@@ -32,7 +33,7 @@ pub struct AdjustPeriodicEventStreamRequest {
     pub custom_data: Option<CustomDataType>,
 
     /// Required. The identifier of the periodic event stream.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub id: i32,
 
     /// Required. Parameters for the periodic event stream.
@@ -40,7 +41,8 @@ pub struct AdjustPeriodicEventStreamRequest {
 }
 
 /// Response body for the AdjustPeriodicEventStream response.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct AdjustPeriodicEventStreamResponse {
     /// Optional. Custom data from the Charging Station.

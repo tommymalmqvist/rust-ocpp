@@ -1,4 +1,6 @@
 use crate::v2_0_1::enumerations::vpn_enum_type::VPNEnumType;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 /// VPN Configuration settings
 /// VPNType is used by: SetNetworkProfileRequest.NetworkConnectionProfileType

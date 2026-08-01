@@ -1,6 +1,8 @@
 //! A ChargingProfile consists of ChargingSchedule, describing the amount of power or current that can be delivered per time interval
 use crate::v2_0_1::enumerations::charging_limit_source_enum_type::ChargingLimitSourceEnumType;
 use crate::v2_0_1::enumerations::charging_profile_purpose_enum_type::ChargingProfilePurposeEnumType;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 /// A ChargingProfile consists of ChargingSchedule, describing the amount of power or current that can be delivered per time interval.
 ///

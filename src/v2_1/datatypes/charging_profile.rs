@@ -1,6 +1,9 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use crate::v2_1::{
@@ -12,7 +15,8 @@ use crate::v2_1::{
 
 /// A ChargingProfile consists of 1 to 3 ChargingSchedules with a list of ChargingSchedulePeriods,
 /// describing the amount of power or current that can be delivered per time interval.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingProfileType {
     /// Id of ChargingProfile. Unique within charging station. Id can have a negative value.
@@ -22,7 +26,7 @@ pub struct ChargingProfileType {
 
     /// Value determining level in hierarchy stack of profiles. Higher values have precedence over lower values.
     /// Lowest level is 0.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub stack_level: i32,
 
     /// Defines the purpose of the schedule transferred by this profile
@@ -56,7 +60,7 @@ pub struct ChargingProfileType {
     /// SHALL only be included if ChargingProfilePurpose is set to TxProfile.
     /// The transactionId is used to match the profile to a specific transaction.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 36))]
+    #[cfg_attr(feature = "std", validate(length(max = 36)))]
     pub transaction_id: Option<String>,
 
     /// Period in seconds that this charging profile remains valid after the Charging Station has gone offline. After this period the charging profile becomes invalid for as long as it is offline and the Charging Station reverts back to a valid profile with a lower stack level. \r\nIf _invalidAfterOfflineDuration_ is true, then this charging profile will become permanently invalid.\r\nA value of 0 means that the charging profile is immediately invalid while offline. When the field is absent, then  no timeout applies and the charging profile remains valid when offline.
@@ -81,7 +85,7 @@ pub struct ChargingProfileType {
 
     /// ISO 15118-20 signature for all price schedules in _chargingSchedules_. +\r\nNote: for 256-bit elliptic curves (like secp256k1) the ECDSA signature is 512 bits (64 bytes) and for 521-bit curves (like secp521r1) the signature is 1042 bits. This equals 131 bytes, which can be encoded as base64 in 176 bytes.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 176))]
+    #[cfg_attr(feature = "std", validate(length(max = 176)))]
     pub price_schedule_signature: Option<String>,
 
     /// Schedule that contains limits for the available
@@ -92,7 +96,7 @@ pub struct ChargingProfileType {
     /// purpose TxProfile in the context of an ISO 15118
     /// charging session. For ISO 15118 Dynamic Control Mode
     /// only one chargingSchedule shall be provided.
-    #[validate(length(min = 1, max = 3), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 3), nested))]
     pub charging_schedule: Vec<ChargingScheduleType>,
 
     /// Custom data from the Charging Station.

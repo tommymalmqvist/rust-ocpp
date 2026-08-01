@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{custom_data::CustomDataType, id_token::IdTokenType, id_token_info::IdTokenInfoType};
@@ -7,20 +8,21 @@ use super::{custom_data::CustomDataType, id_token::IdTokenType, id_token_info::I
 ///
 /// This type represents authorization data including the identifier token and its status information.
 /// It is used in authorization-related messages to provide information about an identifier's authorization status.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct AuthorizationData {
     /// Required. The identifier to be authorized.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub id_token: IdTokenType,
 
     /// Required. Status information about the identifier.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub id_token_info: IdTokenInfoType,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

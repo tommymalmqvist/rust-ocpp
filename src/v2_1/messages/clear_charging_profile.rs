@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CustomDataType, StatusInfoType},
@@ -7,7 +6,8 @@ use crate::v2_1::{
 };
 
 /// A ClearChargingProfileType is a filter for charging profiles to be cleared by ClearChargingProfileRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ClearChargingProfileType {
     /// Optional. Specifies the id of the EVSE for which to clear charging profiles.
@@ -15,7 +15,7 @@ pub struct ClearChargingProfileType {
     /// Absence of this parameter means the clearing applies to all charging profiles that match
     /// the other criteria in the request.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub evse_id: Option<i32>,
 
     /// Optional. Specifies to purpose of the charging profiles that will be cleared,
@@ -26,7 +26,7 @@ pub struct ClearChargingProfileType {
     /// Optional. Specifies the stackLevel for which charging profiles will be cleared,
     /// if they meet the other criteria in the request.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub stack_level: Option<i32>,
 
     /// Optional. Custom data from the Charging Station.
@@ -35,7 +35,8 @@ pub struct ClearChargingProfileType {
 }
 
 /// Request to clear charging profiles from a charging station.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ClearChargingProfileRequest {
     /// Optional. The Id of the charging profile to clear.
@@ -52,7 +53,8 @@ pub struct ClearChargingProfileRequest {
 }
 
 /// Response to a ClearChargingProfileRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ClearChargingProfileResponse {
     /// Required. Indicates if the Charging Station was able to execute the request.

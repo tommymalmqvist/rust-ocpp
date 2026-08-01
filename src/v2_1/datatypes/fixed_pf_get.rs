@@ -1,20 +1,28 @@
+#[cfg(feature = "std")]
 use super::super::helpers::validator::validate_identifier_string;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
+use core::fmt;
 use serde::{Deserialize, Serialize};
-use std::fmt;
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{custom_data::CustomDataType, fixed_pf::FixedPFType};
 
 /// Fixed power factor get type for retrieving fixed power factor settings.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate, Default)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct FixedPFGetType {
     /// The fixed power factor settings.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub fixed_pf: FixedPFType,
 
     /// Id of the setting.
-    #[validate(length(max = 36), custom(function = "validate_identifier_string"))]
+    #[cfg_attr(
+        feature = "std",
+        validate(length(max = 36), custom(function = "validate_identifier_string"))
+    )]
     pub id: String,
 
     /// True if this setting is superseded by a higher priority setting (i.e. lower value of priority).
@@ -25,7 +33,7 @@ pub struct FixedPFGetType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

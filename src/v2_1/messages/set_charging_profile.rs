@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{ChargingProfileType, CustomDataType, StatusInfoType},
@@ -7,7 +6,8 @@ use crate::v2_1::{
 };
 
 /// Request to set a charging profile at the Charging Station.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetChargingProfileRequest {
     /// Optional. Custom data specific to this message.
@@ -17,7 +17,7 @@ pub struct SetChargingProfileRequest {
     /// Required. For TxDefaultProfile an evseId=0 applies the profile to each individual evse.
     /// For ChargingStationMaxProfile and ChargingStationExternalConstraints an evseId=0 contains
     /// an overall limit for the whole Charging Station.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub evse_id: i32,
 
     /// Required. Charging Profile to be set at the Charging Station.
@@ -25,7 +25,8 @@ pub struct SetChargingProfileRequest {
 }
 
 /// Response to a SetChargingProfileRequest.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetChargingProfileResponse {
     /// Optional. Custom data specific to this message.

@@ -1,15 +1,19 @@
 use super::custom_data::CustomDataType;
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::{Validate, ValidationError};
 
 /// Log parameters for GetLog request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct LogParametersType {
     /// Required. The Id of this request.
-    #[validate(length(max = 2000))]
+    #[cfg_attr(feature = "std", validate(length(max = 2000)))]
     pub remote_location: String,
 
     /// Required. The oldest log entry date/time to include in the response.
@@ -30,7 +34,7 @@ pub struct LogParametersType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 
@@ -44,6 +48,7 @@ pub struct LogParametersType {
 /// # Returns
 ///
 /// Returns Ok(()) if the timestamps are valid, otherwise returns Err
+#[cfg(feature = "std")]
 fn validate_timestamps(
     oldest: &Option<DateTime<Utc>>,
     latest: &Option<DateTime<Utc>>,
@@ -216,6 +221,7 @@ impl LogParametersType {
     /// # Returns
     ///
     /// `Ok(())` if the instance is valid, otherwise an error
+    #[cfg(feature = "std")]
     pub fn validate(&self) -> Result<(), validator::ValidationErrors> {
         let mut errors = validator::ValidationErrors::new();
 

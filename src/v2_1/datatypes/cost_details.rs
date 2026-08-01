@@ -1,4 +1,7 @@
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{
@@ -8,7 +11,8 @@ use super::{
 
 /// CostDetailsType contains the cost as calculated by Charging Station based on provided TariffType.
 /// NOTE: Reservation is not shown as a chargingPeriod, because it took place outside of the transaction.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct CostDetailsType {
     /// List of Charging Periods that make up this
@@ -18,15 +22,15 @@ pub struct CostDetailsType {
     /// running cost update during a transaction chargingPeriods
     /// are omitted.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1))]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
     pub charging_periods: Option<Vec<ChargingPeriodType>>,
 
     /// Total cost of this transaction, including taxes.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub total_cost: TotalCostType,
 
     /// Total usage of energy and time during this transaction.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub total_usage: TotalUsageType,
 
     /// If set to true, then Charging Station has failed to calculate the cost.
@@ -35,12 +39,12 @@ pub struct CostDetailsType {
 
     /// Optional human-readable reason text in case of failure to calculate.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 500))]
+    #[cfg_attr(feature = "std", validate(length(max = 500)))]
     pub failure_reason: Option<String>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

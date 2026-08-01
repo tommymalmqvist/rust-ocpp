@@ -1,15 +1,17 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::datatypes::CustomDataType;
 
 /// Request to get the status of a transaction.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetTransactionStatusRequest {
     /// Optional. The Id of the transaction for which the status is requested.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 36))]
+    #[cfg_attr(feature = "std", validate(length(max = 36)))]
     pub transaction_id: Option<String>,
 
     /// Optional. Custom data from the Charging Station.
@@ -18,7 +20,8 @@ pub struct GetTransactionStatusRequest {
 }
 
 /// Response to a GetTransactionStatusRequest.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetTransactionStatusResponse {
     /// Optional. Whether the transaction is still ongoing.

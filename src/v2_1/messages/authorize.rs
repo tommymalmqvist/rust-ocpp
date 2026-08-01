@@ -1,5 +1,6 @@
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CustomDataType, IdTokenInfoType, IdTokenType, TariffType},
@@ -7,7 +8,8 @@ use crate::v2_1::{
 };
 
 /// Request to start a transaction with the given idToken.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct AuthorizeRequest {
     /// Optional. Custom data from the Charging Station.
@@ -18,7 +20,7 @@ pub struct AuthorizeRequest {
     /// Order of certificates in chain is from leaf up to (but excluding) root certificate.
     /// Only needed in case of central contract validation when Charging Station cannot validate the contract certificate.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 10000))]
+    #[cfg_attr(feature = "std", validate(length(max = 10000)))]
     pub certificate: Option<String>,
 
     /// Required. Contains the identifier that needs to be authorized.
@@ -26,12 +28,13 @@ pub struct AuthorizeRequest {
 
     /// Optional list of OCSP request data for certificates that need to be validated.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 4))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 4)))]
     pub iso15118_certificate_hash_data: Option<Vec<OCSPRequestDataType>>,
 }
 
 /// Information about a certificate for an OCSP check.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct OCSPRequestDataType {
     /// Optional. Custom data from the Charging Station.
@@ -43,21 +46,21 @@ pub struct OCSPRequestDataType {
 
     /// Required. The hash of the issuer's distinguished name (DN), that must be calculated over the DER
     /// encoding of the issuer's name field in the certificate being checked.
-    #[validate(length(max = 128))]
+    #[cfg_attr(feature = "std", validate(length(max = 128)))]
     pub issuer_name_hash: String,
 
     /// Required. The hash of the DER encoded public key: the value (excluding tag and length) of the subject
     /// public key field in the issuer's certificate.
-    #[validate(length(max = 128))]
+    #[cfg_attr(feature = "std", validate(length(max = 128)))]
     pub issuer_key_hash: String,
 
     /// Required. The string representation of the hexadecimal value of the serial number without the
     /// prefix "0x" and without leading zeroes.
-    #[validate(length(max = 40))]
+    #[cfg_attr(feature = "std", validate(length(max = 40)))]
     pub serial_number: String,
 
     /// Required. This contains the responder URL (Case insensitive).
-    #[validate(length(max = 2000))]
+    #[cfg_attr(feature = "std", validate(length(max = 2000)))]
     pub responder_url: String,
 }
 
@@ -73,7 +76,8 @@ pub enum HashAlgorithmEnumType {
 }
 
 /// Response to an AuthorizeRequest.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct AuthorizeResponse {
     /// Optional. Custom data from the Charging Station.

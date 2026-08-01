@@ -1,25 +1,36 @@
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{cost::CostType, custom_data::CustomDataType};
 
 /// Consumption cost type for consumption blocks.
-#[derive(Debug, Clone, Serialize, Deserialize, Validate, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ConsumptionCostType {
     /// Custom data specific to this class.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 
     /// The lowest level of consumption that defines the starting point of this consumption block.
     /// The block interval extends to the start of the next interval.
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub start_value: Decimal,
 
     /// List of costs associated with this consumption block.
-    #[validate(length(min = 1, max = 3), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 3), nested))]
     pub cost: Vec<CostType>,
 }
 

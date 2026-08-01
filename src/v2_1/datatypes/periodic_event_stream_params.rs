@@ -1,23 +1,25 @@
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
 
 /// Parameters for periodic event stream configuration.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct PeriodicEventStreamParamsType {
     /// Required. Time in seconds after which stream data is sent.
-    #[validate(range(min = 0, max = 86400))]
+    #[cfg_attr(feature = "std", validate(range(min = 0, max = 86400)))]
     pub interval: i32,
 
     /// Required. Number of items to be sent together in stream.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub values: i32,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

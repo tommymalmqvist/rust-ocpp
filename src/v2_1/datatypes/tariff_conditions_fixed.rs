@@ -1,4 +1,7 @@
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
@@ -10,7 +13,8 @@ use crate::v2_1::enumerations::{day_of_week::DayOfWeekEnumType, evse_kind::EvseK
 ///
 /// NOTE: _startTimeOfDay_ and _endTimeOfDay_ are in local time, because it is the time in the tariff as it is shown to the EV driver at the Charging Station.
 /// A Charging Station will convert this to the internal time zone that it uses (which is recommended to be UTC, see section Generic chapter 3.1) when performing cost calculation.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct TariffConditionsFixedType {
     /// Optional. Start time of day in local time.
@@ -28,7 +32,7 @@ pub struct TariffConditionsFixedType {
 
     /// Optional. Day(s) of the week this is tariff applies.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 7))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 7)))]
     pub day_of_week: Option<Vec<DayOfWeekEnumType>>,
 
     /// Optional. Start date in local time, for example: 2015-12-24.
@@ -50,18 +54,18 @@ pub struct TariffConditionsFixedType {
     /// Optional. For which payment brand this (adhoc) tariff applies. Can be used to add a surcharge for certain payment brands.
     /// Based on value of _additionalIdToken_ from _idToken.additionalInfo.type_ = "PaymentBrand".
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 20))]
+    #[cfg_attr(feature = "std", validate(length(max = 20)))]
     pub payment_brand: Option<String>,
 
     /// Optional. Type of adhoc payment, e.g. CC, Debit.
     /// Based on value of _additionalIdToken_ from _idToken.additionalInfo.type_ = "PaymentRecognition".
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 20))]
+    #[cfg_attr(feature = "std", validate(length(max = 20)))]
     pub payment_recognition: Option<String>,
 
     /// Optional. Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

@@ -1,6 +1,9 @@
+#![cfg(feature = "std")]
+
 use std::sync::OnceLock;
 
 use regex::Regex;
+#[cfg(feature = "std")]
 use validator::ValidationError;
 
 static REGEX: OnceLock<Regex> = OnceLock::new();

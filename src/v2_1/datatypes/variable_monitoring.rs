@@ -1,5 +1,6 @@
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
@@ -7,7 +8,8 @@ use crate::v2_1::enumerations::event_notification::EventNotificationEnumType;
 use crate::v2_1::enumerations::monitor::MonitorEnumType;
 
 /// A monitoring setting for a variable.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct VariableMonitoringType {
     /// Required. Identifies the monitor.
@@ -19,7 +21,14 @@ pub struct VariableMonitoringType {
 
     /// Required. Value for threshold or delta monitoring.
     /// For Periodic or PeriodicClockAligned this is the interval in seconds.
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub value: Decimal,
 
     /// Required. Monitor type of the variable.
@@ -36,7 +45,7 @@ pub struct VariableMonitoringType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

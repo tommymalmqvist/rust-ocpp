@@ -1,5 +1,6 @@
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{
@@ -9,17 +10,18 @@ use super::{
 use crate::v2_1::enumerations::monitor::MonitorEnumType;
 
 /// Class to hold parameters of SetVariableMonitoring request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetMonitoringDataType {
     /// An id SHALL only be given to replace an existing monitor. The Charging Station handles the generation of id's for new monitors.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub id: Option<i32>,
 
     /// Parameters for periodic event stream configuration.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub periodic_event_stream: Option<PeriodicEventStreamParamsType>,
 
     /// Monitor only active when a transaction is ongoing on a component relevant to this transaction. Default = false.
@@ -28,7 +30,14 @@ pub struct SetMonitoringDataType {
 
     /// Value for threshold or delta monitoring.
     /// For Periodic or PeriodicClockAligned this is the interval in seconds.
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub value: Decimal,
 
     /// The type of this monitor, e.g. a threshold, delta or periodic monitor.
@@ -58,15 +67,15 @@ pub struct SetMonitoringDataType {
     /// Indicates a regular operational event. May be used for reporting, measuring throughput, etc. No action is required.
     /// *9-Debug*
     /// Indicates information useful to developers for debugging, not useful during operations.
-    #[validate(range(min = 0, max = 9))]
+    #[cfg_attr(feature = "std", validate(range(min = 0, max = 9)))]
     pub severity: i32,
 
     /// Required. Component for which a variable is monitored.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub component: ComponentType,
 
     /// Required. Variable that is monitored.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub variable: VariableType,
 
     /// Custom data from the Charging Station.

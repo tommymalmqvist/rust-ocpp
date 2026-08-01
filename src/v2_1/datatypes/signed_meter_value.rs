@@ -1,36 +1,40 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
 
 /// Represent a signed version of the meter value.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SignedMeterValueType {
     /// Required. Base64 encoded, contains the signed data from the meter in the format specified in _encodingMethod_,
     /// which might contain more then just the meter value. It can contain information like timestamps,
     /// reference to a customer etc.
-    #[validate(length(max = 32768))]
+    #[cfg_attr(feature = "std", validate(length(max = 32768)))]
     pub signed_meter_data: String,
 
     /// Required. Format used by the energy meter to encode the meter data. For example: OCMF or EDL.
-    #[validate(length(max = 50))]
+    #[cfg_attr(feature = "std", validate(length(max = 50)))]
     pub encoding_method: String,
 
     /// Optional. *(2.1)* Method used to create the digital signature. Optional, if already included in _signedMeterData_.
     /// Standard values for this are defined in Appendix as SigningMethodEnumStringType.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 50))]
+    #[cfg_attr(feature = "std", validate(length(max = 50)))]
     pub signing_method: Option<String>,
 
     /// Optional. *(2.1)* Base64 encoded, sending depends on configuration variable _PublicKeyWithSignedMeterValue_.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 2500))]
+    #[cfg_attr(feature = "std", validate(length(max = 2500)))]
     pub public_key: Option<String>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

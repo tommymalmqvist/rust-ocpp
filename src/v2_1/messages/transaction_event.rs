@@ -2,6 +2,8 @@ use super::{
     CustomData, IdToken, IdTokenInfo, MessageContent, MeterValue, Transaction,
     TransactionEventEnum, TransactionLimit, TriggerReasonEnum, EVSE,
 };
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq)]
 pub struct TransactionEventRequest {

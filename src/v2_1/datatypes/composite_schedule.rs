@@ -1,18 +1,22 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{charging_schedule_period::ChargingSchedulePeriodType, custom_data::CustomDataType};
 use crate::v2_1::enumerations::ChargingRateUnitEnumType;
 
 /// Composite Schedule structure defines a list of charging periods.
-#[derive(Debug, Clone, Serialize, Deserialize, Validate, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct CompositeScheduleType {
     /// The ID of the EVSE for which the schedule is requested.
     /// When evseid=0, the Charging Station calculated the expected consumption for the grid connection.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub evse_id: i32,
 
     /// Duration of the schedule in seconds.
@@ -27,12 +31,12 @@ pub struct CompositeScheduleType {
     pub charging_rate_unit: ChargingRateUnitEnumType,
 
     /// List of charging periods describing the amount of power or current that can be delivered per time interval.
-    #[validate(length(min = 1), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1), nested))]
     pub charging_schedule_period: Vec<ChargingSchedulePeriodType>,
 
     /// Custom data specific to this class.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

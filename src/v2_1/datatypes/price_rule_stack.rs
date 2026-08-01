@@ -1,23 +1,27 @@
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{custom_data::CustomDataType, price_rule::PriceRuleType};
 
 /// Stack of price rules, defining the price of charging.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct PriceRuleStackType {
     /// Required. Duration in seconds after which the price rule becomes active.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub duration: i32,
 
     /// Required. List of price rules that are part of the stack.
-    #[validate(length(min = 1, max = 8))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 8)))]
     pub price_rules: Vec<PriceRuleType>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

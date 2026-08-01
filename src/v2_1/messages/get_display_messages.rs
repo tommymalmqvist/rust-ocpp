@@ -1,5 +1,6 @@
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CustomDataType, StatusInfoType},
@@ -9,7 +10,8 @@ use crate::v2_1::{
 };
 
 /// Request to get the display messages from a Charging Station.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetDisplayMessagesRequest {
     /// Required. The Id of this request.
@@ -18,7 +20,7 @@ pub struct GetDisplayMessagesRequest {
     /// Optional. If provided the Charging Station shall return Display Messages of the given ids.
     /// This field SHALL NOT contain more ids than set in NumberOfDisplayMessages.maxLimit.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1))]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
     pub id: Option<Vec<i32>>,
 
     /// Optional. If provided the Charging Station shall return Display Messages with the given priority only.
@@ -35,7 +37,8 @@ pub struct GetDisplayMessagesRequest {
 }
 
 /// Response to a GetDisplayMessagesRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetDisplayMessagesResponse {
     /// Required. Indicates if the Charging Station has Display Messages that match

@@ -1,4 +1,7 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{custom_data::CustomDataType, status_info::StatusInfoType};
@@ -13,17 +16,18 @@ pub enum TariffClearStatusEnumType {
 }
 
 /// Result of clearing a tariff.
-#[derive(Debug, Clone, Serialize, Deserialize, Validate, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ClearTariffsResultType {
     /// Element providing more information about the status.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub status_info: Option<StatusInfoType>,
 
     /// Id of tariff for which _status_ is reported. If no tariffs were found, then this field is absent, and _status_ will be `NoTariff`.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 60))]
+    #[cfg_attr(feature = "std", validate(length(max = 60)))]
     pub tariff_id: Option<String>,
 
     /// Status indicating whether the tariff was cleared.
@@ -31,7 +35,7 @@ pub struct ClearTariffsResultType {
 
     /// Custom data specific to this class.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

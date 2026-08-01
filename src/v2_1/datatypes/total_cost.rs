@@ -1,15 +1,19 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{custom_data::CustomDataType, price::PriceType, total_price::TotalPriceType};
 use crate::v2_1::enumerations::tariff_cost::TariffCostEnumType;
 
 /// This contains the cost calculated during a transaction. It is used both for running cost and final cost of the transaction.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct TotalCostType {
     /// Required. Currency of the costs in ISO 4217 Code.
-    #[validate(length(max = 3))]
+    #[cfg_attr(feature = "std", validate(length(max = 3)))]
     pub currency: String,
 
     /// Required. Type of cost.
@@ -17,41 +21,41 @@ pub struct TotalCostType {
 
     /// Optional. Fixed costs per transaction.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub fixed: Option<PriceType>,
 
     /// Optional. Energy costs per transaction.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub energy: Option<PriceType>,
 
     /// Optional. Time cost per transaction.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub charging_time: Option<PriceType>,
 
     /// Optional. Idle time cost per transaction.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub idle_time: Option<PriceType>,
 
     /// Optional. Reservation time cost per transaction.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub reservation_time: Option<PriceType>,
 
     /// Optional. Fixed reservation costs per transaction.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub reservation_fixed: Option<PriceType>,
 
     /// Required. Total cost including and/or excluding tax.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub total: TotalPriceType,
 
     /// Optional. Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

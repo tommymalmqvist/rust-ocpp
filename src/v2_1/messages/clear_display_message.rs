@@ -1,15 +1,15 @@
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::datatypes::{CustomDataType, StatusInfoType};
 use crate::v2_1::enumerations::ClearMessageStatusEnumType;
 
 /// Request to clear a message from the charging station's display.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ClearDisplayMessageRequest {
     /// Required. Id of the message that SHALL be removed from the Charging Station.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub id: i32,
 
     /// Optional. Custom data from the Charging Station.
@@ -18,7 +18,8 @@ pub struct ClearDisplayMessageRequest {
 }
 
 /// Response to a ClearDisplayMessageRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ClearDisplayMessageResponse {
     /// Required. Returns whether the Charging Station has been able to remove the message.

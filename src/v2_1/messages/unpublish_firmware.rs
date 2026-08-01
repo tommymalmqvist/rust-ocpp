@@ -1,4 +1,6 @@
 use super::{CustomData, UnpublishFirmwareStatusEnum};
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq)]
 pub struct UnpublishFirmwareRequest {

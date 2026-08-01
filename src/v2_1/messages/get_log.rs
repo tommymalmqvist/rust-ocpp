@@ -1,5 +1,6 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CustomDataType, LogParametersType, StatusInfoType},
@@ -8,7 +9,8 @@ use crate::v2_1::{
 };
 
 /// Request to get logging information from a Charging Station.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetLogRequest {
     /// Required. This contains the type of log file that the Charging Station should send.
@@ -24,7 +26,7 @@ pub struct GetLogRequest {
     /// If this field is not present, it is left to Charging Station to decide how many times it wants to retry.
     /// If the value is 0, it means: no retries.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub retries: Option<i32>,
 
     /// Optional. The interval in seconds after which a retry may be attempted.
@@ -38,7 +40,8 @@ pub struct GetLogRequest {
 }
 
 /// Response to a GetLogRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetLogResponse {
     /// Required. This field indicates whether the Charging Station was able to accept the request.
@@ -47,7 +50,7 @@ pub struct GetLogResponse {
     /// Optional. This contains the name of the log file that will be uploaded.
     /// This field is not present when no logging information is available.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 255))]
+    #[cfg_attr(feature = "std", validate(length(max = 255)))]
     pub filename: Option<String>,
 
     /// Optional. Element providing more information about the status.

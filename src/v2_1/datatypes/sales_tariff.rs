@@ -1,35 +1,39 @@
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{custom_data::CustomDataType, sales_tariff_entry::SalesTariffEntryType};
 
 /// A SalesTariff provided by a Mobility Operator (EMSP).
 /// NOTE: This dataType is based on dataTypes from ISO 15118-2.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SalesTariffType {
     /// Required. SalesTariff identifier used to identify one sales tariff.
     /// An SAID remains a unique identifier for one schedule throughout a charging session.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub id: i32,
 
     /// Optional. A human readable title/description of the sales tariff e.g. for HMI display purposes.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 32))]
+    #[cfg_attr(feature = "std", validate(length(max = 32)))]
     pub sales_tariff_description: Option<String>,
 
     /// Optional. Defines the overall number of distinct price levels used across all provided SalesTariff elements.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub num_e_price_levels: Option<i32>,
 
     /// Required. List of sales tariff entries.
-    #[validate(length(min = 1, max = 1024), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 1024), nested))]
     pub sales_tariff_entry: Vec<SalesTariffEntryType>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

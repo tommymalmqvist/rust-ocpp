@@ -21,18 +21,19 @@
 //! not for unlocking a connector access door.
 
 use crate::v1_6::types::UnlockStatus;
-use validator::Validate;
 
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct UnlockConnectorRequest {
     /// # From OCPP Specification
     /// Required. This contains the identifier of the connector to be unlocked.
-    #[validate(range(min = 0, max = 20))]
+    #[cfg_attr(feature = "std", validate(range(min = 0, max = 20)))]
     pub connector_id: u32,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct UnlockConnectorResponse {
     /// # From OCPP Specification

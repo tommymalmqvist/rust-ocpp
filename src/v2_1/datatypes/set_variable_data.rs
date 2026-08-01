@@ -1,19 +1,23 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{component::ComponentType, custom_data::CustomDataType, variable::VariableType};
 use crate::v2_1::enumerations::attribute::AttributeEnumType;
 
 /// Class to hold parameters of SetVariable request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetVariableDataType {
     /// Required. Component for which the variable is set.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub component: ComponentType,
 
     /// Required. Variable which holds the attribute value.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub variable: VariableType,
 
     /// Required. Value to be assigned to attribute of variable.
@@ -22,7 +26,7 @@ pub struct SetVariableDataType {
     /// The Configuration Variable <<configkey-configuration-value-size,ConfigurationValueSize>>
     /// can be used to limit SetVariableData.attributeValue and VariableCharacteristics.valuesList.
     /// The max size of these values will always remain equal.
-    #[validate(length(max = 2500))]
+    #[cfg_attr(feature = "std", validate(length(max = 2500)))]
     pub attribute_value: String,
 
     /// Optional. Type of attribute that is set.
@@ -31,7 +35,7 @@ pub struct SetVariableDataType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

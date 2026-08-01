@@ -1,11 +1,11 @@
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::datatypes::CustomDataType;
 use crate::v2_1::enumerations::FirmwareStatusEnumType;
 
 /// Request to notify the CSMS of the status of a firmware update.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct FirmwareStatusNotificationRequest {
     /// Required. This contains the progress status of the firmware installation.
@@ -26,7 +26,8 @@ pub struct FirmwareStatusNotificationRequest {
 /// Response to a FirmwareStatusNotificationRequest.
 /// This response contains no fields other than the optional customData field,
 /// because the request cannot be denied by the CSMS.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct FirmwareStatusNotificationResponse {
     /// Optional. Custom data from the Charging Station.

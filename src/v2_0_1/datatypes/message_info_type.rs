@@ -1,3 +1,5 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use chrono::DateTime;
 use chrono::Utc;
 

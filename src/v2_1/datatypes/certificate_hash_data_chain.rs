@@ -2,18 +2,22 @@ use crate::v2_1::datatypes::{
     certificate_hash_data::CertificateHashDataType, custom_data::CustomDataType,
 };
 use crate::v2_1::enumerations::get_certificate_id_use::GetCertificateIdUseEnumType;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Certificate hash data chain for validating certificates through OCSP.
 ///
 /// This type represents a chain of certificate hash data used for certificate validation
 /// through the Online Certificate Status Protocol (OCSP).
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct CertificateHashDataChainType {
     /// Information to identify a certificate
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub certificate_hash_data: CertificateHashDataType,
 
     /// Indicates the type of the requested certificate(s).
@@ -21,12 +25,12 @@ pub struct CertificateHashDataChainType {
 
     /// Information to identify the child certificate(s).
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 4), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 4), nested))]
     pub child_certificate_hash_data: Option<Vec<CertificateHashDataType>>,
 
     /// Optional custom data
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

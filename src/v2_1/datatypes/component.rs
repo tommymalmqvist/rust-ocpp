@@ -1,30 +1,34 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{custom_data::CustomDataType, evse::EVSEType};
 
 /// A physical or logical component
-#[derive(Debug, Clone, Serialize, Deserialize, Validate, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ComponentType {
     /// Custom data specific to this class.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 
     /// Specifies the EVSE when component is located at EVSE level, also specifies the connector when component is located at Connector level.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub evse: Option<EVSEType>,
 
     /// Name of the component. Name should be taken from the list of standardized component names whenever possible.
     /// Case Insensitive. strongly advised to use Camel Case.
-    #[validate(length(max = 50))]
+    #[cfg_attr(feature = "std", validate(length(max = 50)))]
     pub name: String,
 
     /// Name of instance in case the component exists as multiple instances. Case Insensitive. strongly advised to use Camel Case.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 50))]
+    #[cfg_attr(feature = "std", validate(length(max = 50)))]
     pub instance: Option<String>,
 }
 

@@ -1,7 +1,8 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{ComponentType, CustomDataType, MessageContentType},
@@ -9,7 +10,8 @@ use crate::v2_1::{
 };
 
 /// Contains message details, for a message to be displayed on a Charging Station.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct MessageInfoType {
     /// Optional. Display component that this message concerns.
@@ -17,7 +19,7 @@ pub struct MessageInfoType {
     pub display: Option<ComponentType>,
 
     /// Required. Unique id within an exchange context. It is defined within the OCPP context as a positive Integer value (greater or equal to zero).
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub id: i32,
 
     /// Required. With what priority should this message be shown.
@@ -46,7 +48,7 @@ pub struct MessageInfoType {
     /// Optional. During which transaction shall this message be shown.
     /// Message SHALL be removed by the Charging Station after transaction has ended.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 36))]
+    #[cfg_attr(feature = "std", validate(length(max = 36)))]
     pub transaction_id: Option<String>,
 
     /// Required. Contains message details.
@@ -58,11 +60,12 @@ pub struct MessageInfoType {
 }
 
 /// Request to notify the CSMS about display messages.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct NotifyDisplayMessagesRequest {
     /// Required. Id of this request for identification in response.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub request_id: i32,
 
     /// Optional. "to be continued" indicator. Indicates whether another part of the report follows in an upcoming notifyDisplayMessagesRequest message. Default value when omitted is false.
@@ -70,7 +73,7 @@ pub struct NotifyDisplayMessagesRequest {
     pub tbc: Option<bool>,
 
     /// Required. Array of message info objects.
-    #[validate(length(min = 1))]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
     pub message_info: Vec<MessageInfoType>,
 
     /// Optional. Custom data specific to this class.
@@ -79,7 +82,8 @@ pub struct NotifyDisplayMessagesRequest {
 }
 
 /// Response to a NotifyDisplayMessagesRequest. This message has no fields.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct NotifyDisplayMessagesResponse {
     /// Optional. Custom data specific to this class.

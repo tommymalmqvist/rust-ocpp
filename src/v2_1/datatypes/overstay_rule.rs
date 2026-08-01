@@ -1,10 +1,12 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use super::{custom_data::CustomDataType, rational_number::RationalNumberType};
 
 /// Rule that describes the pricing of overstaying.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct OverstayRuleType {
     /// Custom data from the Charging Station.
@@ -22,7 +24,7 @@ pub struct OverstayRuleType {
 
     /// Optional. Human readable string to identify the overstay rule.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 32))]
+    #[cfg_attr(feature = "std", validate(length(max = 32)))]
     pub overstay_rule_description: Option<String>,
 }
 

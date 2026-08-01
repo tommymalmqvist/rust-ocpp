@@ -1,5 +1,7 @@
 //! ClearedChargingLimit
 use crate::v2_0_1::datatypes::clear_monitoring_result_type::ClearMonitoringResultType;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 /// ClearVariableMonitoringRequest, sent by the CSMS to the Charging Station.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]

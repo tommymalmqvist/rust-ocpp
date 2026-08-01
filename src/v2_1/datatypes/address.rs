@@ -1,53 +1,57 @@
 use crate::v2_1::datatypes::custom_data::CustomDataType;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// A generic address format.
 ///
 /// This type represents a physical address with standard address fields
 /// such as name, street address, city, postal code, and country.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct AddressType {
     /// Name of person/company
-    #[validate(length(max = 50))]
+    #[cfg_attr(feature = "std", validate(length(max = 50)))]
     pub name: String,
 
     /// Address line 1
     ///
     /// Primary street address, building number, etc.
-    #[validate(length(max = 100))]
+    #[cfg_attr(feature = "std", validate(length(max = 100)))]
     pub address1: String,
 
     /// Address line 2
     ///
     /// Additional address information like apartment number, suite, etc.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 100))]
+    #[cfg_attr(feature = "std", validate(length(max = 100)))]
     pub address2: Option<String>,
 
     /// City
     ///
     /// Name of the city or locality
-    #[validate(length(max = 100))]
+    #[cfg_attr(feature = "std", validate(length(max = 100)))]
     pub city: String,
 
     /// Postal code
     ///
     /// ZIP or postal code
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 20))]
+    #[cfg_attr(feature = "std", validate(length(max = 20)))]
     pub postal_code: Option<String>,
 
     /// Country name
     ///
     /// Name of the country
-    #[validate(length(max = 50))]
+    #[cfg_attr(feature = "std", validate(length(max = 50)))]
     pub country: String,
 
     /// Optional custom data
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

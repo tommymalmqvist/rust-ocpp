@@ -1,4 +1,6 @@
 use crate::v2_0_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use chrono::DateTime;
 use chrono::Utc;
 

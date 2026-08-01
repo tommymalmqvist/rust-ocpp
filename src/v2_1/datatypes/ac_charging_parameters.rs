@@ -1,42 +1,72 @@
 use crate::v2_1::datatypes::custom_data::CustomDataType;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// EV AC charging parameters for ISO 15118-2
 ///
 /// Contains parameters specific to AC charging according to ISO 15118-2.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ACChargingParametersType {
     /// Amount of energy requested (in Wh). This includes energy required for preconditioning.
     /// Relates to:
     /// *ISO 15118-2*: AC_EVChargeParameterType: EAmount
     /// *ISO 15118-20*: Dynamic/Scheduled_SEReqControlModeType: EVTargetEnergyRequest
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub energy_amount: Decimal,
 
     /// Minimum current (amps) supported by the electric vehicle (per phase).
     /// Relates to:
     /// *ISO 15118-2*: AC_EVChargeParameterType: EVMinCurrent
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub ev_min_current: Decimal,
 
     /// Maximum current (amps) supported by the electric vehicle (per phase). Includes cable capacity.
     /// Relates to:
     /// *ISO 15118-2*: AC_EVChargeParameterType: EVMaxCurrent
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub ev_max_current: Decimal,
 
     /// Maximum voltage supported by the electric vehicle.
     /// Relates to:
     /// *ISO 15118-2*: AC_EVChargeParameterType: EVMaxVoltage
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub ev_max_voltage: Decimal,
 
     /// Optional custom data
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

@@ -2,10 +2,12 @@ use crate::v2_1::{
     datatypes::custom_data::CustomDataType, enumerations::ChargingLimitSourceEnumType,
 };
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Represents a charging limit for a charging session.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingLimitType {
     /// Represents the source of the charging limit.
@@ -21,7 +23,7 @@ pub struct ChargingLimitType {
 
     /// Custom data specific to this charging limit.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 
@@ -186,6 +188,7 @@ impl ChargingLimitType {
     /// # Returns
     ///
     /// `Ok(())` if the instance is valid, otherwise an error
+    #[cfg(feature = "std")]
     pub fn validate(&self) -> Result<(), validator::ValidationErrors> {
         Validate::validate(self)
     }

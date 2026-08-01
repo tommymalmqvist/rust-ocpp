@@ -1,12 +1,12 @@
 use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::datatypes::custom_data::CustomDataType;
 
 /// HeartbeatRequest, sent by the Charging Station to the CSMS.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct HeartbeatRequest {
     /// Custom data from the Charging Station.
@@ -15,7 +15,8 @@ pub struct HeartbeatRequest {
 }
 
 /// HeartbeatResponse, sent by the CSMS to the Charging Station in response to a HeartbeatRequest.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct HeartbeatResponse {
     /// Custom data from the CSMS.

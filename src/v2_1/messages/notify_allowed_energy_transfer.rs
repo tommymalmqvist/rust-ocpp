@@ -1,5 +1,6 @@
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CustomDataType, StatusInfoType},
@@ -7,7 +8,8 @@ use crate::v2_1::{
 };
 
 /// Request to notify the Charging Station about the allowed energy transfer modes.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct NotifyAllowedEnergyTransferRequest {
     /// Optional. Custom data from the Charging Station.
@@ -15,16 +17,17 @@ pub struct NotifyAllowedEnergyTransferRequest {
     pub custom_data: Option<CustomDataType>,
 
     /// Required. The transaction for which the allowed energy transfer is allowed.
-    #[validate(length(max = 36))]
+    #[cfg_attr(feature = "std", validate(length(max = 36)))]
     pub transaction_id: String,
 
     /// Required. Modes of energy transfer that are accepted by CSMS.
-    #[validate(length(min = 1))]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
     pub allowed_energy_transfer: Vec<EnergyTransferModeEnumType>,
 }
 
 /// Response to a NotifyAllowedEnergyTransferRequest.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct NotifyAllowedEnergyTransferResponse {
     /// Optional. Custom data from the Charging Station.

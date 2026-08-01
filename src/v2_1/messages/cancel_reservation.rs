@@ -2,15 +2,15 @@ use super::super::datatypes::CustomDataType;
 use super::super::datatypes::StatusInfoType;
 use super::super::enumerations::CancelReservationStatusEnumType;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 /// Request to cancel a reservation.
 ///
 /// This message is sent by the CSMS to the Charging Station to cancel an existing reservation.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 pub struct CancelReservationRequest {
     /// Id of the reservation to cancel.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     #[serde(rename = "reservationId")]
     pub reservation_id: i32,
 
@@ -23,7 +23,8 @@ pub struct CancelReservationRequest {
 ///
 /// This message is sent by the Charging Station to the CSMS in response to a CancelReservationRequest.
 /// It indicates whether the Charging Station was able to cancel the reservation.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct CancelReservationResponse {
     /// Optional custom data

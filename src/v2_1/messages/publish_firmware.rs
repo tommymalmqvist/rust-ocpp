@@ -1,5 +1,7 @@
 use crate::v2_1::datatypes::status_info::StatusInfoType;
 use crate::v2_1::enumerations::generic_status::GenericStatusEnumType;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 /// This contains the field definition of the PublishFirmwareRequest PDU sent by the CSMS to the Local Controller.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]

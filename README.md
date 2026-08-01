@@ -3,6 +3,7 @@
 [![crates.io](https://img.shields.io/crates/v/rust-ocpp.svg)](https://crates.io/crates/rust-ocpp)
 [![workflow](https://img.shields.io/github/actions/workflow/status/codelabsab/rust-ocpp/rust.yml)](https://github.com/codelabsab/rust-ocpp/actions)
 [![codecov](https://codecov.io/gh/codelabsab/rust-ocpp/branch/main/graph/badge.svg?token=23C458RC3S)](https://codecov.io/gh/codelabsab/rust-ocpp)
+[![no_std](https://img.shields.io/badge/no__std-compatible-brightgreen.svg)](#no_std-support)
 
 The `rust-ocpp` libs implements the Open Charge Point Protocol
 used in charging stations. You can read more on the official [Open Charge Alliance](https://www.openchargealliance.org/) website.
@@ -39,6 +40,40 @@ You can also use multiple versions:
 ```toml
 [dependencies]
 rust-ocpp = { version = "2.0", features = ["v2_0_1"] }
+```
+
+## no_std support
+
+`rust-ocpp` supports `no_std` (`alloc`-only) environments for all protocol versions
+(`v1_6`, `v2_0_1`, and `wip_v2_1`). This is controlled by the `std` feature, which is
+**enabled by default**.
+
+To use `rust-ocpp` in a `no_std` context, disable default features:
+
+```toml
+[dependencies]
+rust-ocpp = { version = "3.0", default-features = false, features = ["v2_0_1"] }
+```
+
+Disabling `std` turns off everything that inherently requires an OS or heap-backed
+standard library:
+
+- **Validation** (`validator`-derived `.validate()` methods and `#[validate(...)]`
+  checks) is unavailable, since the `validator` crate itself does not support `no_std`.
+- `chrono::Utc::now()`-based defaults are unavailable (no OS clock).
+- `Decimal` fields that use OCPP's arbitrary-precision JSON number format are
+  (de)serialized via a small internal `no_std`-compatible helper instead of
+  `rust_decimal`'s built-in one, producing byte-identical JSON output.
+
+Everything else - all data types, (de)serialization via `serde`/`serde_json`, and
+message structures - works the same as in a `std` build. `String`, `Vec`, and other
+heap-allocated types come from `alloc`, so your target still needs a global allocator.
+
+Re-enable `std` explicitly if you want the full feature set (validation included):
+
+```toml
+[dependencies]
+rust-ocpp = { version = "3.0", features = ["v2_0_1"] } # std is on by default
 ```
 
 ## How to Build

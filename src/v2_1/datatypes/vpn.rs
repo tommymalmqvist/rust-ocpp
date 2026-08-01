@@ -1,32 +1,36 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
 use crate::v2_1::enumerations::vpn::VPNEnumType;
 
 /// VPN Configuration settings
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct VPNType {
     /// Required. VPN Server Address
-    #[validate(length(max = 2000))]
+    #[cfg_attr(feature = "std", validate(length(max = 2000)))]
     pub server: String,
 
     /// Required. VPN User
-    #[validate(length(max = 50))]
+    #[cfg_attr(feature = "std", validate(length(max = 50)))]
     pub user: String,
 
     /// VPN group.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 50))]
+    #[cfg_attr(feature = "std", validate(length(max = 50)))]
     pub group: Option<String>,
 
     /// Required. VPN Password.
-    #[validate(length(max = 64))]
+    #[cfg_attr(feature = "std", validate(length(max = 64)))]
     pub password: String,
 
     /// Required. VPN shared secret.
-    #[validate(length(max = 255))]
+    #[cfg_attr(feature = "std", validate(length(max = 255)))]
     pub key: String,
 
     /// Required. VPN Type.
@@ -35,7 +39,7 @@ pub struct VPNType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

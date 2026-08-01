@@ -1,4 +1,7 @@
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use crate::v2_1::{
@@ -7,15 +10,16 @@ use crate::v2_1::{
 };
 
 /// Request body for the ReportChargingProfiles request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ReportChargingProfilesRequest {
     /// Required. Source that has installed this charging profile. Values defined in Appendix as ChargingLimitSourceEnumStringType.
     pub charging_limit_source: ChargingLimitSourceEnumType,
 
     /// Required. The charging profile entries, sorted by stackLevel lowest value first.
-    #[validate(length(min = 1))]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub charging_profile: Vec<ChargingProfileType>,
 
     /// Required. Id used to match the GetChargingProfilesRequest message with the resulting ReportChargingProfilesRequest messages. When the CSMS provided a requestId in the GetChargingProfilesRequest, this field SHALL contain the same value.
@@ -35,7 +39,8 @@ pub struct ReportChargingProfilesRequest {
 
 /// Response body for the ReportChargingProfiles response.
 /// This contains no fields as per the OCPP 2.1 specification.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ReportChargingProfilesResponse {
     /// Optional. Custom data from the Charging Station.

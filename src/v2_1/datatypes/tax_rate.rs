@@ -1,19 +1,30 @@
 use super::custom_data::CustomDataType;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Tax percentage
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct TaxRateType {
     /// Required. Type of this tax, e.g. "Federal", "State", for information on receipt.
-    #[validate(length(max = 20))]
+    #[cfg_attr(feature = "std", validate(length(max = 20)))]
     #[serde(rename = "type")]
     pub type_: String,
 
     /// Required. Tax percentage
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub tax: Decimal,
 
     /// Optional. Stack level for this type of tax. Default value, when absent, is 0.
@@ -21,12 +32,12 @@ pub struct TaxRateType {
     /// stack = 1: tax added on top of stack 0;
     /// stack = 2: tax added on top of stack 1, etc.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub stack: Option<i32>,
 
     /// Optional. Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

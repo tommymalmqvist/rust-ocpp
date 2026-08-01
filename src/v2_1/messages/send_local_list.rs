@@ -1,5 +1,6 @@
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{AuthorizationData, CustomDataType, StatusInfoType},
@@ -15,7 +16,8 @@ pub enum UpdateEnumType {
 }
 
 /// Request to send a local authorization list to the Charging Station.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SendLocalListRequest {
     /// Optional. Custom data specific to this message.
@@ -25,7 +27,7 @@ pub struct SendLocalListRequest {
     /// Optional. List of authorization data to update in the Local Authorization List.
     /// If empty and updateType is Full, the Local Authorization List will be cleared.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1))]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
     pub local_authorization_list: Option<Vec<AuthorizationData>>,
 
     /// Required. In case of a full update this is the version number of the full list.
@@ -37,7 +39,8 @@ pub struct SendLocalListRequest {
 }
 
 /// Response to a SendLocalListRequest.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SendLocalListResponse {
     /// Optional. Custom data specific to this message.

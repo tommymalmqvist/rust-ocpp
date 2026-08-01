@@ -8,7 +8,7 @@
 //! general information about the Charging Station.
 //!
 //!
-use std::fmt;
+use core::fmt;
 
 use chrono::DateTime;
 use chrono::Utc;

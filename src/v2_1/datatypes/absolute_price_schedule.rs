@@ -4,15 +4,19 @@ use crate::v2_1::datatypes::{
     rational_number::RationalNumberType, tax_rule::TaxRuleType,
 };
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, string::ToString, vec::Vec};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// The AbsolutePriceScheduleType is modeled after the same type that is defined in ISO 15118-20,
 /// such that if it is supplied by an EMSP as a signed EXI message, the conversion from EXI to JSON
 /// (in OCPP) and back to EXI (for ISO 15118-20) does not change the digest and therefore does not
 /// invalidate the signature.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct AbsolutePriceScheduleType {
     /// Starting point of price schedule.
@@ -21,60 +25,60 @@ pub struct AbsolutePriceScheduleType {
 
     /// Unique ID of price schedule
     #[serde(rename = "priceScheduleID")]
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub price_schedule_id: i32,
 
     /// Description of the price schedule.
     #[serde(rename = "priceScheduleDescription")]
-    #[validate(length(max = 160))]
+    #[cfg_attr(feature = "std", validate(length(max = 160)))]
     pub price_schedule_description: Option<String>,
 
     /// Currency according to ISO 4217.
-    #[validate(length(max = 3))]
+    #[cfg_attr(feature = "std", validate(length(max = 3)))]
     pub currency: String,
 
     /// String that indicates what language is used for the human readable strings in the price schedule.
     /// Based on ISO 639.
-    #[validate(length(max = 8))]
+    #[cfg_attr(feature = "std", validate(length(max = 8)))]
     pub language: String,
 
     /// A string in URN notation which shall uniquely identify an algorithm that defines how to compute
     /// an energy fee sum for a specific power profile based on the EnergyFee information from the PriceRule elements.
-    #[validate(length(max = 2000))]
+    #[cfg_attr(feature = "std", validate(length(max = 2000)))]
     pub price_algorithm: String,
 
     /// Stack of price rules, defining the price of charging.
-    #[validate(length(min = 1, max = 1024), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 1024), nested))]
     pub price_rule_stacks: Vec<PriceRuleStackType>,
 
     /// List of tax rules that apply to the price.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 10), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 10), nested))]
     pub tax_rules: Option<Vec<TaxRuleType>>,
 
     /// List of additional services selected by the user.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 5), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 5), nested))]
     pub additional_selected_services: Option<Vec<AdditionalSelectedServicesType>>,
 
     /// Rules for overstay pricing.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub overstay_rule_list: Option<OverstayRuleListType>,
 
     /// Minimum cost of a charging session.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub minimum_cost: Option<RationalNumberType>,
 
     /// Maximum cost of a charging session.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub maximum_cost: Option<RationalNumberType>,
 
     /// Optional custom data
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

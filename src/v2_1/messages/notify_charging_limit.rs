@@ -1,10 +1,12 @@
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::datatypes::{ChargingLimitType, ChargingScheduleType, CustomDataType};
 
 /// Request to notify the CSMS about charging limits that are set by an external system on the Charging Station.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct NotifyChargingLimitRequest {
     /// Custom data specific to this class.
@@ -13,7 +15,7 @@ pub struct NotifyChargingLimitRequest {
 
     /// The EVSE to which the charging limit is set. If absent or when zero, it applies to the entire Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub evse_id: Option<i32>,
 
     /// Contains limits for the available power or current over time, as set by the external source.
@@ -25,7 +27,8 @@ pub struct NotifyChargingLimitRequest {
 }
 
 /// Response to a NotifyChargingLimitRequest. This message has no fields.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct NotifyChargingLimitResponse {
     /// Custom data specific to this class.

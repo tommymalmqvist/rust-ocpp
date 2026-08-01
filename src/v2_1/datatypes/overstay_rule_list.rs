@@ -1,4 +1,7 @@
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{
@@ -7,17 +10,18 @@ use super::{
 };
 
 /// List of overstay rules for a charging profile.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct OverstayRuleListType {
     /// Required. List of overstay rules.
-    #[validate(length(min = 1, max = 5))]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 5)))]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub overstay_rule: Vec<OverstayRuleType>,
 
     /// Optional. Power threshold for overstay rules.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub overstay_power_threshold: Option<RationalNumberType>,
 
     /// Optional. Time till overstay is applied in seconds.
@@ -26,7 +30,7 @@ pub struct OverstayRuleListType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

@@ -1,5 +1,7 @@
 use crate::v2_0_1::enumerations::charging_state_enum_type::ChargingStateEnumType;
 use crate::v2_0_1::enumerations::reason_enum_type::ReasonEnumType;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 /// TransactionType is used by: TransactionEventRequest
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]

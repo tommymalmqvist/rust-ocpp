@@ -1,6 +1,7 @@
 //! Collection of configuration data needed to make a data-connection over a cellular network
 use crate::v2_0_1::enumerations::apn_authentication_enum_type::APNAuthenticationEnumType;
-use validator::Validate;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 /// Collection of configuration data needed to make a data-connection over a cellular network
 ///
@@ -12,25 +13,26 @@ use validator::Validate;
 /// this network is not available, a different network is used.
 ///
 /// If you specify `UseOnlyPreferredNetwork` and this network is not available, the modem will not dial in
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct APNType {
     /// The Access Point Name as an URL
-    #[validate(length(min = 0, max = 512))]
+    #[cfg_attr(feature = "std", validate(length(min = 0, max = 512)))]
     pub apn: String,
     /// APN username
-    #[validate(length(min = 0, max = 20))]
+    #[cfg_attr(feature = "std", validate(length(min = 0, max = 20)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub apn_user_name: Option<String>,
     /// APN Password.
-    #[validate(length(min = 0, max = 20))]
+    #[cfg_attr(feature = "std", validate(length(min = 0, max = 20)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub apn_password: Option<String>,
     /// SIM card pin code.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub sim_pin: Option<i32>,
     /// Preferred network, written as MCC and MNC concatenated. See note.
-    #[validate(length(min = 0, max = 6))]
+    #[cfg_attr(feature = "std", validate(length(min = 0, max = 6)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub preferred_network: Option<String>,
     /// Default: false. Use only the preferred Network, do not dial in when not available. See Note

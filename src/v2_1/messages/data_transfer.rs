@@ -1,5 +1,6 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CustomDataType, StatusInfoType},
@@ -7,16 +8,17 @@ use crate::v2_1::{
 };
 
 /// Request to transfer vendor-specific data between Charging Station and CSMS.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct DataTransferRequest {
     /// Required. This identifies the vendor specific implementation.
-    #[validate(length(max = 255))]
+    #[cfg_attr(feature = "std", validate(length(max = 255)))]
     pub vendor_id: String,
 
     /// Optional. May be used to indicate a specific message or implementation.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 50))]
+    #[cfg_attr(feature = "std", validate(length(max = 50)))]
     pub message_id: Option<String>,
 
     /// Optional. Data without specified length or format.
@@ -30,7 +32,8 @@ pub struct DataTransferRequest {
 }
 
 /// Response to a DataTransferRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct DataTransferResponse {
     /// Required. This indicates the success or failure of the data transfer.

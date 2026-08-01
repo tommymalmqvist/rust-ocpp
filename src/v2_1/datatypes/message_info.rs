@@ -4,23 +4,28 @@ use super::{
 };
 use crate::v2_1::enumerations::{MessagePriorityEnumType, MessageStateEnumType};
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(feature = "std")]
 use crate::v2_1::helpers::validator::validate_identifier_string;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Contains message details, for a message to be displayed on a Charging Station.
 ///
 /// This type is used in display message related requests and responses to provide
 /// information about messages that should be shown on a Charging Station's display.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct MessageInfoType {
     /// Required. The identifier that identifies this message.
     ///
     /// Unique id within an exchange context. It is defined within the OCPP context
     /// as a positive Integer value (greater or equal to zero).
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub id: i32,
 
     /// Required. Priority with which this message should be shown.
@@ -49,17 +54,20 @@ pub struct MessageInfoType {
 
     /// Optional. Transaction Id for which this message is intended.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 36), custom(function = "validate_identifier_string"))]
+    #[cfg_attr(
+        feature = "std",
+        validate(length(max = 36), custom(function = "validate_identifier_string"))
+    )]
     pub transaction_id: Option<String>,
 
     /// Optional. Message details for a specific user.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub message: Option<MessageContentType>,
 
     /// Optional. Display component that this message concerns.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub display: Option<ComponentType>,
 
     /// Optional. Identification of the token for which this message is intended.
@@ -68,12 +76,12 @@ pub struct MessageInfoType {
 
     /// Optional. Additional message details.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub message_extra: Option<MessageContentType>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 
@@ -505,6 +513,7 @@ impl MessageInfoType {
     /// # Returns
     ///
     /// Ok(()) if the instance is valid, otherwise an error with validation details
+    #[cfg(feature = "std")]
     pub fn validate(&self) -> Result<(), validator::ValidationErrors> {
         Validate::validate(self)
     }

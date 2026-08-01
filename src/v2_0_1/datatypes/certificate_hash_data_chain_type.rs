@@ -1,5 +1,7 @@
 use super::certificate_hash_data_type::CertificateHashDataType;
 use crate::v2_0_1::enumerations::get_certificate_id_use_enum_type::GetCertificateIdUseEnumType;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 /// CertificateHashDataChainType is used by: GetInstalledCertificateIdsResponse
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]

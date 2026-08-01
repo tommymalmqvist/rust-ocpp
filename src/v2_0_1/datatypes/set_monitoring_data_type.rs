@@ -13,7 +13,14 @@ pub struct SetMonitoringDataType {
     pub id: Option<i32>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub transaction: Option<bool>,
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub value: Decimal,
     #[serde(rename = "type")]
     pub kind: MonitorEnumType,

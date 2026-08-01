@@ -1,7 +1,6 @@
 use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::datatypes::CustomDataType;
 
@@ -17,7 +16,8 @@ pub enum ConnectorStatusEnumType {
 }
 
 /// Request to notify the CSMS about a status change of a connector.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct StatusNotificationRequest {
     /// Optional. Custom data specific to this class.
@@ -32,16 +32,17 @@ pub struct StatusNotificationRequest {
     pub connector_status: ConnectorStatusEnumType,
 
     /// Required. The id of the EVSE to which the connector belongs for which the status is reported.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub evse_id: i32,
 
     /// Required. The id of the connector within the EVSE for which the status is reported.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub connector_id: i32,
 }
 
 /// Response to a StatusNotificationRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct StatusNotificationResponse {
     /// Optional. Custom data specific to this class.

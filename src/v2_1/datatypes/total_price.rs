@@ -1,13 +1,15 @@
 use super::custom_data::CustomDataType;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Total cost with and without tax.
 ///
 /// Contains the total of energy, charging time, idle time, fixed and reservation costs
 /// including and/or excluding tax.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct TotalPriceType {
     /// Price/cost excluding tax. Can be absent if inclTax is present.
@@ -20,7 +22,7 @@ pub struct TotalPriceType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

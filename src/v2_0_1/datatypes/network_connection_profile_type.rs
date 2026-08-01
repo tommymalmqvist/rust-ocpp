@@ -3,6 +3,8 @@ use super::vpn_type::VPNType;
 use crate::v2_0_1::enumerations::ocpp_interface_enum_type::OCPPInterfaceEnumType;
 use crate::v2_0_1::enumerations::ocpp_transport_enum_type::OCPPTransportEnumType;
 use crate::v2_0_1::enumerations::ocpp_version_enum_type::OCPPVersionEnumType;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 /// The NetworkConnectionProfile defines the functional and technical parameters of a communication link.
 /// NetworkConnectionProfileType is used by: SetNetworkProfileRequest

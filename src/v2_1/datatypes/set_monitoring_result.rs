@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{
@@ -8,25 +9,26 @@ use super::{
 use crate::v2_1::enumerations::{MonitorEnumType, SetMonitoringStatusEnumType};
 
 /// Class to hold result of SetVariableMonitoring request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetMonitoringResultType {
     /// Required. Status indicating whether the Charging Station accepts the monitoring request.
     pub status: SetMonitoringStatusEnumType,
 
     /// Required. Component for which the monitoring status is returned.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub component: ComponentType,
 
     /// Required. Variable for which the monitoring status is returned.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub variable: VariableType,
 
     /// Id given to the VariableMonitor by the Charging Station. The Id is only returned when status is accepted.
     /// Installed VariableMonitors should have unique id's but the id's of removed Installed monitors
     /// should have unique id's but the id's of removed monitors MAY be reused.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub id: Option<i32>,
 
     /// Required. Type of monitor that was set.
@@ -57,17 +59,17 @@ pub struct SetMonitoringResultType {
     /// Indicates a regular operational event. May be used for reporting, measuring throughput, etc. No action is required.
     /// *9-Debug*
     /// Indicates information useful to developers for debugging, not useful during operations.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub severity: i32,
 
     /// Optional. Detailed status information.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub status_info: Option<StatusInfoType>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

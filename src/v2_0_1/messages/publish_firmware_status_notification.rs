@@ -1,4 +1,6 @@
 use crate::v2_0_1::enumerations::publish_firmware_status_enum_type::PublishFirmwareStatusEnumType;
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 
 /// This contains the field definition of the PublishFirmwareStatusNotificationRequest PDU sent by the Charging Station to the CSMS.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]

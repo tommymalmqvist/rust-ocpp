@@ -1,23 +1,27 @@
+#[cfg(not(feature = "std"))]
+use alloc::{vec, vec::Vec};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
 use super::ev_price_rule::EVPriceRuleType;
 
 /// Entry in the EVAbsolutePriceSchedule.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct EVAbsolutePriceScheduleEntryType {
     /// Duration of the schedule entry in seconds.
     pub duration: i32,
 
     /// Price rules for different power ranges.
-    #[validate(length(min = 1, max = 8))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 8)))]
     pub ev_price_rules: Vec<EVPriceRuleType>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{
@@ -6,24 +7,25 @@ use super::{
 };
 
 /// Constant stream data type for periodic event streams.
-#[derive(Debug, Clone, Serialize, Deserialize, Validate, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ConstantStreamDataType {
     /// Custom data specific to this class.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 
     /// Uniquely identifies the stream.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub id: i32,
 
     /// Parameters for the periodic event stream.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub params: PeriodicEventStreamParamsType,
 
     /// Id of monitor used to report this event. It can be a preconfigured or hardwired monitor.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub variable_monitoring_id: i32,
 }
 

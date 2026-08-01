@@ -1,13 +1,15 @@
 use crate::v1_6::types::IdTagInfo;
-use validator::Validate;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 // # From OCPP Specification
 // 6.1. Authorize.req
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct AuthorizeRequest {
     /// Required. This contains the identifier that needs to be authorized.
-    #[validate(length(min = 1, max = 20))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 20)))]
     pub id_tag: String, // IdToken, should maybe be a type?
 }
 

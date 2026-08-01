@@ -1,3 +1,5 @@
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, string::ToString};
 use serde::{Deserialize, Serialize};
 
 /// Standardized values for the signingMethod in a SignedMeterValueType.

@@ -1,7 +1,8 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CustomDataType, IdTokenType},
@@ -9,7 +10,8 @@ use crate::v2_1::{
 };
 
 /// Battery data information.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct BatteryDataType {
     /// Optional. Custom data from the Charging Station.
@@ -17,7 +19,7 @@ pub struct BatteryDataType {
     pub custom_data: Option<CustomDataType>,
 
     /// Required. Slot number where battery is inserted or removed.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub evse_id: i32,
 
     /// Optional. Production date of battery.
@@ -29,29 +31,30 @@ pub struct BatteryDataType {
     pub production_date: Option<DateTime<Utc>>,
 
     /// Required. Serial number of battery.
-    #[validate(length(max = 50))]
+    #[cfg_attr(feature = "std", validate(length(max = 50)))]
     pub serial_number: String,
 
     /// Required. State of charge.
-    #[validate(range(min = 0.0, max = 100.0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0.0, max = 100.0)))]
     pub so_c: f64,
 
     /// Required. State of health.
-    #[validate(range(min = 0.0, max = 100.0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0.0, max = 100.0)))]
     pub so_h: f64,
 
     /// Optional. Vendor-specific info from battery in undefined format.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 500))]
+    #[cfg_attr(feature = "std", validate(length(max = 500)))]
     pub vendor_info: Option<String>,
 }
 
 /// Request body for the BatterySwap request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct BatterySwapRequest {
     /// Required. Array of battery data.
-    #[validate(length(min = 1))]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
     pub battery_data: Vec<BatteryDataType>,
 
     /// Optional. Custom data from the Charging Station.
@@ -70,7 +73,8 @@ pub struct BatterySwapRequest {
 
 /// Response body for the BatterySwap response.
 /// This is an empty response that just acknowledges receipt of the request. (The request cannot be rejected).
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct BatterySwapResponse {
     /// Optional. Custom data from the Charging Station.

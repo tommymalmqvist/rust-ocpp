@@ -1,5 +1,6 @@
 //! CustomerInformation
-use validator::Validate;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 use crate::v2_0_1::datatypes::certificate_hash_data_type::CertificateHashDataType;
 use crate::v2_0_1::datatypes::id_token_type::IdTokenType;
@@ -7,7 +8,8 @@ use crate::v2_0_1::datatypes::status_info_type::StatusInfoType;
 use crate::v2_0_1::enumerations::customer_information_status_enum_type::CustomerInformationStatusEnumType;
 
 /// CustomerInformationRequest, sent by the CSMS to the Charging Station
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct CustomerInformationRequest {
     /// The Id of the request
@@ -21,7 +23,7 @@ pub struct CustomerInformationRequest {
     /// This field contains a custom identifier other than IdToken and Certificate.
     ///  One of the possible identifiers (customerIdentifier, customerIdToken or
     /// customerCertificate) should be in the request message.
-    #[validate(length(min = 0, max = 64))]
+    #[cfg_attr(feature = "std", validate(length(min = 0, max = 64)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub customer_identifier: Option<String>,
     /// The IdToken of the customer this request refers to. One of the possible identifiers

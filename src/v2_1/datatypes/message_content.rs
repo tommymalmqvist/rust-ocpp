@@ -1,4 +1,7 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
@@ -9,13 +12,14 @@ use crate::v2_1::enumerations::MessageFormatEnumType;
 /// This type is used to display messages on a Charging Station's screen.
 /// The message content can be formatted in different ways (ASCII, HTML, etc.)
 /// and supports internationalization through the language field.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct MessageContentType {
     /// Required. Message contents.
     ///
     /// Maximum length is 1024 characters as defined in the OCPP 2.1 specification.
-    #[validate(length(max = 1024))]
+    #[cfg_attr(feature = "std", validate(length(max = 1024)))]
     pub content: String,
 
     /// Required. Format of the message.
@@ -26,14 +30,14 @@ pub struct MessageContentType {
     /// Required. Language identifier of the message content.
     ///
     /// Contains a language code as defined in RFC5646.
-    #[validate(length(max = 8))]
+    #[cfg_attr(feature = "std", validate(length(max = 8)))]
     pub language: String,
 
     /// Custom data from the Charging Station.
     ///
     /// This field can be used to add vendor-specific information to the message.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 
@@ -214,6 +218,7 @@ impl MessageContentType {
     /// # Returns
     ///
     /// Ok(()) if the instance is valid, otherwise an error with validation details
+    #[cfg(feature = "std")]
     pub fn validate(&self) -> Result<(), validator::ValidationErrors> {
         Validate::validate(self)
     }

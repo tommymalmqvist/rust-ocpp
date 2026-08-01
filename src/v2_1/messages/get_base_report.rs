@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CustomDataType, StatusInfoType},
@@ -7,11 +6,12 @@ use crate::v2_1::{
 };
 
 /// Request to get a base report from the Charging Station.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetBaseReportRequest {
     /// Required. The Id of the request.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub request_id: i32,
 
     /// Required. This field specifies the report base.
@@ -23,7 +23,8 @@ pub struct GetBaseReportRequest {
 }
 
 /// Response to a GetBaseReportRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetBaseReportResponse {
     /// Required. This indicates whether the Charging Station is able to accept this request.

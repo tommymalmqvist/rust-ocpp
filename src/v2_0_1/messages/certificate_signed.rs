@@ -2,10 +2,12 @@
 use crate::v2_0_1::datatypes::status_info_type::StatusInfoType;
 use crate::v2_0_1::enumerations::certificate_signed_status_enum_type::CertificateSignedStatusEnumType;
 use crate::v2_0_1::enumerations::certificate_signing_use_enum_type::CertificateSigningUseEnumType;
-use validator::Validate;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 /// `CertificateSignedRequest`, sent by the CSMS to the Charging Station.
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct CertificateSignedRequest {
     /// The signed PEM encoded X.509 certificate. This can also contain the necessary sub
@@ -14,7 +16,7 @@ pub struct CertificateSignedRequest {
     ///
     /// The Configuration Variable `MaxCertificateChainSize` can be used to limit the
     ///  maximum size of this field.
-    #[validate(length(min = 0, max = 10000))]
+    #[cfg_attr(feature = "std", validate(length(min = 0, max = 10000)))]
     pub certificate_chain: String,
     /// Indicates the type of the signed certificate that is returned. When omitted the
     ///  certificate is used for both the 15118 connection (if implemented) and the

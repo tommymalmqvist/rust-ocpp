@@ -1,14 +1,16 @@
 use crate::v1_6::types::{IdTagInfo, MeterValue, Reason};
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 
 use chrono::{DateTime, Utc};
-use validator::Validate;
 
 /// This contains the field definition of the StopTransaction.req PDU sent by the Charge Point to the Central System. See also Stop Transaction
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct StopTransactionRequest {
     /// Required.
-    #[validate(length(min = 1, max = 20))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 20)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id_tag: Option<String>, // IdToken, should this be a type?
     /// Optional. Only filled in when request applies to a specific connector.

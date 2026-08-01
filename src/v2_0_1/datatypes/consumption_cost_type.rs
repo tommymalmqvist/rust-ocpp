@@ -1,4 +1,6 @@
 use super::cost_type::CostType;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 /// ConsumptionCostType is used by: Common:SalesTariffEntryType
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]

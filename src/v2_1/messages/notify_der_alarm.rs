@@ -1,7 +1,8 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::CustomDataType,
@@ -9,7 +10,8 @@ use crate::v2_1::{
 };
 
 /// Request to notify the CSMS about a DER alarm.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct NotifyDERAlarmRequest {
     /// Custom data specific to this class.
@@ -34,12 +36,13 @@ pub struct NotifyDERAlarmRequest {
 
     /// Optional info provided by EV.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 200))]
+    #[cfg_attr(feature = "std", validate(length(max = 200)))]
     pub extra_info: Option<String>,
 }
 
 /// Response to a NotifyDERAlarmRequest. This message has no fields.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct NotifyDERAlarmResponse {
     /// Custom data specific to this class.

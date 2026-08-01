@@ -1,15 +1,19 @@
 use super::custom_data::CustomDataType;
 use crate::v2_1::enumerations::data_enum::DataEnumType;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Fixed read-only parameters of a variable.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct VariableCharacteristicsType {
     /// Unit of the variable. When the transmitted value has a unit, this field SHALL be included.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 16))]
+    #[cfg_attr(feature = "std", validate(length(max = 16)))]
     pub unit: Option<String>,
 
     /// Required. Data type of this variable.
@@ -31,7 +35,7 @@ pub struct VariableCharacteristicsType {
     /// Mandatory when _dataType_ = OptionList, MemberList or SequenceList. In that case _valuesList_
     /// specifies the allowed values for the type.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 1000))]
+    #[cfg_attr(feature = "std", validate(length(max = 1000)))]
     pub values_list: Option<String>,
 
     /// Required. Flag indicating if this variable supports monitoring.
@@ -39,7 +43,7 @@ pub struct VariableCharacteristicsType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

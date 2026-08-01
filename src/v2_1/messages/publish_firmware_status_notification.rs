@@ -1,11 +1,13 @@
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::datatypes::{CustomDataType, StatusInfoType};
 use crate::v2_1::enumerations::publish_firmware_status::PublishFirmwareStatusEnumType;
 
 /// Request to notify the CSMS about the status of a firmware publication.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct PublishFirmwareStatusNotificationRequest {
     /// Required. This contains the progress status of the publishfirmware
@@ -14,13 +16,13 @@ pub struct PublishFirmwareStatusNotificationRequest {
 
     /// Required if status is Published. Can be multiple URI's, if the Local Controller supports e.g. HTTP, HTTPS, and FTP.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1))]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
     pub location: Option<Vec<String>>,
 
     /// The request id that was provided in the PublishFirmwareRequest which
     /// triggered this action.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub request_id: Option<i32>,
 
     /// Optional. Element providing more information about the status.
@@ -35,7 +37,8 @@ pub struct PublishFirmwareStatusNotificationRequest {
 /// Response to a PublishFirmwareStatusNotificationRequest.
 /// This response contains no fields other than the optional customData field,
 /// because the request cannot be denied by the CSMS.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct PublishFirmwareStatusNotificationResponse {
     /// Optional. Custom data specific to this class.

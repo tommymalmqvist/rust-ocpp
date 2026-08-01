@@ -1,11 +1,11 @@
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::datatypes::{ConstantStreamDataType, CustomDataType, StatusInfoType};
 use crate::v2_1::enumerations::generic_status::GenericStatusEnumType;
 
 /// Request to open a periodic event stream.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct OpenPeriodicEventStreamRequest {
     /// Required. Data for the constant stream.
@@ -17,7 +17,8 @@ pub struct OpenPeriodicEventStreamRequest {
 }
 
 /// Response to an OpenPeriodicEventStreamRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct OpenPeriodicEventStreamResponse {
     /// Required. Result of the request.

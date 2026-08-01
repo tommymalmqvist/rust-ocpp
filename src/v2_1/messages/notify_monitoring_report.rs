@@ -1,12 +1,14 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::datatypes::{ComponentType, CustomDataType, VariableMonitoringType, VariableType};
 
 /// Class to hold parameters of SetVariableMonitoring request.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct MonitoringDataType {
     /// Required. Component for which monitoring is configured.
@@ -16,7 +18,7 @@ pub struct MonitoringDataType {
     pub variable: VariableType,
 
     /// Required. List of configured monitoring settings.
-    #[validate(length(min = 1))]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
     pub variable_monitoring: Vec<VariableMonitoringType>,
 
     /// Optional. Custom data specific to this class.
@@ -25,12 +27,13 @@ pub struct MonitoringDataType {
 }
 
 /// Request to notify the CSMS about monitoring events.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct NotifyMonitoringReportRequest {
     /// Optional. List of monitoring data.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1))]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
     pub monitor: Option<Vec<MonitoringDataType>>,
 
     /// Required. The id of the GetMonitoringRequest that requested this report.
@@ -41,7 +44,7 @@ pub struct NotifyMonitoringReportRequest {
     pub tbc: Option<bool>,
 
     /// Required. Sequence number of this message. First message starts at 0.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub seq_no: i32,
 
     /// Required. Timestamp of when this message was generated at the Charging Station.
@@ -54,7 +57,8 @@ pub struct NotifyMonitoringReportRequest {
 }
 
 /// Response to a NotifyMonitoringReportRequest. This message has no fields.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct NotifyMonitoringReportResponse {
     /// Optional. Custom data specific to this class.

@@ -1,3 +1,5 @@
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use chrono::DateTime;
 use chrono::Utc;
 
@@ -6,10 +8,10 @@ use crate::v2_0_1::enumerations::charging_profile_kind_enum_type::ChargingProfil
 use crate::v2_0_1::enumerations::charging_profile_purpose_enum_type::ChargingProfilePurposeEnumType;
 use crate::v2_0_1::enumerations::recurrency_kind_enum_type::RecurrencyKindEnumType;
 use crate::v2_0_1::helpers::datetime_rfc3339;
-use validator::Validate;
 /// A ChargingProfile consists of ChargingSchedule, describing the amount of power or current that can be delivered per time interval
 /// ChargingProfileType is used by: RequestStartTransactionRequest , SetChargingProfileRequest , ReportChargingProfilesRequest
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingProfileType {
     /// Required. Id of ChargingProfile.
@@ -38,7 +40,7 @@ pub struct ChargingProfileType {
     )]
     pub valid_to: Option<DateTime<Utc>>,
     /// Optional. SHALL only be included if ChargingProfilePurpose is set to TxProfile. The transactionId is used to match the profile to a specific transaction
-    #[validate(length(min = 0, max = 36))]
+    #[cfg_attr(feature = "std", validate(length(min = 0, max = 36)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub transaction_id: Option<String>,
     /// Required. Schedule that contains limits for the available power or current over time. In order to support ISO 15118 schedule negotiation, it supports at most three schedules with associated tariff to choose from
