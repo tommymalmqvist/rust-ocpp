@@ -1,3 +1,5 @@
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use chrono::DateTime;
 use chrono::Utc;
 use rust_decimal::Decimal;
@@ -42,10 +44,14 @@ pub struct TransactionEventRequest {
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct TransactionEventResponse {
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub total_cost: Option<Decimal>,
     #[serde(skip_serializing_if = "Option::is_none")]

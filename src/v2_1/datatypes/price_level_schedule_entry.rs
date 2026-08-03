@@ -1,10 +1,12 @@
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
 
 /// Entry in the PriceLevelSchedule.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct PriceLevelScheduleEntryType {
     /// Required. Duration of the schedule entry in seconds.
@@ -12,12 +14,12 @@ pub struct PriceLevelScheduleEntryType {
 
     /// Required. Relative price level of this schedule entry.
     /// Small values represent a cheaper price level, large values represent a more expensive price level.
-    #[validate(range(min = 0, max = 9))]
+    #[cfg_attr(feature = "std", validate(range(min = 0, max = 9)))]
     pub price_level: i8,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

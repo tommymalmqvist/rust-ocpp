@@ -1,5 +1,7 @@
 //! MeterValues
 use crate::v2_0_1::datatypes::meter_value_type::MeterValueType;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]

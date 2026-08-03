@@ -1,4 +1,6 @@
 use crate::v2_0_1::enumerations::unpublish_firmware_status_enum_type::UnpublishFirmwareStatusEnumType;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 /// This contains the field definition of the UnpublishFirmwareRequest PDU sent by the CSMS to the Charging Station.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]

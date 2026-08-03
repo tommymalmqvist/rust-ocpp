@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CustomDataType, StatusInfoType, TariffType},
@@ -7,7 +6,8 @@ use crate::v2_1::{
 };
 
 /// Request to set a default tariff at the Charging Station.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetDefaultTariffRequest {
     /// Optional. Custom data specific to this message.
@@ -15,7 +15,7 @@ pub struct SetDefaultTariffRequest {
     pub custom_data: Option<CustomDataType>,
 
     /// Required. EVSE that tariff applies to. When evseId = 0, then tariff applies to all EVSEs.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub evse_id: i32,
 
     /// Required. The tariff to be set at the Charging Station.
@@ -23,7 +23,8 @@ pub struct SetDefaultTariffRequest {
 }
 
 /// Response to a SetDefaultTariffRequest.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetDefaultTariffResponse {
     /// Optional. Custom data specific to this message.

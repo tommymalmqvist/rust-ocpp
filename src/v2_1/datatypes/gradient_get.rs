@@ -1,23 +1,31 @@
+#[cfg(feature = "std")]
 use super::super::helpers::validator::validate_identifier_string;
 use super::{custom_data::CustomDataType, gradient::GradientType};
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Gradient get type for retrieving gradient settings.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GradientGetType {
     /// Id of the setting.
-    #[validate(length(max = 36), custom(function = "validate_identifier_string"))]
+    #[cfg_attr(
+        feature = "std",
+        validate(length(max = 36), custom(function = "validate_identifier_string"))
+    )]
     pub id: String,
 
     /// Default ramp rate in seconds (0 if not applicable)
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub gradient: GradientType,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

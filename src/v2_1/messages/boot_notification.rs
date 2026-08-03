@@ -1,6 +1,9 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use crate::v2_1::{
@@ -9,7 +12,8 @@ use crate::v2_1::{
 };
 
 /// Defines parameters required for initiating and maintaining wireless communication with other devices.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ModemType {
     /// Optional. Custom data from the Charging Station.
@@ -18,17 +22,18 @@ pub struct ModemType {
 
     /// Optional. This contains the ICCID of the modem's SIM card.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 20))]
+    #[cfg_attr(feature = "std", validate(length(max = 20)))]
     pub iccid: Option<String>,
 
     /// Optional. This contains the IMSI of the modem's SIM card.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 20))]
+    #[cfg_attr(feature = "std", validate(length(max = 20)))]
     pub imsi: Option<String>,
 }
 
 /// The physical system where an Electrical Vehicle (EV) can be charged.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingStationType {
     /// Optional. Custom data from the Charging Station.
@@ -37,11 +42,11 @@ pub struct ChargingStationType {
 
     /// Optional. This contains the firmware version of the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 50))]
+    #[cfg_attr(feature = "std", validate(length(max = 50)))]
     pub firmware_version: Option<String>,
 
     /// Required. Defines the model of the device.
-    #[validate(length(max = 20))]
+    #[cfg_attr(feature = "std", validate(length(max = 20)))]
     pub model: String,
 
     /// Optional. Defines parameters required for initiating and maintaining wireless communication with other devices.
@@ -50,16 +55,17 @@ pub struct ChargingStationType {
 
     /// Optional. Vendor-specific device identifier.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 25))]
+    #[cfg_attr(feature = "std", validate(length(max = 25)))]
     pub serial_number: Option<String>,
 
     /// Required. Identifies the vendor (not necessarily in a unique manner).
-    #[validate(length(max = 50))]
+    #[cfg_attr(feature = "std", validate(length(max = 50)))]
     pub vendor_name: String,
 }
 
 /// Request body for the BootNotification request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct BootNotificationRequest {
     /// Required. The physical system where an Electrical Vehicle (EV) can be charged.
@@ -74,6 +80,7 @@ pub struct BootNotificationRequest {
 }
 
 impl BootNotificationRequest {
+    #[cfg(feature = "std")]
     pub fn validate(&self) -> Result<(), validator::ValidationErrors> {
         validator::Validate::validate(self)?;
         self.charging_station.validate()?;
@@ -96,7 +103,8 @@ impl BootNotificationRequest {
 }
 
 /// Response body for the BootNotification response.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct BootNotificationResponse {
     /// Optional. Custom data from the Charging Station.
@@ -110,7 +118,7 @@ pub struct BootNotificationResponse {
     /// Required. When Status is Accepted, this contains the heartbeat interval in seconds.
     /// If the CSMS returns something other than Accepted, the value of the interval field
     /// indicates the minimum wait time before sending a next BootNotification request.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub interval: i32,
 
     /// Required. This contains whether the Charging Station has been registered within the CSMS.

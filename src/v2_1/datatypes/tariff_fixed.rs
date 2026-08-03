@@ -1,4 +1,7 @@
+#[cfg(not(feature = "std"))]
+use alloc::{vec, vec::Vec};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{
@@ -9,27 +12,28 @@ use super::{
 ///
 /// This structure contains lists of fixed prices and optional tax rates
 /// that apply to a tariff, following the OCPP 2.1 specification.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct TariffFixedType {
     /// Required. List of fixed prices.
     ///
     /// This list must contain at least one element.
-    #[validate(length(min = 1))]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
     pub prices: Vec<TariffFixedPriceType>,
 
     /// Optional. List of taxes. Relevant only to taxes that have a fixed amount.
     ///
     /// When provided, this list must contain at least one and at most 5 elements.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 5))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 5)))]
     pub tax_rates: Option<Vec<TaxRateType>>,
 
     /// Optional. Custom data from the Charging Station.
     ///
     /// This field MAY contain any custom data sent by the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

@@ -3,8 +3,8 @@ use crate::v2_0_1::datatypes::log_parameters_type::LogParametersType;
 use crate::v2_0_1::datatypes::status_info_type::StatusInfoType;
 use crate::v2_0_1::enumerations::log_enum_type::LogEnumType;
 use crate::v2_0_1::enumerations::log_status_enum_type::LogStatusEnumType;
-
-use validator::Validate;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 /// GetLogRequest, sent by the CSMS to the Charging Station.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
@@ -25,13 +25,14 @@ pub struct GetLogRequest {
 }
 
 /// GetLogResponse, sent by the Charging Station to the CSMS in response to a GetLogRequest.
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetLogResponse {
     /// This field indicates whether the ChargingStation was able to accept the request.
     pub status: LogStatusEnumType,
     /// This contains the name of the log file that willbe uploaded. This field is not present when no logginginformation is available.
-    #[validate(length(min = 0, max = 255))]
+    #[cfg_attr(feature = "std", validate(length(min = 0, max = 255)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub filename: Option<String>,
     /// Detailed status information.

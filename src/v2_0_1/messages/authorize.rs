@@ -1,17 +1,19 @@
 //! Authorize
 use crate::v2_0_1::datatypes::id_token_info_type::IdTokenInfoType;
-use validator::Validate;
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 
 use crate::v2_0_1::datatypes::id_token_type::IdTokenType;
 use crate::v2_0_1::datatypes::ocsp_request_data_type::OCSPRequestDataType;
 use crate::v2_0_1::enumerations::authorize_certificate_status_enum_type::AuthorizeCertificateStatusEnumType;
 
 /// ´AuthorizeRequest`, sent by the Charging Station to the CSMS.
-#[derive(serde::Serialize, serde::Deserialize, Validate, Clone, Debug, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct AuthorizeRequest {
     /// The X.509 certificated presented by EV and encoded in PEM format.
-    #[validate(length(min = 0, max = 5500))]
+    #[cfg_attr(feature = "std", validate(length(min = 0, max = 5500)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub certificate: Option<String>,
     /// This contains the identifier that needs to be authorized.

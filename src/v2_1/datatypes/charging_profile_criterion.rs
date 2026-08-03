@@ -1,4 +1,7 @@
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use crate::v2_1::{
@@ -7,7 +10,8 @@ use crate::v2_1::{
 };
 
 /// A ChargingProfileCriterionType is a filter for charging profiles to be selected by a GetChargingProfilesRequest.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingProfileCriterionType {
     /// Defines the purpose of the schedule transferred by this profile
@@ -16,14 +20,14 @@ pub struct ChargingProfileCriterionType {
 
     /// Value determining level in hierarchy stack of profiles. Higher values have precedence over lower values. Lowest level is 0.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub stack_level: Option<i32>,
 
     /// List of all the chargingProfileIds requested. Any ChargingProfile that matches one of these profiles will be reported.
     /// If omitted, the Charging Station SHALL not filter on chargingProfileId.
     /// This field SHALL NOT contain more ids than set in ChargingProfileEntries.maxLimit
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1))]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
     pub charging_profile_id: Option<Vec<i32>>,
 
     /// For which charging limit sources, charging profiles SHALL be reported. If omitted, the Charging Station SHALL not filter on chargingLimitSource.
@@ -32,7 +36,7 @@ pub struct ChargingProfileCriterionType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 
@@ -254,6 +258,7 @@ impl ChargingProfileCriterionType {
     /// # Returns
     ///
     /// `Ok(())` if the instance is valid, otherwise an error
+    #[cfg(feature = "std")]
     pub fn validate(&self) -> Result<(), validator::ValidationErrors> {
         Validate::validate(self)
     }

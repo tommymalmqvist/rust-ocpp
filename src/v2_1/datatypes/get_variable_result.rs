@@ -1,4 +1,7 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{
@@ -8,15 +11,16 @@ use super::{
 use crate::v2_1::enumerations::{AttributeEnumType, GetVariableStatusEnumType};
 
 /// Class to hold results of GetVariables request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetVariableResultType {
     /// Required. Component for which the Variable is requested.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub component: ComponentType,
 
     /// Required. Variable for which the attribute value is requested.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub variable: VariableType,
 
     /// Optional. If the variable is attribute-based, this field specifies the attribute type for which the value is requested.
@@ -25,7 +29,7 @@ pub struct GetVariableResultType {
 
     /// Optional. Value of the requested attribute if status is Accepted.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 2500))]
+    #[cfg_attr(feature = "std", validate(length(max = 2500)))]
     pub attribute_value: Option<String>,
 
     /// Required. Result status of getting the variable.
@@ -33,12 +37,12 @@ pub struct GetVariableResultType {
 
     /// Optional. Detailed status information.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub attribute_status_info: Option<StatusInfoType>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

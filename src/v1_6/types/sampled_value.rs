@@ -1,4 +1,6 @@
 use super::{value_format::ValueFormat, Location, Measurand, Phase, ReadingContext, UnitOfMeasure};
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 /// Single sampled value in MeterValues. Each value can be accompanied by optional fields.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]

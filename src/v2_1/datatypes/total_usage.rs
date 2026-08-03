@@ -1,16 +1,25 @@
 use rust_decimal::prelude::FromPrimitive;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
 
 /// This contains the calculated usage of energy, charging time and idle time during a transaction.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct TotalUsageType {
     /// Energy usage in kWh.
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub energy: Decimal,
 
     /// Total duration of the charging session (including the duration of charging and not charging), in seconds.
@@ -25,7 +34,7 @@ pub struct TotalUsageType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

@@ -1,18 +1,26 @@
 use super::{custom_data::CustomDataType, limit_max_discharge::LimitMaxDischargeType};
+#[cfg(feature = "std")]
 use crate::v2_1::helpers::validator::validate_identifier_string;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Limit max discharge get type for retrieving limit max discharge settings.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct LimitMaxDischargeGetType {
     /// The limit max discharge settings.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub limit_max_discharge: LimitMaxDischargeType,
 
     /// Id of the setting.
-    #[validate(length(max = 36), custom(function = "validate_identifier_string"))]
+    #[cfg_attr(
+        feature = "std",
+        validate(length(max = 36), custom(function = "validate_identifier_string"))
+    )]
     pub id: String,
 
     /// True if this setting is superseded by a higher priority setting (i.e. lower value of priority).
@@ -23,7 +31,7 @@ pub struct LimitMaxDischargeGetType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

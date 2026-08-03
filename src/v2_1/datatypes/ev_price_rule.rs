@@ -2,23 +2,39 @@ use super::custom_data::CustomDataType;
 use rust_decimal::prelude::ToPrimitive;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Price rule for a power range.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct EVPriceRuleType {
     /// Energy fee in the currency specified in EVAbsolutePriceSchedule.
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub energy_fee: Decimal,
 
     /// Start of the power range in Watts (W).
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub power_range_start: Decimal,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

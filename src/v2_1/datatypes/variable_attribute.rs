@@ -1,11 +1,15 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
 use crate::v2_1::enumerations::{attribute::AttributeEnumType, mutability::MutabilityEnumType};
 
 /// Attribute data of a variable.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct VariableAttributeType {
     /// Required. Type of attribute: Actual, Target, MinSet, MaxSet, etc.
@@ -16,7 +20,7 @@ pub struct VariableAttributeType {
     ///
     /// The Configuration Variable <<configkey-reporting-value-size,ReportingValueSize>> can be used to limit GetVariableResult.attributeValue, VariableAttribute.value and EventData.actualValue. The max size of these values will always remain equal.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 2500))]
+    #[cfg_attr(feature = "std", validate(length(max = 2500)))]
     pub value: Option<String>,
 
     /// Defines the mutability of this attribute.
@@ -32,7 +36,7 @@ pub struct VariableAttributeType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

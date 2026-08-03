@@ -1,4 +1,7 @@
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{
@@ -7,29 +10,30 @@ use super::{
 };
 
 /// Sales tariff entry details.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SalesTariffEntryType {
     /// Required. Time and date at which the tariff becomes valid.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub relative_time_interval: RelativeTimeIntervalType,
 
     /// Optional. Defines the price level of this SalesTariffEntry (referring to NumEPriceLevels).
     /// Small values for the EPriceLevel represent a cheaper TariffEntry.
     /// Large values for the EPriceLevel represent a more expensive TariffEntry.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub e_price_level: Option<i32>,
 
     /// Optional. Consumption cost per time interval.
     /// When present, must contain at least 1 and at most 3 items.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 3), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 3), nested))]
     pub consumption_cost: Option<Vec<ConsumptionCostType>>,
 
     /// Optional. Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

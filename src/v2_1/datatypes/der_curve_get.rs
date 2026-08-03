@@ -1,19 +1,23 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{custom_data::CustomDataType, der_curve::DERCurveType};
 use crate::v2_1::enumerations::der_control::DERControlEnumType;
 
 /// DER curve get type for retrieving DER curve information.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct DERCurveGetType {
     /// The DER curve.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub curve: DERCurveType,
 
     /// Id of DER curve.
-    #[validate(length(max = 36))]
+    #[cfg_attr(feature = "std", validate(length(max = 36)))]
     pub id: String,
 
     /// Type of DER curve.
@@ -27,7 +31,7 @@ pub struct DERCurveGetType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

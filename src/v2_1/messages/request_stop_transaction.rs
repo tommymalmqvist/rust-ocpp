@@ -1,5 +1,6 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CustomDataType, StatusInfoType},
@@ -7,7 +8,8 @@ use crate::v2_1::{
 };
 
 /// Request body for the RequestStopTransaction request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct RequestStopTransactionRequest {
     /// Optional. Custom data from the Charging Station.
@@ -15,12 +17,13 @@ pub struct RequestStopTransactionRequest {
     pub custom_data: Option<CustomDataType>,
 
     /// Required. The identifier of the transaction which the Charging Station is requested to stop.
-    #[validate(length(max = 36))]
+    #[cfg_attr(feature = "std", validate(length(max = 36)))]
     pub transaction_id: String,
 }
 
 /// Response body for the RequestStopTransaction response.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct RequestStopTransactionResponse {
     /// Optional. Custom data from the Charging Station.

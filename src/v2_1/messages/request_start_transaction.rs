@@ -1,5 +1,6 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{ChargingProfileType, CustomDataType, IdTokenType, StatusInfoType},
@@ -7,7 +8,8 @@ use crate::v2_1::{
 };
 
 /// Request body for the RequestStartTransaction request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct RequestStartTransactionRequest {
     /// Optional. Custom data from the Charging Station.
@@ -16,7 +18,7 @@ pub struct RequestStartTransactionRequest {
 
     /// Optional. Number of the EVSE on which to start the transaction. EvseId SHALL be > 0.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 1))]
+    #[cfg_attr(feature = "std", validate(range(min = 1)))]
     pub evse_id: Option<i32>,
 
     /// Optional. Group authorization reference to use when starting a transaction.
@@ -35,7 +37,8 @@ pub struct RequestStartTransactionRequest {
 }
 
 /// Response body for the RequestStartTransaction response.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct RequestStartTransactionResponse {
     /// Optional. Custom data from the Charging Station.
@@ -51,6 +54,6 @@ pub struct RequestStartTransactionResponse {
 
     /// Optional. When the transaction was already started by the Charging Station before the RequestStartTransactionRequest was received, for example: cable plugged in first. This contains the transactionId of the already started transaction.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 36))]
+    #[cfg_attr(feature = "std", validate(length(max = 36)))]
     pub transaction_id: Option<String>,
 }

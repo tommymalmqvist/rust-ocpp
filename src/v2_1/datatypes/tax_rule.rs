@@ -1,19 +1,23 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{custom_data::CustomDataType, rational_number::RationalNumberType};
 
 /// Part of ISO 15118-20 price schedule.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct TaxRuleType {
     /// Required. Id for the tax rule.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub tax_rule_id: i32,
 
     /// Optional. Human readable string to identify the tax rule.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 100))]
+    #[cfg_attr(feature = "std", validate(length(max = 100)))]
     pub tax_rule_name: Option<String>,
 
     /// Optional. Indicates whether the tax is included in any price or not.
@@ -33,12 +37,12 @@ pub struct TaxRuleType {
     pub applies_to_minimum_maximum_cost: bool,
 
     /// Required. The tax rate.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub tax_rate: RationalNumberType,
 
     /// Optional. Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

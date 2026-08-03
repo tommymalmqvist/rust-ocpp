@@ -1,6 +1,9 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{custom_data::CustomDataType, sampled_value::SampledValueType};
@@ -12,7 +15,8 @@ use super::{custom_data::CustomDataType, sampled_value::SampledValueType};
 /// contains a timestamp and one or more sampled values, all taken at the same point in time.
 /// The sampled values can represent different types of measurements (energy, power, voltage, etc.)
 /// from different locations within the Charging Station.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct MeterValueType {
     /// Required. Timestamp for measured value(s).
@@ -25,15 +29,15 @@ pub struct MeterValueType {
     ///
     /// This vector must contain at least one sampled value as per the OCPP 2.1 specification.
     /// All values in this vector are sampled at the same point in time (specified by the timestamp).
-    #[validate(length(min = 1))]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub sampled_value: Vec<SampledValueType>,
 
     /// Custom data from the Charging Station.
     ///
     /// This field can be used to include vendor-specific information.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 
@@ -208,6 +212,7 @@ impl MeterValueType {
     /// # Returns
     ///
     /// Ok(()) if the instance is valid, otherwise an error with validation details
+    #[cfg(feature = "std")]
     pub fn validate(&self) -> Result<(), validator::ValidationErrors> {
         Validate::validate(self)
     }

@@ -1,24 +1,26 @@
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{component::ComponentType, custom_data::CustomDataType, variable::VariableType};
 
 /// Class to report components, variables and variable attributes and characteristics.
-#[derive(Debug, Clone, Serialize, Deserialize, Validate, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ComponentVariableType {
     /// Required. Component for which a report of Variable is requested.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub component: ComponentType,
 
     /// Optional. Variable(s) for which the report is requested.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub variable: Option<VariableType>,
 
     /// Custom data specific to this class.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

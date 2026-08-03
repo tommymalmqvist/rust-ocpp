@@ -1,22 +1,27 @@
+use alloc::collections::BTreeMap;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::collections::HashMap;
+#[cfg(feature = "std")]
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// This class does not get 'AdditionalProperties = false' in the schema generation,
 /// so it can be extended with arbitrary JSON properties to allow adding custom data.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct CustomDataType {
     /// Vendor-specific identifier
-    #[validate(length(max = 255))]
+    #[cfg_attr(feature = "std", validate(length(max = 255)))]
     pub vendor_id: String,
 
     /// Additional vendor-specific properties
     #[serde(flatten)]
-    #[serde(skip_serializing_if = "HashMap::is_empty")]
+    #[serde(skip_serializing_if = "BTreeMap::is_empty")]
     #[serde(default)]
-    pub additional_properties: HashMap<String, Value>,
+    pub additional_properties: BTreeMap<String, Value>,
 }
 
 impl CustomDataType {
@@ -32,7 +37,7 @@ impl CustomDataType {
     pub fn new(vendor_id: String) -> Self {
         Self {
             vendor_id,
-            additional_properties: HashMap::new(),
+            additional_properties: BTreeMap::new(),
         }
     }
 
@@ -79,7 +84,7 @@ impl CustomDataType {
     /// # Returns
     ///
     /// A reference to the additional vendor-specific properties
-    pub fn additional_properties(&self) -> &HashMap<String, Value> {
+    pub fn additional_properties(&self) -> &BTreeMap<String, Value> {
         &self.additional_properties
     }
 

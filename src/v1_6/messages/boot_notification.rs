@@ -39,67 +39,70 @@
 //! RemoteStartTransaction.req and RemoteStopTransaction.req
 
 use crate::v1_6::types::RegistrationStatus;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use chrono::{DateTime, Utc};
-use validator::Validate;
 
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct BootNotificationRequest {
     /// # From OCPP Specification
     /// Optional. This contains a value that identifies the serial number of the Charge Box inside
     /// the Charge Point. Deprecated, will be removed in future version
-    #[validate(length(min = 1, max = 25))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 25)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub charge_box_serial_number: Option<String>,
 
     /// # From OCPP Specification
     /// Required. This contains a value that identifies the model of the ChargePoint.
-    #[validate(length(min = 1, max = 20))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 20)))]
     pub charge_point_model: String,
 
     /// # From OCPP Specification
     /// Optional. This contains a value that identifies the serial number of the Charge Point.
-    #[validate(length(min = 1, max = 25))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 25)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub charge_point_serial_number: Option<String>,
 
     /// # From OCPP Specification
     /// Required. This contains a value that identifies the vendor of the ChargePoint.
-    #[validate(length(min = 1, max = 20))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 20)))]
     pub charge_point_vendor: String,
 
     /// # From OCPP Specification
     /// Optional. This contains the firmware version of the Charge Point.
-    #[validate(length(min = 1, max = 50))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 50)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub firmware_version: Option<String>,
 
     /// # From OCPP Specification
     /// Optional. This contains the ICCID of the modem’s SIM card.
-    #[validate(length(min = 1, max = 20))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 20)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub iccid: Option<String>,
 
     /// # From OCPP Specification
     /// Optional. This contains the IMSI of the modem’s SIM card.
-    #[validate(length(min = 1, max = 20))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 20)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub imsi: Option<String>,
 
     /// # From OCPP Specification
     /// Optional. This contains the serial number of the main electrical meter of the Charge Point.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 25))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 25)))]
     pub meter_serial_number: Option<String>,
 
     /// # From OCPP Specification
     /// Optional. This contains the type of the main electrical meter of the Charge Point.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 25))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 25)))]
     pub meter_type: Option<String>,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct BootNotificationResponse {
     /// # From OCPP Specification

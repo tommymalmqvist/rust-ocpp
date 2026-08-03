@@ -1,6 +1,9 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{
@@ -19,25 +22,26 @@ use super::{
 /// Each of these fields may have (optional) conditions that specify when a price is applicable.
 /// The _description_ contains a human-readable explanation of the tariff to be shown to the user.
 /// The other fields are parameters that define the tariff. These are used by the charging station to calculate the price.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct TariffType {
     /// Required. Unique id of tariff
-    #[validate(length(max = 60))]
+    #[cfg_attr(feature = "std", validate(length(max = 60)))]
     pub tariff_id: String,
 
     /// Required. Currency code according to ISO 4217
-    #[validate(length(max = 3))]
+    #[cfg_attr(feature = "std", validate(length(max = 3)))]
     pub currency: String,
 
     /// Optional. Description of the tariff in different languages
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 10), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 10), nested))]
     pub description: Option<Vec<MessageContentType>>,
 
     /// Optional. Energy costs of the tariff
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub energy: Option<TariffEnergyType>,
 
     /// Optional. Time when this tariff becomes active. When absent, it is immediately active.
@@ -50,42 +54,42 @@ pub struct TariffType {
 
     /// Optional. Charging time costs of the tariff
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub charging_time: Option<TariffTimeType>,
 
     /// Optional. Idle time costs of the tariff
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub idle_time: Option<TariffTimeType>,
 
     /// Optional. Fixed costs of the tariff
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub fixed_fee: Option<TariffFixedType>,
 
     /// Optional. Reservation time costs of the tariff
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub reservation_time: Option<TariffTimeType>,
 
     /// Optional. Fixed costs for a reservation
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub reservation_fixed: Option<TariffFixedType>,
 
     /// Optional. Minimum cost for a charging session
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub min_cost: Option<PriceType>,
 
     /// Optional. Maximum cost for a charging session
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub max_cost: Option<PriceType>,
 
     /// Optional. Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

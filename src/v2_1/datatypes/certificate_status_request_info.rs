@@ -2,7 +2,10 @@ use crate::v2_1::datatypes::{
     certificate_hash_data::CertificateHashDataType, custom_data::CustomDataType,
 };
 use crate::v2_1::enumerations::CertificateStatusSourceEnumType;
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::{Validate, ValidationError};
 
 /// Validates that each URL in the list does not exceed the maximum length.
@@ -14,6 +17,7 @@ use validator::{Validate, ValidationError};
 /// # Returns
 ///
 /// Returns Ok(()) if all URLs are valid, otherwise returns Err
+#[cfg(feature = "std")]
 pub fn validate_urls(urls: &[String]) -> Result<(), ValidationError> {
     const MAX_URL_LENGTH: usize = 2000;
 
@@ -30,23 +34,27 @@ pub fn validate_urls(urls: &[String]) -> Result<(), ValidationError> {
 ///
 /// This type contains the information needed to request the revocation status
 /// of a certificate from a certificate status source like OCSP or CRL.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct CertificateStatusRequestInfoType {
     /// Certificate hash data needed for validating certificates through OCSP.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub certificate_hash_data: CertificateHashDataType,
 
     /// Source of status: OCSP, CRL
     pub source: CertificateStatusSourceEnumType,
 
     /// URL(s) of _source_.
-    #[validate(length(min = 1, max = 5), custom(function = "validate_urls"))]
+    #[cfg_attr(
+        feature = "std",
+        validate(length(min = 1, max = 5), custom(function = "validate_urls"))
+    )]
     pub urls: Vec<String>,
 
     /// Optional custom data
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 
@@ -189,6 +197,7 @@ impl CertificateStatusRequestInfoType {
     /// # Returns
     ///
     /// `Ok(())` if the instance is valid, otherwise an error
+    #[cfg(feature = "std")]
     pub fn validate(&self) -> Result<(), validator::ValidationErrors> {
         Validate::validate(self)
     }

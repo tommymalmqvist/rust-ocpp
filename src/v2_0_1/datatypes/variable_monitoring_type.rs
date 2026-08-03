@@ -9,7 +9,14 @@ use crate::v2_0_1::enumerations::monitor_enum_type::MonitorEnumType;
 pub struct VariableMonitoringType {
     pub id: i32,
     pub transaction: bool,
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub value: Decimal,
     #[serde(rename = "type")]
     pub kind: MonitorEnumType,

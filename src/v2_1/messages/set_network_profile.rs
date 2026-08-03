@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CustomDataType, NetworkConnectionProfileType, StatusInfoType},
@@ -7,7 +6,8 @@ use crate::v2_1::{
 };
 
 /// Request to configure network connection profiles on a Charging Station.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetNetworkProfileRequest {
     /// Optional. Custom data specific to this message.
@@ -15,7 +15,7 @@ pub struct SetNetworkProfileRequest {
     pub custom_data: Option<CustomDataType>,
 
     /// Required. Slot in which the configuration should be stored.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub configuration_slot: i32,
 
     /// Required. Network connection profile details.
@@ -23,7 +23,8 @@ pub struct SetNetworkProfileRequest {
 }
 
 /// Response to a SetNetworkProfileRequest.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetNetworkProfileResponse {
     /// Optional. Custom data specific to this message.

@@ -1,29 +1,33 @@
 use crate::v2_1::datatypes::{custom_data::CustomDataType, rational_number::RationalNumberType};
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Part of ISO 15118-20 price schedule.
 ///
 /// This type represents additional services that can be selected as part of a charging session,
 /// including the service name and associated fee.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct AdditionalSelectedServicesType {
     /// Service fee
     ///
     /// The fee associated with this additional service, represented as a rational number.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub service_fee: RationalNumberType,
 
     /// Human-readable string to identify this service.
     ///
     /// A descriptive name for the service that can be displayed to users.
-    #[validate(length(max = 80))]
+    #[cfg_attr(feature = "std", validate(length(max = 80)))]
     pub service_name: String,
 
     /// Optional custom data
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 
@@ -74,6 +78,7 @@ impl AdditionalSelectedServicesType {
     /// # Returns
     ///
     /// `Ok(())` if the instance is valid, otherwise an error
+    #[cfg(feature = "std")]
     pub fn validate(&self) -> Result<(), validator::ValidationErrors> {
         Validate::validate(self)
     }

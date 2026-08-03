@@ -2,10 +2,10 @@
 use crate::v2_1::datatypes::CustomDataType;
 use crate::v2_1::datatypes::StatusInfoType;
 use crate::v2_1::enumerations::upload_log_status::UploadLogStatusEnumType;
-use validator::Validate;
 
 /// LogStatusNotificationRequest, sent by the Charging Station to the CSMS.
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct LogStatusNotificationRequest {
     /// This contains the status of the log upload.
@@ -27,7 +27,8 @@ pub struct LogStatusNotificationRequest {
 }
 
 /// LogStatusNotificationResponse, sent by the CSMS to the Charging Station in response to LogStatusNotificationRequest.
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct LogStatusNotificationResponse {
     /// Custom data from the CSMS.

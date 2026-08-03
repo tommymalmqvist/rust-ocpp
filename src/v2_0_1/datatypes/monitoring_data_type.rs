@@ -1,6 +1,8 @@
 use super::component_type::ComponentType;
 use super::variable_monitoring_type::VariableMonitoringType;
 use super::variable_type::VariableType;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 /// Class to hold parameters of SetVariableMonitoring request.
 /// MonitoringDataType is used by: NotifyMonitoringReportRequest

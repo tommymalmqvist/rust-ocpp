@@ -1,24 +1,33 @@
 use super::{custom_data::CustomDataType, tariff_conditions_fixed::TariffConditionsFixedType};
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Tariff with optional conditions for a fixed price.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct TariffFixedPriceType {
     /// Required. Fixed price for this element e.g. a start fee.
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub price_fixed: Decimal,
 
     /// Optional. Conditions when this tariff element applies.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub conditions: Option<TariffConditionsFixedType>,
 
     /// Optional. Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

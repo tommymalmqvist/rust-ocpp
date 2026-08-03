@@ -3,6 +3,8 @@ use crate::v2_0_1::datatypes::component_variable_type::ComponentVariableType;
 use crate::v2_0_1::datatypes::status_info_type::StatusInfoType;
 use crate::v2_0_1::enumerations::generic_device_model_status_enum_type::GenericDeviceModelStatusEnumType;
 use crate::v2_0_1::enumerations::monitoring_criterion_enum_type::MonitoringCriterionEnumType;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 /// GetMonitoringReportRequest, sent by the CSMS to the Charging Station.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]

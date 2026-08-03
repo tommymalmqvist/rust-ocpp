@@ -1,10 +1,12 @@
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
 
 /// Time interval relative to a fixed point in time defined in the message that contains this type.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct RelativeTimeIntervalType {
     /// Required. Start of the interval, in seconds from NOW.
@@ -15,7 +17,7 @@ pub struct RelativeTimeIntervalType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

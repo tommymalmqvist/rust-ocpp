@@ -1,8 +1,11 @@
 use super::custom_data::CustomDataType;
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use chrono::{DateTime, Utc};
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::{Validate, ValidationError};
 
 /// Validates if a Decimal value is within the specified range
@@ -14,6 +17,7 @@ use validator::{Validate, ValidationError};
 /// # Returns
 ///
 /// Returns Ok(()) if the value is between 0 and 100 (inclusive), otherwise returns Err
+#[cfg(feature = "std")]
 pub fn validate_decimal_range(value: &Decimal) -> Result<(), ValidationError> {
     let min = Decimal::ZERO;
     let max = Decimal::new(100, 0); // 100.0
@@ -29,25 +33,40 @@ pub fn validate_decimal_range(value: &Decimal) -> Result<(), ValidationError> {
 ///
 /// This type represents battery data for an electric vehicle, including state of charge (SoC)
 /// at the start and end of charging, battery capacity, and rechargeable energy capacity.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct BatteryDataType {
     ///Required. Slot number where battery is inserted or removed
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub evse_id: i32,
 
     ///Required. Serial number of battery
-    #[validate(length(max = 50))]
+    #[cfg_attr(feature = "std", validate(length(max = 50)))]
     pub serial_number: String,
 
     ///Required. State of charge
-    #[validate(custom(function = "validate_decimal_range"))]
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(feature = "std", validate(custom(function = "validate_decimal_range")))]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub so_c: Decimal,
 
     ///Required. State of health
-    #[validate(custom(function = "validate_decimal_range"))]
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(feature = "std", validate(custom(function = "validate_decimal_range")))]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub so_h: Decimal,
 
     ///Optional. Production date of battery
@@ -56,12 +75,12 @@ pub struct BatteryDataType {
 
     ///Optional. Vendor-specific info from battery in undefined format.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 500))]
+    #[cfg_attr(feature = "std", validate(length(max = 500)))]
     pub vendor_info: Option<String>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

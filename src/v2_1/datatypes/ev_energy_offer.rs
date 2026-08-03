@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use super::{
     custom_data::CustomDataType, ev_absolute_price_schedule::EVAbsolutePriceScheduleType,
@@ -7,7 +6,8 @@ use super::{
 };
 
 /// Energy offer from EV to EVSE.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct EVEnergyOfferType {
     /// Custom data from the Charging Station.

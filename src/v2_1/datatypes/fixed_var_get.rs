@@ -1,14 +1,22 @@
+#[cfg(feature = "std")]
 use super::super::helpers::validator::validate_identifier_string;
 use super::{custom_data::CustomDataType, fixed_var::FixedVarType};
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Fixed VAr get type for retrieving fixed VAr settings.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct FixedVarGetType {
     /// Id of the setting.
-    #[validate(length(max = 36), custom(function = "validate_identifier_string"))]
+    #[cfg_attr(
+        feature = "std",
+        validate(length(max = 36), custom(function = "validate_identifier_string"))
+    )]
     pub id: String,
 
     /// True if setting is a default control.
@@ -18,12 +26,12 @@ pub struct FixedVarGetType {
     pub is_superseded: bool,
 
     /// The fixed VAr settings.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub fixed_var: FixedVarType,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

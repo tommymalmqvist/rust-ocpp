@@ -1,16 +1,18 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::datatypes::{CustomDataType, StatusInfoType};
 use crate::v2_1::enumerations::{CertificateSignedStatusEnumType, CertificateSigningUseEnumType};
 
 /// Request to inform the Charging Station about the result of a certificate signing operation.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct CertificateSignedRequest {
     /// The signed PEM encoded X.509 certificate. This SHALL also contain the necessary sub CA certificates, when applicable.
     /// The order of the bundle follows the certificate chain, starting from the leaf certificate.
-    #[validate(length(max = 10000))]
+    #[cfg_attr(feature = "std", validate(length(max = 10000)))]
     pub certificate_chain: String,
 
     /// Optional. Indicates the type of the signed certificate that is returned.
@@ -28,7 +30,8 @@ pub struct CertificateSignedRequest {
 }
 
 /// Response to a CertificateSignedRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct CertificateSignedResponse {
     /// Required. Returns whether certificate signing has been accepted, otherwise rejected.

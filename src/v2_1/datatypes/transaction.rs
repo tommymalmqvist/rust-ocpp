@@ -1,4 +1,7 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
@@ -6,11 +9,12 @@ use crate::v2_1::enumerations::{ChargingStateEnumType, ReasonEnumType};
 
 /// Transaction
 /// urn:x-oca:ocpp:uid:2:233318
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct TransactionType {
     /// This contains the Id of the transaction.
-    #[validate(length(max = 36))]
+    #[cfg_attr(feature = "std", validate(length(max = 36)))]
     pub transaction_id: String,
 
     /// Optional. The identifier that identifies the current charging state of the charging session.
@@ -35,7 +39,7 @@ pub struct TransactionType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

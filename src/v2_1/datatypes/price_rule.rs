@@ -1,11 +1,13 @@
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
 use crate::v2_1::datatypes::rational_number::RationalNumberType;
 
 /// Part of ISO 15118-20 price schedule.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct PriceRuleType {
     /// The duration of the parking fee period (in seconds).
@@ -15,30 +17,30 @@ pub struct PriceRuleType {
 
     /// Number of grams of CO2 per kWh.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub carbon_dioxide_emission: Option<i32>,
 
     /// Percentage of the power that is created by renewable resources.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0, max = 100))]
+    #[cfg_attr(feature = "std", validate(range(min = 0, max = 100)))]
     pub renewable_generation_percentage: Option<i32>,
 
     /// Required. Energy fee for this price rule.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub energy_fee: RationalNumberType,
 
     /// Parking fee for this price rule.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub parking_fee: Option<RationalNumberType>,
 
     /// Required. Start of the power range for this price rule.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub power_range_start: RationalNumberType,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

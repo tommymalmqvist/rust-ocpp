@@ -1,5 +1,6 @@
 use crate::v1_6::types::ConfigurationStatus;
-use validator::Validate;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 pub const CHANGE_CONFIGURATION_ACTION: &str = "ChangeConfiguration";
 
@@ -233,15 +234,17 @@ pub const CONNECTOR_SWITCH_3_TO_1_PHASE_SUPPORTED: &str = "ConnectorSwitch3to1Ph
 /// Maximum number of Charging profiles installed at a time
 pub const MAX_CHARGING_PROFILES_INSTALLED: &str = "MaxChargingProfilesInstalled";
 
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 pub struct ChangeConfigurationRequest {
-    #[validate(length(min = 1, max = 50))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 50)))]
     pub key: String,
-    #[validate(length(min = 1, max = 500))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 500)))]
     pub value: String,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 pub struct ChangeConfigurationResponse {
     pub status: ConfigurationStatus,
 }

@@ -1,10 +1,12 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::datatypes::CustomDataType;
 
 /// Request to notify the Charging Station about updated cost for the current transaction.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct CostUpdatedRequest {
     /// Required. Current total cost, based on the information known by the CSMS,
@@ -13,7 +15,7 @@ pub struct CostUpdatedRequest {
     pub total_cost: f64,
 
     /// Required. Transaction Id of the transaction the current cost are asked for.
-    #[validate(length(max = 36))]
+    #[cfg_attr(feature = "std", validate(length(max = 36)))]
     pub transaction_id: String,
 
     /// Optional. Custom data from the Charging Station.
@@ -24,7 +26,8 @@ pub struct CostUpdatedRequest {
 /// Response to a CostUpdatedRequest.
 /// This response contains no fields other than the optional customData field,
 /// because the request cannot be denied by the Charging Station.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct CostUpdatedResponse {
     /// Optional. Custom data from the Charging Station.

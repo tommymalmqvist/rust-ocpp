@@ -1,5 +1,7 @@
 /// Represents a UnitOfMeasure with a multiplier
 /// UnitOfMeasureType is used by: Common:SampledValueType
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct UnitOfMeasureType {

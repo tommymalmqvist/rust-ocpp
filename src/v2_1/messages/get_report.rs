@@ -1,5 +1,6 @@
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{ComponentVariableType, CustomDataType, StatusInfoType},
@@ -7,7 +8,8 @@ use crate::v2_1::{
 };
 
 /// Request to get a report from a Charging Station.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetReportRequest {
     /// Required. The Id of the request.
@@ -15,12 +17,12 @@ pub struct GetReportRequest {
 
     /// Optional. This field contains criteria for components for which a report is requested.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 4))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 4)))]
     pub component_criteria: Option<Vec<ComponentCriterionEnumType>>,
 
     /// Optional. This field specifies the components and variables for which a report is requested.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1))]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
     pub component_variable: Option<Vec<ComponentVariableType>>,
 
     /// Optional. Custom data from the Charging Station.
@@ -29,7 +31,8 @@ pub struct GetReportRequest {
 }
 
 /// Response to a GetReportRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetReportResponse {
     /// Required. This field indicates whether the Charging Station was able to accept the request.

@@ -1,4 +1,6 @@
 use super::{Address, CustomData, GenericStatusEnum, StatusInfo};
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]

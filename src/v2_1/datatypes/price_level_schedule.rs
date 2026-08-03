@@ -1,12 +1,16 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{custom_data::CustomDataType, price_level_schedule_entry::PriceLevelScheduleEntryType};
 
 /// Price level schedule structure defines a list of time periods during which a specific price level applies.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct PriceLevelScheduleType {
     /// Required. Starting point of this price schedule.
@@ -14,26 +18,26 @@ pub struct PriceLevelScheduleType {
     pub time_anchor: DateTime<Utc>,
 
     /// Required. Unique ID of this price schedule.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub price_schedule_id: i32,
 
     /// Required. Defines the overall number of distinct price level elements used across all PriceLevelSchedules.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub number_of_price_levels: i32,
 
     /// Required. List of price level schedule entries.
-    #[validate(length(min = 1, max = 100))]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 100)))]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub price_level_schedule_entries: Vec<PriceLevelScheduleEntryType>,
 
     /// Optional. Description of the price schedule.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 32))]
+    #[cfg_attr(feature = "std", validate(length(max = 32)))]
     pub price_schedule_description: Option<String>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

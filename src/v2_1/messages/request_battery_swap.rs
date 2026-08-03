@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CustomDataType, IdTokenType, StatusInfoType},
@@ -7,7 +6,8 @@ use crate::v2_1::{
 };
 
 /// Request body for the RequestBatterySwap request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct RequestBatterySwapRequest {
     /// Optional. Custom data from the Charging Station.
@@ -22,7 +22,8 @@ pub struct RequestBatterySwapRequest {
 }
 
 /// Response body for the RequestBatterySwap response.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct RequestBatterySwapResponse {
     /// Optional. Custom data from the Charging Station.

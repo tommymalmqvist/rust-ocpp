@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{
@@ -10,15 +11,16 @@ use crate::v2_1::enumerations::{
 };
 
 /// Class to hold result of SetVariable request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetVariableResultType {
     /// Required. Component for which the variable is set.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub component: ComponentType,
 
     /// Required. Variable which holds the attribute value.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub variable: VariableType,
 
     /// Required. Status indicating whether the Charging Station has accepted the request.
@@ -30,12 +32,12 @@ pub struct SetVariableResultType {
 
     /// Optional. Detailed status information.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub attribute_status_info: Option<StatusInfoType>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

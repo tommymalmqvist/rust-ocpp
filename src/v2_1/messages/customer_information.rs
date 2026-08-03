@@ -1,5 +1,6 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CertificateHashDataType, CustomDataType, IdTokenType, StatusInfoType},
@@ -7,11 +8,12 @@ use crate::v2_1::{
 };
 
 /// Request to get or clear customer information.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct CustomerInformationRequest {
     /// Required. The Id of the request.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub request_id: i32,
 
     /// Required. Flag indicating whether the Charging Station should return
@@ -27,7 +29,7 @@ pub struct CustomerInformationRequest {
     /// refers to. This field contains a custom identifier other than IdToken and
     /// Certificate.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 64))]
+    #[cfg_attr(feature = "std", validate(length(max = 64)))]
     pub customer_identifier: Option<String>,
 
     /// Optional. The customer certificate to get or clear information for.
@@ -44,7 +46,8 @@ pub struct CustomerInformationRequest {
 }
 
 /// Response to a CustomerInformationRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct CustomerInformationResponse {
     /// Required. Indicates whether the request was accepted.

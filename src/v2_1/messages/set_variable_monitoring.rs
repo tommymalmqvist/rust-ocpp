@@ -1,4 +1,7 @@
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use crate::v2_1::datatypes::{
@@ -21,7 +24,8 @@ pub enum SetMonitoringStatusEnumType {
 }
 
 /// Class to hold result of SetVariableMonitoring request.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetMonitoringResultType {
     /// Custom data from the Charging Station.
@@ -31,12 +35,12 @@ pub struct SetMonitoringResultType {
     /// Id given to the VariableMonitor by the Charging Station.
     /// The Id is only returned when status is accepted.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub id: Option<i32>,
 
     /// Detailed status information.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub status_info: Option<StatusInfoType>,
 
     /// Required. The status of the monitoring setting.
@@ -47,21 +51,22 @@ pub struct SetMonitoringResultType {
     pub kind: MonitorEnumType,
 
     /// Required. Component for which a variable is monitored.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub component: ComponentType,
 
     /// Required. Variable that is monitored.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub variable: VariableType,
 
     /// Required. The severity that will be assigned to an event that is triggered by this monitor.
     /// The severity range is 0-9, with 0 as the highest and 9 as the lowest severity level.
-    #[validate(range(min = 0, max = 9))]
+    #[cfg_attr(feature = "std", validate(range(min = 0, max = 9)))]
     pub severity: i32,
 }
 
 /// Request to set monitoring parameters for a variable.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetVariableMonitoringRequest {
     /// Custom data from the CSMS.
@@ -69,12 +74,13 @@ pub struct SetVariableMonitoringRequest {
     pub custom_data: Option<CustomDataType>,
 
     /// Required. List of monitoring settings to configure.
-    #[validate(length(min = 1), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1), nested))]
     pub set_monitoring_data: Vec<SetMonitoringDataType>,
 }
 
 /// Response to SetVariableMonitoring request.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetVariableMonitoringResponse {
     /// Custom data from the Charging Station.
@@ -82,7 +88,7 @@ pub struct SetVariableMonitoringResponse {
     pub custom_data: Option<CustomDataType>,
 
     /// Required. List of result statuses per monitoring setting.
-    #[validate(length(min = 1), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1), nested))]
     pub set_monitoring_result: Vec<SetMonitoringResultType>,
 }
 

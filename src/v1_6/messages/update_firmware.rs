@@ -1,8 +1,10 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use chrono::{DateTime, Utc};
-use validator::Validate;
 
 /// This contains the field definition of the UpdateFirmware.req PDU sent by the Central System to the Charge Point. See also Update Firmware
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct UpdateFirmwareRequest {
     /// Required. This contains a string containing a URI pointing to a location from which to retrieve the firmware.

@@ -2,6 +2,8 @@
 use crate::v2_0_1::datatypes::ocsp_request_data_type::OCSPRequestDataType;
 use crate::v2_0_1::datatypes::status_info_type::StatusInfoType;
 use crate::v2_0_1::enumerations::get_certificate_status_enum_type::GetCertificateStatusEnumType;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 /// GetCertificateStatusRequest, sent by the Charging Station to the CSMS.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]

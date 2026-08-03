@@ -1,5 +1,7 @@
 use crate::v2_0_1::datatypes::set_monitoring_data_type::SetMonitoringDataType;
 use crate::v2_0_1::datatypes::set_monitoring_result_type::SetMonitoringResultType;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 /// This contains the field definition of the SetVariableMonitoringRequest PDU sent by the CSMS to the Charging Station.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]

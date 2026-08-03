@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{
@@ -14,7 +15,8 @@ use crate::v2_1::enumerations::{
 /// To save on mobile data usage, default values of all of the optional fields are such that.
 /// The value without any additional fields will be interpreted, as a register reading of active
 /// import energy in Wh (Watt-hour) units.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SampledValueType {
     /// Required. Indicates the measured value.
@@ -38,17 +40,17 @@ pub struct SampledValueType {
 
     /// Optional. Contains the signed version of the meter value.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub signed_meter_value: Option<SignedMeterValueType>,
 
     /// Optional. Unit of the measured value.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub unit_of_measure: Option<UnitOfMeasureType>,
 
     /// Optional. Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

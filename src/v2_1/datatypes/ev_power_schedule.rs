@@ -1,12 +1,16 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{custom_data::CustomDataType, ev_power_schedule_entry::EVPowerScheduleEntryType};
 
 /// Power schedule of EV energy offer.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct EVPowerScheduleType {
     /// Starting point in time of the EVEnergyOffer.
@@ -14,13 +18,13 @@ pub struct EVPowerScheduleType {
     pub time_anchor: DateTime<Utc>,
 
     /// List of power schedule entries.
-    #[validate(length(min = 1, max = 1024))]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 1024)))]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub ev_power_schedule_entries: Vec<EVPowerScheduleEntryType>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

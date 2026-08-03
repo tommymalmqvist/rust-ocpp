@@ -1,24 +1,28 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
 
 /// Reference key to a component-variable.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct VariableType {
     /// Name of the variable. Name should be taken from the list of standardized variable names whenever possible. Case Insensitive. strongly advised to use Camel Case.
-    #[validate(length(max = 50))]
+    #[cfg_attr(feature = "std", validate(length(max = 50)))]
     pub name: String,
 
     /// Name of instance in case the variable exists as multiple instances. Case Insensitive. strongly advised to use Camel Case.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 50))]
+    #[cfg_attr(feature = "std", validate(length(max = 50)))]
     pub instance: Option<String>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

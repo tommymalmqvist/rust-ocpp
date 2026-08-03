@@ -1,4 +1,6 @@
 use crate::v1_6::types::{AuthorizationData, UpdateStatus, UpdateType};
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 /// This contains the field definition of the SendLocalListRequest PDU sent by the Central System to the Charge Point. If no (empty) local_authorization_list is given and the updateType is Full, all identifications are removed from the list. Requesting a Differential update without (empty) local_authorization_list will have no effect on the list. All idTags in the local_authorization_list MUST be unique, no duplicate values are allowed. See also Send Local List
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]

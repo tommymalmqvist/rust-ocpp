@@ -1,5 +1,7 @@
 use crate::v2_0_1::enumerations::attribute_enum_type::AttributeEnumType;
 use crate::v2_0_1::enumerations::mutability_enum_type::MutabilityEnumType;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 /// Attribute data of a variable.
 /// VariableAttributeType is used by: NotifyReportRequest.ReportDataType

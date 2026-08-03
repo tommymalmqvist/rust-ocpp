@@ -5,17 +5,19 @@ use crate::v2_1::enumerations::{CertificateStatusEnumType, CertificateStatusSour
 use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Revocation status of certificate
 ///
 /// This type represents the status of a certificate, including its revocation status,
 /// source of the status information, and when the next update is expected.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct CertificateStatusType {
     /// Certificate hash data needed for validating certificates through OCSP.
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub certificate_hash_data: CertificateHashDataType,
 
     /// Source of status: OCSP, CRL
@@ -30,7 +32,7 @@ pub struct CertificateStatusType {
 
     /// Optional custom data
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 
@@ -199,6 +201,7 @@ impl CertificateStatusType {
     /// # Returns
     ///
     /// `Ok(())` if the instance is valid, otherwise an error
+    #[cfg(feature = "std")]
     pub fn validate(&self) -> Result<(), validator::ValidationErrors> {
         Validate::validate(self)
     }

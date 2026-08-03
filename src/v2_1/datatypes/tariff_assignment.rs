@@ -1,16 +1,20 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
 
 /// Tariff assignment to a charging profile.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct TariffAssignmentType {
     /// Required. Unique identifier used to identify one or more tariffs.
-    #[validate(length(max = 60))]
+    #[cfg_attr(feature = "std", validate(length(max = 60)))]
     pub tariff_id: String,
 
     /// Required. Start date and time of the tariff assignment.
@@ -27,7 +31,7 @@ pub struct TariffAssignmentType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

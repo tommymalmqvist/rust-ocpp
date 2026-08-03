@@ -1,16 +1,20 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
 
 /// Contains information about a specific firmware version.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct FirmwareType {
     /// URL from which the firmware can be downloaded.
-    #[validate(length(max = 2000))]
+    #[cfg_attr(feature = "std", validate(length(max = 2000)))]
     pub location: String,
 
     /// Date and time at which the firmware shall be retrieved.
@@ -30,17 +34,17 @@ pub struct FirmwareType {
     pub install_date_time: Option<DateTime<Utc>>,
 
     /// Firmware version.
-    #[validate(length(max = 800))]
+    #[cfg_attr(feature = "std", validate(length(max = 800)))]
     pub signature: String,
 
     /// MD5 checksum over the entire firmware file as a hexadecimal string of length 32.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 5500))]
+    #[cfg_attr(feature = "std", validate(length(max = 5500)))]
     pub signing_certificate: Option<String>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

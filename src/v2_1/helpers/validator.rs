@@ -1,7 +1,10 @@
+#![cfg(feature = "std")]
+
 use std::sync::OnceLock;
 
 use regex::Regex;
 use rust_decimal::Decimal;
+#[cfg(feature = "std")]
 use validator::ValidationError;
 
 static REGEX: OnceLock<Regex> = OnceLock::new();

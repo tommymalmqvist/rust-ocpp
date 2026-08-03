@@ -2,6 +2,8 @@ use super::component_type::ComponentType;
 use super::variable_attribute_type::VariableAttributeType;
 use super::variable_characteristics_type::VariableCharacteristicsType;
 use super::variable_type::VariableType;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 /// Class to report components, variables and variable attributes and characteristics.
 /// ReportDataType is used by: NotifyReportRequest

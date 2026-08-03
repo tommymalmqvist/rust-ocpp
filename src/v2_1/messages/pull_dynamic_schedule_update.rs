@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{ChargingScheduleUpdateType, CustomDataType, StatusInfoType},
@@ -7,7 +6,8 @@ use crate::v2_1::{
 };
 
 /// Request body for the PullDynamicScheduleUpdate request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct PullDynamicScheduleUpdateRequest {
     /// Optional. Custom data from the Charging Station.
@@ -19,7 +19,8 @@ pub struct PullDynamicScheduleUpdateRequest {
 }
 
 /// Response body for the PullDynamicScheduleUpdate response.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct PullDynamicScheduleUpdateResponse {
     /// Optional. Custom data from the Charging Station.

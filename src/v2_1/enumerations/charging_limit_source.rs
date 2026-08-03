@@ -1,10 +1,15 @@
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, string::ToString};
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
-#[derive(Debug, Validate, Serialize, Deserialize, Clone, PartialEq)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(transparent)]
 pub struct CustomString {
-    #[validate(length(max = 20, message = "String length must not exceed 20 characters"))]
+    #[cfg_attr(
+        feature = "std",
+        validate(length(max = 20, message = "String length must not exceed 20 characters"))
+    )]
     pub value: String,
 }
 

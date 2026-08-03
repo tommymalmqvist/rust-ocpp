@@ -1,25 +1,29 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
 
 /// Element providing more information about the status.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct StatusInfoType {
     /// Required. A predefined code for the reason why the status is returned in this response.
     /// The string is case-insensitive.
-    #[validate(length(max = 20))]
+    #[cfg_attr(feature = "std", validate(length(max = 20)))]
     pub reason_code: String,
 
     /// Optional. Additional text to provide detailed information.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 1024))]
+    #[cfg_attr(feature = "std", validate(length(max = 1024)))]
     pub additional_info: Option<String>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

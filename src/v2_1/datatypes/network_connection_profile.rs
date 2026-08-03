@@ -1,25 +1,29 @@
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, string::ToString};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{apn::APNType, custom_data::CustomDataType, vpn::VPNType};
 
 /// The NetworkConnectionProfile defines the functional and technical parameters of a communication link.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct NetworkConnectionProfileType {
     /// Optional. APN configuration, when using GSM.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub apn: Option<APNType>,
 
     /// Required. URL of the CSMS(s) that this Charging Station communicates with, without the Charging Station identity part.
     /// The SecurityCtrlr.Identity field is appended to this URL to provide the full websocket URL.
-    #[validate(length(max = 2000))]
+    #[cfg_attr(feature = "std", validate(length(max = 2000)))]
     pub ocpp_csms_url: String,
 
     /// Required. Applicable Network Interface. Charging Station is allowed to use a different network interface to connect if the given one does not work.
     /// Allowed values: "Wired0", "Wired1", "Wired2", "Wired3", "Wireless0", "Wireless1", "Wireless2", "Wireless3", "Any"
-    #[validate(length(max = 20))]
+    #[cfg_attr(feature = "std", validate(length(max = 20)))]
     pub ocpp_interface: String,
 
     /// Required. Duration in seconds before a message sent by the Charging Station via this network connection times-out.
@@ -31,33 +35,33 @@ pub struct NetworkConnectionProfileType {
 
     /// Required. Defines the transport protocol (e.g. SOAP or JSON). Note: SOAP is not supported in OCPP 2.x, but is supported by earlier versions.
     /// Allowed values: "SOAP", "JSON"
-    #[validate(length(max = 20))]
+    #[cfg_attr(feature = "std", validate(length(max = 20)))]
     pub ocpp_transport: String,
 
     /// Required. This field is ignored, since the OCPP version to use is determined during the websocket handshake.
     /// The field is only kept for backwards compatibility with the OCPP 2.0.1 JSON schema.
     /// Allowed values: "OCPP12", "OCPP15", "OCPP16", "OCPP20", "OCPP201", "OCPP21"
-    #[validate(length(max = 20))]
+    #[cfg_attr(feature = "std", validate(length(max = 20)))]
     pub ocpp_version: String,
 
     /// Optional. Charging Station identity to be used as the basic authentication username (specific to OCPP 2.1).
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 48))]
+    #[cfg_attr(feature = "std", validate(length(max = 48)))]
     pub identity: Option<String>,
 
     /// Optional. BasicAuthPassword to use for security profile 1 or 2 (specific to OCPP 2.1).
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 64))]
+    #[cfg_attr(feature = "std", validate(length(max = 64)))]
     pub basic_auth_password: Option<String>,
 
     /// Optional. VPN configuration, when using VPN.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub vpn: Option<VPNType>,
 
     /// Optional. Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

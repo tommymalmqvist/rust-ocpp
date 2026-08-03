@@ -1,5 +1,6 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::datatypes::{CertificateHashDataType, CustomDataType, StatusInfoType};
 
@@ -21,7 +22,8 @@ pub enum GenericStatusEnumType {
 }
 
 /// Request to sign a certificate.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SignCertificateRequest {
     /// Optional. Custom data specific to this class.
@@ -30,7 +32,7 @@ pub struct SignCertificateRequest {
 
     /// Required. The Charging Station SHALL send the public key in form of a Certificate
     /// Signing Request (CSR) as described in RFC 2986 and then PEM encoded.
-    #[validate(length(max = 5500))]
+    #[cfg_attr(feature = "std", validate(length(max = 5500)))]
     pub csr: String,
 
     /// Optional. Indicates the type of certificate that is to be signed.
@@ -47,7 +49,8 @@ pub struct SignCertificateRequest {
 }
 
 /// Response to a SignCertificateRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SignCertificateResponse {
     /// Optional. Custom data specific to this class.

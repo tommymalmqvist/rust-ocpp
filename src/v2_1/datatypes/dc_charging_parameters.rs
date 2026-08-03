@@ -1,11 +1,13 @@
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use crate::v2_1::datatypes::CustomDataType;
 
 /// EV DC charging parameters for ISO 15118-2
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct DCChargingParametersType {
     /// Maximum current (in A) supported by the electric vehicle. Includes cable capacity.
@@ -41,7 +43,7 @@ pub struct DCChargingParametersType {
     /// ISO 15118-2: DC_EVChargeParameterType:
     /// DC_EVStatus: EVRESSSOC
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0, max = 100))]
+    #[cfg_attr(feature = "std", validate(range(min = 0, max = 100)))]
     pub state_of_charge: Option<i32>,
 
     /// Percentage of SoC at which the EV considers
@@ -49,12 +51,12 @@ pub struct DCChargingParametersType {
     /// Relates to:
     /// ISO 15118-2: DC_EVChargeParameterType: FullSOC
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0, max = 100))]
+    #[cfg_attr(feature = "std", validate(range(min = 0, max = 100)))]
     pub full_so_c: Option<i32>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

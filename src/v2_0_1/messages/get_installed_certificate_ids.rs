@@ -3,6 +3,8 @@ use crate::v2_0_1::datatypes::certificate_hash_data_chain_type::CertificateHashD
 use crate::v2_0_1::datatypes::status_info_type::StatusInfoType;
 use crate::v2_0_1::enumerations::get_certificate_id_use_enum_type::GetCertificateIdUseEnumType;
 use crate::v2_0_1::enumerations::get_installed_certificate_status_enum_type::GetInstalledCertificateStatusEnumType;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 /// Used by the CSMS to request an overview of the installed certificates on a Charging Station.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]

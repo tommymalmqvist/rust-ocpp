@@ -1,7 +1,8 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{
@@ -15,7 +16,8 @@ use crate::v2_1::{
 };
 
 /// Charging needs of an EV.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingNeedsType {
     /// Optional. AC charging parameters.
@@ -43,7 +45,7 @@ pub struct ChargingNeedsType {
 
     /// Optional. Modes of energy transfer that are marked as available by EV.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1))]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
     pub available_energy_transfer: Option<Vec<EnergyTransferModeEnumType>>,
 
     /// Optional. Control mode.
@@ -68,7 +70,8 @@ pub struct ChargingNeedsType {
 }
 
 /// Request to notify the CSMS about EV charging needs.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct NotifyEVChargingNeedsRequest {
     /// Optional. Contains the maximum schedule tuples the car supports per schedule.
@@ -79,7 +82,7 @@ pub struct NotifyEVChargingNeedsRequest {
     pub charging_needs: ChargingNeedsType,
 
     /// Required. Defines the EVSE and connector to which the EV is connected. EvseId may not be 0.
-    #[validate(range(min = 1))]
+    #[cfg_attr(feature = "std", validate(range(min = 1)))]
     pub evse_id: i32,
 
     /// Optional. Custom data specific to this class.
@@ -88,7 +91,8 @@ pub struct NotifyEVChargingNeedsRequest {
 }
 
 /// Response to a NotifyEVChargingNeedsRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct NotifyEVChargingNeedsResponse {
     /// Required. Status indicating whether the Charging Station accepts the request.

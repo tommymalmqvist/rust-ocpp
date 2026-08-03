@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CompositeScheduleType, CustomDataType, StatusInfoType},
@@ -7,7 +6,8 @@ use crate::v2_1::{
 };
 
 /// Request to get a composite charging schedule from a Charging Station.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetCompositeScheduleRequest {
     /// Required. Length of the requested schedule in seconds.
@@ -16,7 +16,7 @@ pub struct GetCompositeScheduleRequest {
     /// Required. The ID of the EVSE for which the schedule is requested.
     /// When evseid=0, the Charging Station will calculate the expected consumption
     /// for the grid connection.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub evse_id: i32,
 
     /// Optional. Can be used to force a power or current profile.
@@ -29,7 +29,8 @@ pub struct GetCompositeScheduleRequest {
 }
 
 /// Response to a GetCompositeScheduleRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetCompositeScheduleResponse {
     /// Required. The Charging Station will indicate if it was able to process the request.

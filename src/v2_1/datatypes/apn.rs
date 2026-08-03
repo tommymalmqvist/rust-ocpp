@@ -1,4 +1,7 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
@@ -12,21 +15,22 @@ use crate::v2_1::enumerations::APNAuthenticationEnumType;
 /// the key PreferredNetwork = 20404 Some modems allows to specify a preferred network, which means,
 /// if this network is not available, a different network is used. If you specify UseOnlyPreferredNetwork
 /// and this network is not available, the modem will not dial in.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct APNType {
     /// Required. The Access Point Name as an URL.
-    #[validate(length(max = 2000))]
+    #[cfg_attr(feature = "std", validate(length(max = 2000)))]
     pub apn: String,
 
     /// APN username.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 50))]
+    #[cfg_attr(feature = "std", validate(length(max = 50)))]
     pub apn_user_name: Option<String>,
 
     /// APN Password.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 64))]
+    #[cfg_attr(feature = "std", validate(length(max = 64)))]
     pub apn_password: Option<String>,
 
     /// SIM card pin code.
@@ -35,7 +39,7 @@ pub struct APNType {
 
     /// Preferred network, written as MCC and MNC concatenated. See note.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 6))]
+    #[cfg_attr(feature = "std", validate(length(max = 6)))]
     pub preferred_network: Option<String>,
 
     /// Default: false. Use only the preferred Network, do not dial in when not available. See Note.
@@ -47,7 +51,7 @@ pub struct APNType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

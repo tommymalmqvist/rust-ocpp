@@ -1,51 +1,81 @@
 use super::custom_data::CustomDataType;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Hysteresis parameters for DER control functions.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct HysteresisType {
     /// High value for return to normal operation after a grid event, in absolute value. This value adopts the same unit as defined by yUnit
     #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
         skip_serializing_if = "Option::is_none",
         default,
         rename = "hysteresisHigh"
+    )]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub hysteresis_high: Option<Decimal>,
 
     /// Low value for return to normal operation after a grid event, in absolute value. This value adopts the same unit as defined by yUnit
     #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
         skip_serializing_if = "Option::is_none",
         default,
         rename = "hysteresisLow"
+    )]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub hysteresis_low: Option<Decimal>,
 
     /// Delay in seconds, once grid parameter within HysteresisLow and HysteresisHigh, for the EV to return to normal operation after a grid event.
     #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
         skip_serializing_if = "Option::is_none",
         default,
         rename = "hysteresisDelay"
+    )]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub hysteresis_delay: Option<Decimal>,
 
     /// Set default rate of change (ramp rate %/s) for the EV to return to normal operation after a grid event
     #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
         skip_serializing_if = "Option::is_none",
         default,
         rename = "hysteresisGradient"
+    )]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub hysteresis_gradient: Option<Decimal>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

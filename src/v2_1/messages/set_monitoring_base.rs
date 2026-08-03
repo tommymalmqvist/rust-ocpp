@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CustomDataType, StatusInfoType},
@@ -7,7 +6,8 @@ use crate::v2_1::{
 };
 
 /// Request to set the monitoring base at the Charging Station.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetMonitoringBaseRequest {
     /// Optional. Custom data specific to this message.
@@ -19,7 +19,8 @@ pub struct SetMonitoringBaseRequest {
 }
 
 /// Response to a SetMonitoringBaseRequest.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetMonitoringBaseResponse {
     /// Optional. Custom data specific to this message.

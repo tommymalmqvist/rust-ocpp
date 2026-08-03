@@ -1,10 +1,14 @@
 use super::{custom_data::CustomDataType, tax_rate::TaxRateType};
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Price with and without tax. At least one of exclTax, inclTax must be present.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct PriceType {
     /// Price/cost excluding tax. Can be absent if inclTax is present.
@@ -17,12 +21,12 @@ pub struct PriceType {
 
     /// List of tax rates used to calculate tax.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 5), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 5), nested))]
     pub tax_rates: Option<Vec<TaxRateType>>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

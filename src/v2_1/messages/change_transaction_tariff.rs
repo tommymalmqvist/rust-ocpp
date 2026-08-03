@@ -1,5 +1,6 @@
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::{
     datatypes::{CustomDataType, MessageContentType, StatusInfoType},
@@ -7,7 +8,8 @@ use crate::v2_1::{
 };
 
 /// These conditions describe if a FixedPrice applies at start of the transaction.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct TariffConditionsFixedType {
     /// Optional. Start time of day in local time.
@@ -24,7 +26,7 @@ pub struct TariffConditionsFixedType {
 
     /// Optional. Day(s) of the week this tariff applies.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 7))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 7)))]
     pub day_of_week: Option<Vec<DayOfWeekEnumType>>,
 
     /// Optional. Start date in local time, for example: 2015-12-24.
@@ -43,12 +45,12 @@ pub struct TariffConditionsFixedType {
 
     /// Optional. For which payment brand this (adhoc) tariff applies.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 20))]
+    #[cfg_attr(feature = "std", validate(length(max = 20)))]
     pub payment_brand: Option<String>,
 
     /// Optional. Type of adhoc payment, e.g. CC, Debit.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 20))]
+    #[cfg_attr(feature = "std", validate(length(max = 20)))]
     pub payment_recognition: Option<String>,
 
     /// Optional. Custom data from the Charging Station.
@@ -57,7 +59,8 @@ pub struct TariffConditionsFixedType {
 }
 
 /// These conditions describe if and when a TariffEnergyType or TariffTimeType applies during a transaction.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct TariffConditionsType {
     /// Optional. Start time of day in local time.
@@ -70,7 +73,7 @@ pub struct TariffConditionsType {
 
     /// Optional. Day(s) of the week this tariff applies.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 7))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 7)))]
     pub day_of_week: Option<Vec<DayOfWeekEnumType>>,
 
     /// Optional. Start date in local time.
@@ -139,7 +142,8 @@ pub struct TariffConditionsType {
 }
 
 /// Tariff with optional conditions for an energy price.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct TariffEnergyPriceType {
     /// Required. Price per kWh (excl. tax) for this element.
@@ -155,7 +159,8 @@ pub struct TariffEnergyPriceType {
 }
 
 /// Request to change the tariff for an ongoing transaction.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ChangeTransactionTariffRequest {
     /// Required. Transaction Id for which the tariff needs to be changed.
@@ -174,7 +179,8 @@ pub struct ChangeTransactionTariffRequest {
 }
 
 /// Response to a ChangeTransactionTariffRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ChangeTransactionTariffResponse {
     /// Required. Status indicating whether the Charging Station accepts the request.

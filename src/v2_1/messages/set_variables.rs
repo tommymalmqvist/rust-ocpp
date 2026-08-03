@@ -1,4 +1,7 @@
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use crate::v2_1::datatypes::{ComponentType, CustomDataType, StatusInfoType, VariableType};
@@ -32,7 +35,8 @@ pub enum SetVariableStatusEnumType {
 }
 
 /// Class to hold parameters for setting a variable.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetVariableDataType {
     /// Optional. Custom data specific to this class.
@@ -45,7 +49,7 @@ pub struct SetVariableDataType {
     pub attribute_type: Option<AttributeEnumType>,
 
     /// Required. Value to be assigned to attribute of variable.
-    #[validate(length(max = 2500))]
+    #[cfg_attr(feature = "std", validate(length(max = 2500)))]
     pub attribute_value: String,
 
     /// Required. Component for which the variable is set.
@@ -56,7 +60,8 @@ pub struct SetVariableDataType {
 }
 
 /// Class to hold the result of setting a variable.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetVariableResultType {
     /// Optional. Custom data specific to this class.
@@ -83,7 +88,8 @@ pub struct SetVariableResultType {
 }
 
 /// Request to set variables in a charging station.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetVariablesRequest {
     /// Optional. Custom data specific to this class.
@@ -91,12 +97,13 @@ pub struct SetVariablesRequest {
     pub custom_data: Option<CustomDataType>,
 
     /// Required. List of settings to set in components.
-    #[validate(length(min = 1), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1), nested))]
     pub set_variable_data: Vec<SetVariableDataType>,
 }
 
 /// Response to SetVariables request.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct SetVariablesResponse {
     /// Optional. Custom data specific to this class.
@@ -104,6 +111,6 @@ pub struct SetVariablesResponse {
     pub custom_data: Option<CustomDataType>,
 
     /// Required. List of result statuses per settings.
-    #[validate(length(min = 1), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1), nested))]
     pub set_variable_result: Vec<SetVariableResultType>,
 }

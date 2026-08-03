@@ -1,4 +1,7 @@
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{
@@ -6,21 +9,22 @@ use super::{
 };
 
 /// Price elements and tax for time
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct TariffTimeType {
     /// Required. List of time price elements.
-    #[validate(length(min = 1), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1), nested))]
     pub prices: Vec<TariffTimePriceType>,
 
     /// Optional. List of tax rates applicable to time.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 5), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 5), nested))]
     pub tax_rates: Option<Vec<TaxRateType>>,
 
     /// Optional. Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

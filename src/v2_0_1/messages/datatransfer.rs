@@ -1,22 +1,24 @@
 //! DataTransfer
-use validator::Validate;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 
 use crate::v2_0_1::datatypes::status_info_type::StatusInfoType;
 use crate::v2_0_1::enumerations::data_transfer_status_enum_type::DataTransferStatusEnumType;
 
 /// DataTransferRequest, sent either by the CSMS to the Charging Station or vice versa.
-#[derive(serde::Serialize, serde::Deserialize, Validate, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct DataTransferRequest {
     /// May be used to indicate a specific message or implementation.
-    #[validate(length(min = 0, max = 50))]
+    #[cfg_attr(feature = "std", validate(length(min = 0, max = 50)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub message_id: Option<String>,
     /// Data without specified length or format. This needs to be decided by both parties (Open to implementation).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub data: Option<String>,
     /// This identifies the Vendor specific     implementation
-    #[validate(length(min = 0, max = 255))]
+    #[cfg_attr(feature = "std", validate(length(min = 0, max = 255)))]
     pub vendor_id: String,
 }
 

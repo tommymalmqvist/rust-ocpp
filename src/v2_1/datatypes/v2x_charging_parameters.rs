@@ -1,42 +1,56 @@
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
 
 /// Charging parameters for ISO 15118-20, also supporting V2X charging/discharging.
 /// All values are greater or equal to zero, with the exception of EVMinEnergyRequest, EVMaxEnergyRequest, EVTargetEnergyRequest, EVMinV2XEnergyRequest and EVMaxV2XEnergyRequest.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct V2XChargingParametersType {
     /// Minimum charge power in W, defined by max(EV, EVSE).
     /// This field represents the sum of all phases, unless values are provided for L2 and L3, in which case this field represents phase L1.
     /// Relates to:
     /// *ISO 15118-20*: BPT_AC/DC_CPDReqEnergyTransferModeType: EVMinimumChargePower
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub min_charge_power: Option<Decimal>,
 
     /// Minimum charge power on phase L2 in W, defined by max(EV, EVSE).
     /// Relates to:
     /// *ISO 15118-20*: BPT_AC/DC_CPDReqEnergyTransferModeType: EVMinimumChargePower_L2
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub min_charge_power_l2: Option<Decimal>,
 
     /// Minimum charge power on phase L3 in W, defined by max(EV, EVSE).
     /// Relates to:
     /// *ISO 15118-20*: BPT_AC/DC_CPDReqEnergyTransferModeType: EVMinimumChargePower_L3
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub min_charge_power_l3: Option<Decimal>,
 
@@ -46,30 +60,42 @@ pub struct V2XChargingParametersType {
     /// It is usually equivalent to the rated apparent power of the EV when discharging (ChaVAMax) in IEC 61850.
     /// Relates to:
     /// *ISO 15118-20*: BPT_AC/DC_CPDReqEnergyTransferModeType: EVMaximumChargePower
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub max_charge_power: Option<Decimal>,
 
     /// Maximum charge power on phase L2 in W, defined by min(EV, EVSE)
     /// Relates to:
     /// *ISO 15118-20*: BPT_AC/DC_CPDReqEnergyTransferModeType: EVMaximumChargePower_L2
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub max_charge_power_l2: Option<Decimal>,
 
     /// Maximum charge power on phase L3 in W, defined by min(EV, EVSE)
     /// Relates to:
     /// *ISO 15118-20*: BPT_AC/DC_CPDReqEnergyTransferModeType: EVMaximumChargePower_L3
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub max_charge_power_l3: Option<Decimal>,
 
@@ -79,30 +105,42 @@ pub struct V2XChargingParametersType {
     /// It is usually equivalent to the rated apparent power of the EV when discharging (VAMax attribute in the IEC 61850).
     /// Relates to:
     /// *ISO 15118-20*: BPT_AC/DC_CPDReqEnergyTransferModeType: EVMinimumDischargePower
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub min_discharge_power: Option<Decimal>,
 
     /// Minimum discharge power on phase L2 in W, defined by max(EV, EVSE). Value >= 0.
     /// Relates to:
     /// *ISO 15118-20*: BPT_AC/DC_CPDReqEnergyTransferModeType: EVMinimumDischargePower_L2
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub min_discharge_power_l2: Option<Decimal>,
 
     /// Minimum discharge power on phase L3 in W, defined by max(EV, EVSE). Value >= 0.
     /// Relates to:
     /// *ISO 15118-20*: BPT_AC/DC_CPDReqEnergyTransferModeType: EVMinimumDischargePower_L3
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub min_discharge_power_l3: Option<Decimal>,
 
@@ -110,120 +148,168 @@ pub struct V2XChargingParametersType {
     /// This field represents the sum of all phases, unless values are provided for L2 and L3, in which case this field represents phase L1.
     /// Relates to:
     /// *ISO 15118-20*: BPT_AC/DC_CPDReqEnergyTransferModeType: EVMaximumDischargePower
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub max_discharge_power: Option<Decimal>,
 
     /// Maximum discharge power on phase L2 in W, defined by min(EV, EVSE). Value >= 0.
     /// Relates to:
     /// *ISO 15118-20*: BPT_AC/DC_CPDReqEnergyTransferModeType: EVMaximumDischargePowe_L2
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub max_discharge_power_l2: Option<Decimal>,
 
     /// Maximum discharge power on phase L3 in W, defined by min(EV, EVSE). Value >= 0.
     /// Relates to:
     /// *ISO 15118-20*: BPT_AC/DC_CPDReqEnergyTransferModeType: EVMaximumDischargePower_L3
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub max_discharge_power_l3: Option<Decimal>,
 
     /// Minimum charge current in A, defined by max(EV, EVSE)
     /// Relates to:
     /// *ISO 15118-20*: BPT_DC_CPDReqEnergyTransferModeType: EVMinimumChargeCurrent
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub min_charge_current: Option<Decimal>,
 
     /// Maximum charge current in A, defined by min(EV, EVSE)
     /// Relates to:
     /// *ISO 15118-20*: BPT_DC_CPDReqEnergyTransferModeType: EVMaximumChargeCurrent
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub max_charge_current: Option<Decimal>,
 
     /// Minimum discharge current in A, defined by max(EV, EVSE). Value >= 0.
     /// Relates to:
     /// *ISO 15118-20*: BPT_DC_CPDReqEnergyTransferModeType: EVMinimumDischargeCurrent
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub min_discharge_current: Option<Decimal>,
 
     /// Maximum discharge current in A, defined by min(EV, EVSE). Value >= 0.
     /// Relates to:
     /// *ISO 15118-20*: BPT_DC_CPDReqEnergyTransferModeType: EVMaximumDischargeCurrent
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub max_discharge_current: Option<Decimal>,
 
     /// Minimum voltage in V, defined by max(EV, EVSE)
     /// Relates to:
     /// *ISO 15118-20*: BPT_DC_CPDReqEnergyTransferModeType: EVMinimumVoltage
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub min_voltage: Option<Decimal>,
 
     /// Maximum voltage in V, defined by min(EV, EVSE)
     /// Relates to:
     /// *ISO 15118-20*: BPT_DC_CPDReqEnergyTransferModeType: EVMaximumVoltage
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub max_voltage: Option<Decimal>,
 
     /// Energy to requested state of charge in Wh
     /// Relates to:
     /// *ISO 15118-20*: Dynamic/Scheduled_SEReqControlModeType: EVTargetEnergyRequest
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub ev_target_energy_request: Option<Decimal>,
 
     /// Energy to minimum allowed state of charge in Wh
     /// Relates to:
     /// *ISO 15118-20*: Dynamic/Scheduled_SEReqControlModeType: EVMinimumEnergyRequest
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub ev_min_energy_request: Option<Decimal>,
 
     /// Energy to maximum state of charge in Wh
     /// Relates to:
     /// *ISO 15118-20*: Dynamic/Scheduled_SEReqControlModeType: EVMaximumEnergyRequest
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub ev_max_energy_request: Option<Decimal>,
 
@@ -231,10 +317,14 @@ pub struct V2XChargingParametersType {
     /// Positive value means that current state of charge is below V2X range.
     /// Relates to:
     /// *ISO 15118-20*: Dynamic_SEReqControlModeType: EVMinimumV2XEnergyRequest
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub ev_min_v2x_energy_request: Option<Decimal>,
 
@@ -242,10 +332,14 @@ pub struct V2XChargingParametersType {
     /// Negative value indicates that current state of charge is above V2X range.
     /// Relates to:
     /// *ISO 15118-20*: Dynamic_SEReqControlModeType: EVMaximumV2XEnergyRequest
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub ev_max_v2x_energy_request: Option<Decimal>,
 
@@ -253,12 +347,12 @@ pub struct V2XChargingParametersType {
     /// Relates to:
     /// *ISO 15118-20*: BPT_DC_CPDReqEnergyTransferModeType: TargetSOC
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0, max = 100))]
+    #[cfg_attr(feature = "std", validate(range(min = 0, max = 100)))]
     pub target_so_c: Option<i32>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

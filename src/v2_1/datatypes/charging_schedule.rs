@@ -1,7 +1,10 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use chrono::{DateTime, Utc};
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use crate::v2_1::{
@@ -14,7 +17,8 @@ use crate::v2_1::{
 
 /// Charging schedule structure defines a list of charging periods, as used in: NotifyEVChargingScheduleRequest and ChargingProfileType.
 /// When used in a NotifyEVChargingScheduleRequest only duration and chargingSchedulePeriod are relevant and chargingRateUnit must be 'W'.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingScheduleType {
     /// Identifies the ChargingSchedule.
@@ -38,29 +42,37 @@ pub struct ChargingScheduleType {
     pub charging_rate_unit: ChargingRateUnitEnumType,
 
     /// Minimum charging rate supported by the EV. The unit of measure is defined by the chargingRateUnit.
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub min_charging_rate: Option<Decimal>,
 
     /// *(2.1)* Power tolerance when following EVPowerProfile.
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub power_tolerance: Option<Decimal>,
 
     /// *(2.1)* Power tolerance when following EVPowerProfile.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = "0"))]
+    #[cfg_attr(feature = "std", validate(range(min = "0")))]
     pub signature_id: Option<i32>,
 
     /// *(2.1)* Base64 encoded hash (SHA256 for ISO 15118-2, SHA512 for ISO 15118-20) of the EXI price schedule element. Used in signature.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 88))]
+    #[cfg_attr(feature = "std", validate(length(max = 88)))]
     pub digest_value: Option<String>,
 
     /// *(2.1)* Defaults to false. When true, disregard time zone offset in dateTime fields of  _ChargingScheduleType_ and use unqualified local time at Charging Station instead.\r\n This allows the same `Absolute` or `Recurring` charging profile to be used in both summer and winter time.
@@ -69,37 +81,37 @@ pub struct ChargingScheduleType {
 
     /// *(2.1)* Defaults to 0. When _randomizedDelay_ not equals zero, then the start of each &lt;&lt;cmn_chargingscheduleperiodtype,ChargingSchedulePeriodType&gt;&gt; is delayed by a randomly chosen number of seconds between 0 and _randomizedDelay_.  Only allowed for TxProfile and TxDefaultProfile.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = "0"))]
+    #[cfg_attr(feature = "std", validate(range(min = "0")))]
     pub randomized_delay: Option<i32>,
 
     /// Sales tariff for charging associated with this schedule.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub sales_tariff: Option<SalesTariffType>,
 
     /// List of charging periods describing the amount of power or current that can be delivered per time interval.
-    #[validate(length(min = 1, max = 1024))]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 1024)))]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub charging_schedule_period: Vec<ChargingSchedulePeriodType>,
 
     /// The ISO 15118-20 absolute price schedule
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub absolute_price_schedule: Option<AbsolutePriceScheduleType>,
 
     /// (2.1) The ISO 15118-20 price level schedule
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub price_level_schedule: Option<PriceLevelScheduleType>,
 
     /// 2.1) When present and SoC of EV is greater than or equal to soc, then charging limit or setpoint will be capped to the value of limit.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub limit_at_so_c: Option<LimitAtSoCType>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

@@ -6,12 +6,16 @@ use crate::v2_1::{
     },
     enumerations::{ControlModeEnumType, EnergyTransferModeEnumType, MobilityNeedsModeEnumType},
 };
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Represents the charging needs of an EV.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingNeedsType {
     /// Mode of energy transfer requested by the EV.
@@ -19,7 +23,7 @@ pub struct ChargingNeedsType {
 
     /// Modes of energy transfer that are marked as available by EV
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1))]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
     pub available_energy_transfer: Option<Vec<EnergyTransferModeEnumType>>,
 
     /// Indicates whether EV wants to operate in Dynamic or Scheduled mode.When absent, Scheduled mode is assumed for backwards compatibility.ISO 15118-20: ServiceSelectionReq(SelectedEnergyTransferService)
@@ -60,7 +64,7 @@ pub struct ChargingNeedsType {
 
     /// Optional custom data
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 
@@ -281,6 +285,7 @@ impl ChargingNeedsType {
     /// # Returns
     ///
     /// `Ok(())` if the instance is valid, otherwise an error
+    #[cfg(feature = "std")]
     pub fn validate(&self) -> Result<(), validator::ValidationErrors> {
         Validate::validate(self)
     }

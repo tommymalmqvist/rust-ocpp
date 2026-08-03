@@ -1,12 +1,14 @@
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::custom_data::CustomDataType;
 use crate::v2_1::enumerations::power_during_cessation::PowerDuringCessationEnumType;
 
 /// Parameters for voltage-based control.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct VoltageParamsType {
     /// EN 50549-1 chapter 4.9.3.4
@@ -14,20 +16,28 @@ pub struct VoltageParamsType {
     /// The 10 min mean is recalculated up to every 3 s.
     /// If the present voltage is above this threshold for more than the time defined by _hv10MinMeanValue_, the EV must trip.
     /// This value is mandatory if _hv10MinMeanTripDelay_ is set.
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub hv10_min_mean_value: Option<Decimal>,
 
     /// Time for which the voltage is allowed to stay above the 10 min mean value.
     /// After this time, the EV must trip.
     /// This value is mandatory if OverVoltageMeanValue10min is set.
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub hv10_min_mean_trip_delay: Option<Decimal>,
 
@@ -37,7 +47,7 @@ pub struct VoltageParamsType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

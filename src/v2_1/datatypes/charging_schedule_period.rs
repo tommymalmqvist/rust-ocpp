@@ -1,18 +1,23 @@
 use crate::v2_1::datatypes::CustomDataType;
+#[cfg(feature = "std")]
+use crate::v2_1::helpers::validator::validate_discharge_limit;
 use crate::v2_1::{
     datatypes::{V2XFreqWattPointType, V2XSignalWattPointType},
     enumerations::OperationModeEnumType,
-    helpers::validator::validate_discharge_limit,
 };
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use rust_decimal::prelude::FromPrimitive;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::{Validate, ValidationError};
 
 /// Charging schedule period structure defines a time period in a charging schedule.
 /// It is used in: CompositeScheduleType and in ChargingScheduleType.
 /// When used in a NotifyEVChargingScheduleRequest only startPeriod, limit, limit_L2, limit_L3 are relevant.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingSchedulePeriodType {
     /// Start of the period, in seconds from the start of schedule.
@@ -26,118 +31,178 @@ pub struct ChargingSchedulePeriodType {
     /// with older systems that use a negative value to specify a discharging limit.
     /// When using chargingRateUnit = 'W', this field represents the sum of the power of all phases,
     /// unless values are provided for L2 and L3, in which case this field represents phase L1.
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub limit: Decimal,
 
     /// Charging rate limit on phase L2 in the applicable chargingRateUnit.
     #[serde(rename = "limit_L2")]
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub limit_l2: Option<Decimal>,
 
     /// Charging rate limit on phase L3 in the applicable chargingRateUnit.
     #[serde(rename = "limit_L3")]
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub limit_l3: Option<Decimal>,
 
     /// The number of phases that can be used for charging.
     /// If a number of phases is needed, numberPhases=3 will be assumed unless another number is given.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 0, max = 3))]
+    #[cfg_attr(feature = "std", validate(range(min = 0, max = 3)))]
     pub number_phases: Option<i32>,
 
     /// Values: 1..3, Used if numberPhases=1 and if the EVSE is capable of switching the phase connected to the EV,
     /// i.e. ACPhaseSwitchingSupported is defined and true. It's not allowed unless both conditions above are true.
     /// If both conditions are true, and phaseToUse is omitted, the Charging Station / EVSE will make the selection on its own.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = 1, max = 3))]
+    #[cfg_attr(feature = "std", validate(range(min = 1, max = 3)))]
     pub phase_to_use: Option<i32>,
 
     /// Limit in _chargingRateUnit_ that the EV is allowed to discharge with. Note, these are negative values in order to be consistent with _setpoint_, which can be positive and negative.  +\r\nFor AC this field represents the sum of all phases, unless values are provided for L2 and L3, in which case this field represents phase L1.
-    #[validate(custom(function = "validate_discharge_limit"))]
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[cfg_attr(
+        feature = "std",
+        validate(custom(function = "validate_discharge_limit"))
+    )]
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub discharge_limit: Option<Decimal>,
 
     /// Limit in _chargingRateUnit_ that the EV is allowed to discharge with on phase L2.
     #[serde(rename = "dischargeLimit_L2")]
-    #[validate(custom(function = "validate_discharge_limit"))]
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[cfg_attr(
+        feature = "std",
+        validate(custom(function = "validate_discharge_limit"))
+    )]
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub discharge_limit_l2: Option<Decimal>,
 
     /// Limit in _chargingRateUnit_ that the EV is allowed to discharge with on phase L3.
     #[serde(rename = "dischargeLimit_L3")]
-    #[validate(custom(function = "validate_discharge_limit"))]
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[cfg_attr(
+        feature = "std",
+        validate(custom(function = "validate_discharge_limit"))
+    )]
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub discharge_limit_l3: Option<Decimal>,
 
     /// Setpoint in _chargingRateUnit_ that the EV should follow as close as possible. Use negative values for discharging. +\r\nWhen a limit and/or _dischargeLimit_ are given the overshoot when following _setpoint_ must remain within these values.\r\nThis field represents the sum of all phases, unless values are provided for L2 and L3, in which case this field represents phase L1.
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub setpoint: Option<Decimal>,
 
     /// Setpoint in _chargingRateUnit_ that the EV should follow on phase L2 as close as possible.
     #[serde(rename = "setpoint_L2")]
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub setpoint_l2: Option<Decimal>,
 
     /// Setpoint in _chargingRateUnit_ that the EV should follow on phase L3 as close as possible.
     #[serde(rename = "setpoint_L3")]
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub setpoint_l3: Option<Decimal>,
 
     /// Setpoint for reactive power (or current) in _chargingRateUnit_ that the EV should follow as closely as possible. Positive values for inductive, negative for capacitive reactive power or current.  +\r\nThis field represents the sum of all phases, unless values are provided for L2 and L3, in which case this field represents phase L1.
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub setpoint_reactive: Option<Decimal>,
 
     /// Setpoint for reactive power (or current) in _chargingRateUnit_ that the EV should follow on phase L2 as closely as possible.
     #[serde(rename = "setpointReactive_L2")]
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub setpoint_reactive_l2: Option<Decimal>,
 
     /// Setpoint for reactive power (or current) in _chargingRateUnit_ that the EV should follow on phase L3 as closely as possible.
     #[serde(rename = "setpointReactive_L3")]
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub setpoint_reactive_l3: Option<Decimal>,
 
@@ -150,10 +215,14 @@ pub struct ChargingSchedulePeriodType {
     pub evse_sleep: Option<bool>,
 
     /// Power value that, when present, is used as a baseline on top of which values from _v2xFreqWattCurve_ and _v2xSignalWattCurve_ are added.
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub v2x_baseline: Option<Decimal>,
 
@@ -163,12 +232,12 @@ pub struct ChargingSchedulePeriodType {
 
     /// Frequency-watt curve for V2X operation.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 20), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 20), nested))]
     pub v2x_freq_watt_curve: Option<Vec<V2XFreqWattPointType>>,
 
     /// Signal-watt curve for V2X operation.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 20), nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 20), nested))]
     pub v2x_signal_watt_curve: Option<Vec<V2XSignalWattPointType>>,
 
     /// Custom data from the Charging Station.
@@ -643,6 +712,7 @@ impl ChargingSchedulePeriodType {
     /// # Returns
     ///
     /// `Ok(())` if the instance is valid, otherwise an error
+    #[cfg(feature = "std")]
     pub fn validate(&self) -> Result<(), validator::ValidationErrors> {
         let mut errors = validator::ValidationErrors::new();
 

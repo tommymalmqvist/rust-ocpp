@@ -1,22 +1,31 @@
 use super::custom_data::CustomDataType;
 use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
+use core::fmt;
 use rust_decimal::prelude::ToPrimitive;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
-use std::fmt;
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Fixed power factor settings.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate, Default)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct FixedPFType {
     /// Priority of setting (0=highest)
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub priority: i32,
 
     /// Power factor, cos(phi), as value between 0..1.
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub displacement: Decimal,
 
     /// True when absorbing reactive power (under-excited), false when injecting reactive power (over-excited).
@@ -31,16 +40,20 @@ pub struct FixedPFType {
     pub start_time: Option<DateTime<Utc>>,
 
     /// Duration of the setting in seconds.
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub duration: Option<Decimal>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

@@ -1,8 +1,11 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use chrono::{DateTime, Utc};
+use core::convert::TryFrom;
+use core::fmt;
 use serde::{Deserialize, Serialize};
-use std::convert::TryFrom;
-use std::fmt;
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{
@@ -10,7 +13,8 @@ use super::{
 };
 
 /// Price schedule of EV energy offer.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct EVAbsolutePriceScheduleType {
     /// Starting point in time of the EVEnergyOffer.
@@ -18,21 +22,21 @@ pub struct EVAbsolutePriceScheduleType {
     pub time_anchor: DateTime<Utc>,
 
     /// Currency code according to ISO 4217.
-    #[validate(length(max = 3))]
+    #[cfg_attr(feature = "std", validate(length(max = 3)))]
     pub currency: String,
 
     /// ISO 15118-20 URN of price algorithm: Power, PeakPower, StackedEnergy.
-    #[validate(length(max = 2000))]
+    #[cfg_attr(feature = "std", validate(length(max = 2000)))]
     pub price_algorithm: String,
 
     /// List of price schedule entries.
-    #[validate(length(min = 1, max = 1024))]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 1024)))]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub ev_absolute_price_schedule_entries: Vec<EVAbsolutePriceScheduleEntryType>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 
@@ -200,6 +204,7 @@ impl EVAbsolutePriceScheduleType {
 /// Implementation of Default trait for EVAbsolutePriceScheduleType
 /// Provides a default configuration with EUR currency, "Power" price algorithm,
 /// and a single entry for 1 hour with a price of 0.0
+#[cfg(feature = "std")]
 impl Default for EVAbsolutePriceScheduleType {
     fn default() -> Self {
         let time_anchor = Utc::now();

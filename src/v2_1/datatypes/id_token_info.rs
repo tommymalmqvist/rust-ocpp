@@ -1,6 +1,9 @@
 use crate::v2_1::helpers::datetime_rfc3339;
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 use super::{
@@ -11,7 +14,8 @@ use crate::v2_1::enumerations::AuthorizationStatusEnumType;
 
 /// Contains status information about an identifier.
 /// It is advised to not stop charging if the status is Accepted or ConcurrentTx.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct IdTokenInfoType {
     /// Required. This contains whether the identifier is allowed for charging.
@@ -30,42 +34,42 @@ pub struct IdTokenInfoType {
     /// Higher values indicate a higher priority.
     /// The chargingPriority in a ChargingProfile SHALL overrule this priority range.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(range(min = -9, max = 9))]
+    #[cfg_attr(feature = "std", validate(range(min = -9, max = 9)))]
     pub charging_priority: Option<i8>,
 
     /// Optional. Contains a language code as defined in RFC5646.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 8))]
+    #[cfg_attr(feature = "std", validate(length(max = 8)))]
     pub language1: Option<String>,
 
     /// Optional. Contains a language code as defined in RFC5646.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(max = 8))]
+    #[cfg_attr(feature = "std", validate(length(max = 8)))]
     pub language2: Option<String>,
 
     /// Optional. Only used when the IdToken is only valid for one or more specific EVSEs, not for the entire Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1))]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
     pub evse_id: Option<Vec<i32>>,
 
     /// Optional. A case insensitive identifier to use for the authorization and the load profile.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub group_id_token: Option<IdTokenType>,
 
     /// Optional. Contains a case insensitive identifier to use for the user profile.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub personal_message: Option<MessageContentType>,
 
     /// Optional. Additional status information.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub status_info: Option<StatusInfoType>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

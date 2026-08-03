@@ -23,6 +23,19 @@ exclude = ["docs/", "src/tests"]
 all-features = true
 
 [features]
+default = ["std"]
+# std enables validator/regex-based validation, chrono::Utc::now(), and std
+# support in rust_decimal/serde_json. Disable it (no-default-features) for
+# no_std (alloc-only) builds.
+std = [
+    "dep:regex",
+    "dep:validator",
+    "serde/std",
+    "chrono/now",
+    "rust_decimal/std",
+    "rust_decimal/serde-with-arbitrary-precision",
+    "serde_json/std",
+]
 # No default feature, so each version must be explicitly enabled
 v1_6 = []
 v2_0_1 = []
@@ -34,23 +47,23 @@ wip_v2_1 = []
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-serde = { version = "1", default-features = false, features = ["derive"] }
+serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
 chrono = { version = "0.4.43", default-features = false, features = [
-    "now",
     "serde",
     "alloc",
 ] }
-uuid = { version = "1", default-features = false, features = ["v4"] }
 validator = { version = "0.20.0", default-features = false, features = [
     "derive",
-] }
-regex = "1.12.3"
-rust_decimal = { version = "1.36.0", features = [
-    "serde-with-arbitrary-precision",
+], optional = true }
+regex = { version = "1.12.3", optional = true }
+rust_decimal = { version = "1.36.0", default-features = false, features = [
+    "serde",
 ] }
 rust_decimal_macros = "1.40.0"
-serde_json = "1"
-lazy_static = "1.4"
+serde_json = { version = "1", default-features = false, features = [
+    "alloc",
+    "raw_value",
+] }
 
 [dev-dependencies]
 chrono = { version = "0.4.43", default-features = false, features = ["clock"] }

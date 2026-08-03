@@ -1,23 +1,34 @@
 use super::custom_data::CustomDataType;
+#[cfg(feature = "std")]
 use crate::v2_1::helpers::validator::validate_identifier_string;
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, string::ToString};
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Defines parameters required for initiating and maintaining wireless communication with other devices.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct ModemType {
     /// Required. This contains the ICCID of the modem's SIM card.
-    #[validate(length(max = 20), custom(function = "validate_identifier_string"))]
+    #[cfg_attr(
+        feature = "std",
+        validate(length(max = 20), custom(function = "validate_identifier_string"))
+    )]
     pub iccid: String,
 
     /// Required. This contains the IMSI of the modem's SIM card.
-    #[validate(length(max = 20), custom(function = "validate_identifier_string"))]
+    #[cfg_attr(
+        feature = "std",
+        validate(length(max = 20), custom(function = "validate_identifier_string"))
+    )]
     pub imsi: String,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

@@ -3,43 +3,75 @@ use crate::v2_1::helpers::datetime_rfc3339;
 use chrono::{DateTime, Utc};
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// Frequency droop settings.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct FreqDroopType {
     /// Priority of setting (0=highest)
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub priority: i32,
 
     /// Over-frequency start of droop
-    #[serde(with = "rust_decimal::serde::arbitrary_precision", rename = "overFreq")]
+    #[serde(rename = "overFreq")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub over_freq: Decimal,
 
     /// Under-frequency start of droop
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision",
-        rename = "underFreq"
+    #[serde(rename = "underFreq")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
     )]
     pub under_freq: Decimal,
 
     /// Over-frequency droop per unit, oFDroop
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision",
-        rename = "overDroop"
+    #[serde(rename = "overDroop")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
     )]
     pub over_droop: Decimal,
 
     /// Under-frequency droop per unit, uFDroop
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision",
-        rename = "underDroop"
+    #[serde(rename = "underDroop")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
     )]
     pub under_droop: Decimal,
 
     /// Response time in seconds.
-    #[serde(with = "rust_decimal::serde::arbitrary_precision")]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision")
+    )]
     pub response_time: Decimal,
 
     /// Time when this setting becomes active
@@ -51,16 +83,20 @@ pub struct FreqDroopType {
     pub start_time: Option<DateTime<Utc>>,
 
     /// Duration in seconds that this setting is active
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub duration: Option<Decimal>,
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 

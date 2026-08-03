@@ -1,15 +1,17 @@
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::v2_1::datatypes::{CustomDataType, StatusInfoType, TariffAssignmentType};
 use crate::v2_1::enumerations::TariffGetStatusEnumType;
 
 /// Request to get tariff information from a Charging Station.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetTariffsRequest {
     /// Required. EVSE id to get tariff from. When evseId = 0, this gets tariffs from all EVSEs.
-    #[validate(range(min = 0))]
+    #[cfg_attr(feature = "std", validate(range(min = 0)))]
     pub evse_id: i32,
 
     /// Optional. Custom data from the Charging Station.
@@ -18,7 +20,8 @@ pub struct GetTariffsRequest {
 }
 
 /// Response to a GetTariffsRequest.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct GetTariffsResponse {
     /// Required. Status indicating whether the Charging Station accepts the request.
@@ -26,7 +29,7 @@ pub struct GetTariffsResponse {
 
     /// Optional. List of tariff assignments.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1))]
+    #[cfg_attr(feature = "std", validate(length(min = 1)))]
     pub tariff_assignments: Option<Vec<TariffAssignmentType>>,
 
     /// Optional. Element providing more information about the status.

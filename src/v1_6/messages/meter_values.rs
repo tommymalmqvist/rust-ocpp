@@ -1,4 +1,6 @@
 use crate::v1_6::types::MeterValue;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 /// This contains the field definition of the MeterValues.req PDU sent by the Charge Point to the Central System. See also Meter Values
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]

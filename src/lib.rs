@@ -1,3 +1,5 @@
+#![cfg_attr(not(feature = "std"), no_std)]
+
 //! # rust-ocpp
 //!
 //! `rust-ocpp` is a collection of data types and enums specified by the Open Charge Point Protocol
@@ -12,6 +14,11 @@
 //!
 //! # v2_0_1
 //! The [v2_0_1](v2_0_1) module contains the `ocpp 2.0.1` implementation
+
+extern crate alloc;
+
+/// crate-wide helpers
+pub mod helpers;
 /// tests
 #[cfg(test)]
 pub mod tests;

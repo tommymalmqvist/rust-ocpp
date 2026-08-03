@@ -1,6 +1,8 @@
 //! GetTransactionStatus
 
 /// With this message, the CSMS can ask the Charging Station whether it has transaction-related messages waiting to be delivered to the CSMS. When a transactionId is provided, only messages for a specific transaction are asked for.
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct GetTransactionStatusRequest {

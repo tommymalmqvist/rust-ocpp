@@ -1,7 +1,10 @@
 use super::custom_data::CustomDataType;
 use crate::v2_1::enumerations::{day_of_week::DayOfWeekEnumType, evse_kind::EvseKindEnumType};
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "std")]
 use validator::Validate;
 
 /// These conditions describe if and when a TariffEnergyType or TariffTimeType applies during a transaction.
@@ -9,7 +12,8 @@ use validator::Validate;
 /// When more than one restriction is set, they are to be treated as a logical AND. All need to be valid before this price is active.
 ///
 /// For reverse energy flow (discharging) negative values of energy, power and current are used.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Validate)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "std", derive(validator::Validate))]
 #[serde(rename_all = "camelCase")]
 pub struct TariffConditionsType {
     /// Optional. Start time of day in local time.
@@ -27,7 +31,7 @@ pub struct TariffConditionsType {
 
     /// Optional. Day(s) of the week this is tariff applies.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(length(min = 1, max = 7))]
+    #[cfg_attr(feature = "std", validate(length(min = 1, max = 7)))]
     pub day_of_week: Option<Vec<DayOfWeekEnumType>>,
 
     /// Optional. Start date in local time, for example: 2015-12-24.
@@ -47,19 +51,27 @@ pub struct TariffConditionsType {
 
     /// Optional. Minimum consumed energy in Wh, for example 20000 Wh.
     /// Valid from this amount of energy (inclusive) being used.
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub min_energy: Option<Decimal>,
 
     /// Optional. Maximum consumed energy in Wh, for example 50000 Wh.
     /// Valid until this amount of energy (exclusive) being used.
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub max_energy: Option<Decimal>,
 
@@ -67,10 +79,14 @@ pub struct TariffConditionsType {
     /// When the EV is charging with more than, or equal to, the defined amount of current, this price is/becomes active.
     /// If the charging current is or becomes lower, this price is not or no longer valid and becomes inactive.
     /// This is NOT about the minimum current over the entire transaction.
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub min_current: Option<Decimal>,
 
@@ -78,10 +94,14 @@ pub struct TariffConditionsType {
     /// When the EV is charging with less than the defined amount of current, this price becomes/is active.
     /// If the charging current is or becomes higher, this price is not or no longer valid and becomes inactive.
     /// This is NOT about the maximum current over the entire transaction.
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub max_current: Option<Decimal>,
 
@@ -89,10 +109,14 @@ pub struct TariffConditionsType {
     /// When the EV is charging with more than, or equal to, the defined amount of power, this price is/becomes active.
     /// If the charging power is or becomes lower, this price is not or no longer valid and becomes inactive.
     /// This is NOT about the minimum power over the entire transaction.
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub min_power: Option<Decimal>,
 
@@ -100,10 +124,14 @@ pub struct TariffConditionsType {
     /// When the EV is charging with less than the defined amount of power, this price becomes/is active.
     /// If the charging power is or becomes higher, this price is not or no longer valid and becomes inactive.
     /// This is NOT about the maximum power over the entire transaction.
-    #[serde(
-        with = "rust_decimal::serde::arbitrary_precision_option",
-        skip_serializing_if = "Option::is_none",
-        default
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    #[cfg_attr(
+        feature = "std",
+        serde(with = "rust_decimal::serde::arbitrary_precision_option")
+    )]
+    #[cfg_attr(
+        not(feature = "std"),
+        serde(with = "crate::helpers::decimal_arbitrary_precision::option")
     )]
     pub max_power: Option<Decimal>,
 
@@ -145,7 +173,7 @@ pub struct TariffConditionsType {
 
     /// Custom data from the Charging Station.
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[validate(nested)]
+    #[cfg_attr(feature = "std", validate(nested))]
     pub custom_data: Option<CustomDataType>,
 }
 
