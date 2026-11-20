@@ -2775,6 +2775,56 @@ mod tests {
         assert!(compiled.is_valid(&instance));
     }
     #[test]
+    fn validate_reserve_now_request_with_every_connector_type() {
+        let schema = include_str!("schemas/v2.0.1/ReserveNowRequest.json");
+        let schema = serde_json::from_str(schema).unwrap();
+        let compiled = Validator::new(&schema).expect("A valid schema");
+        for connector_type in [
+            ConnectorEnumType::CCCS1,
+            ConnectorEnumType::CCCS2,
+            ConnectorEnumType::CG105,
+            ConnectorEnumType::CTesla,
+            ConnectorEnumType::CType1,
+            ConnectorEnumType::CType2,
+            ConnectorEnumType::S3091P16A,
+            ConnectorEnumType::S3091P32A,
+            ConnectorEnumType::S3093P16A,
+            ConnectorEnumType::S3093P32A,
+            ConnectorEnumType::SBS1361,
+            ConnectorEnumType::SCEE77,
+            ConnectorEnumType::SType2,
+            ConnectorEnumType::SType3,
+            ConnectorEnumType::Other1PhMax16A,
+            ConnectorEnumType::Other1PhOver16A,
+            ConnectorEnumType::Other3Ph,
+            ConnectorEnumType::Pan,
+            ConnectorEnumType::WInductive,
+            ConnectorEnumType::WResonant,
+            ConnectorEnumType::Undetermined,
+            ConnectorEnumType::Unknown,
+        ] {
+            let test = ReserveNowRequest {
+                id: 0,
+                expiry_date_time: Utc::now(),
+                connector_type: Some(connector_type.clone()),
+                evse_id: None,
+                id_token: IdTokenType {
+                    id_token: "".to_string(),
+                    kind: IdTokenEnumType::Central,
+                    additional_info: None,
+                },
+                group_id_token: None,
+            };
+            let instance = serde_json::to_value(test).unwrap();
+            assert!(
+                compiled.is_valid(&instance),
+                "{:?} is serialized as {}",
+                connector_type,
+                instance["connectorType"]
+            );
+        }
+    }
+    #[test]
     fn validate_reserve_now_response() {
         let test = ReserveNowResponse {
             status: ReserveNowStatusEnumType::Accepted,
