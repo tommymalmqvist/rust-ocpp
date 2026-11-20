@@ -23,6 +23,7 @@ pub enum ConnectorEnumType {
     S3093P16A,
     #[serde(rename = "s309-3P-32A")]
     S3093P32A,
+    #[serde(rename = "sBS1361")]
     SBS1361,
     #[serde(rename = "sCEE-7-7")]
     SCEE77,
